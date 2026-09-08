@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60 Günlük AI Koçum Pro</title>
+    <title>60 Günlük AI Koçum Ultimate Pro</title>
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
     <style>
         :root {
@@ -15,222 +15,396 @@
             --text-dim: #9ca3af;
             --green: #10b981;
             --ai-purple: #8b5cf6;
+            --orange: #f59e0b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 40px; }
+        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 60px; }
         
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; margin-top: 10px; }
+        /* Header & Streak Bar */
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; margin-top: 10px; }
         .header-title h1 { font-size: 20px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-title p { font-size: 11px; color: var(--text-dim); }
 
-        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 10px 12px; border-radius: 12px; font-weight: 600; font-size: 13px; outline: none; cursor: pointer; }
+        .streak-badge { background: #312e81; border: 1px solid #4338ca; color: #fbbf24; padding: 6px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px; }
 
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-btn { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center; }
+        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 8px 10px; border-radius: 10px; font-weight: 600; font-size: 12px; outline: none; cursor: pointer; }
+
+        /* Navigation Tabs */
+        .tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { flex: 1; padding: 10px 8px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 10px; font-weight: 700; font-size: 11px; cursor: pointer; text-align: center; white-space: nowrap; }
         .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 16px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #ddd6fe; }
+        /* AI Box & Dynamic Mode */
+        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 14px; padding: 12px; margin-bottom: 14px; font-size: 12px; line-height: 1.4; color: #ddd6fe; }
         .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .ai-badge { background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-        .ai-btn { background: #4c1d95; border: 1px solid #6d28d9; color: #e9d5ff; padding: 3px 8px; border-radius: 8px; font-size: 10px; cursor: pointer; font-weight: 600; }
+        .ai-btn { background: #4c1d95; border: 1px solid #6d28d9; color: #e9d5ff; padding: 3px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: 600; }
 
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .stat-val { font-size: 22px; font-weight: 800; color: white; margin: 2px 0; }
-        .stat-lbl { font-size: 11px; color: var(--text-dim); }
+        .energy-selector { display: flex; gap: 6px; margin-bottom: 14px; background: #0f172a; padding: 6px; border-radius: 10px; border: 1px solid var(--card-border); }
+        .energy-btn { flex: 1; padding: 6px; border: none; border-radius: 6px; background: transparent; color: var(--text-dim); font-size: 10px; font-weight: 700; cursor: pointer; }
+        .energy-btn.active { background: #1e293b; color: #38bdf8; border: 1px solid #0284c7; }
 
-        .water-btn-group { display: flex; gap: 6px; width: 100%; margin-top: 8px; }
-        .water-btn { flex: 1; padding: 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .stat-val { font-size: 20px; font-weight: 800; color: white; margin: 2px 0; }
+        .stat-lbl { font-size: 10px; color: var(--text-dim); }
 
-        .task-list { display: flex; flex-direction: column; gap: 12px; }
-        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s; position: relative; }
-        .task-card.locked { opacity: 0.4; pointer-events: none; filter: grayscale(1); }
-        .task-card.completed { opacity: 0.5; text-decoration: line-through; }
+        .water-btn-group { display: flex; gap: 4px; width: 100%; margin-top: 6px; }
+        .water-btn { flex: 1; padding: 4px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; }
+
+        /* Macro Progress Bars */
+        .macro-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .macro-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; }
+        .macro-bar-bg { background: #0f172a; height: 8px; border-radius: 4px; overflow: hidden; width: 100%; }
+        .macro-bar-fill { background: linear-gradient(90deg, #10b981, #059669); height: 100%; width: 0%; transition: width 0.3s; }
+
+        /* Task List & Exercise Cards */
+        .task-list { display: flex; flex-direction: column; gap: 10px; }
+        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; position: relative; }
+        .task-card.locked { opacity: 0.35; pointer-events: none; filter: grayscale(1); }
+        .task-card.completed { opacity: 0.6; text-decoration: line-through; }
         
-        .task-header { display: flex; align-items: center; gap: 12px; }
-        .checkbox { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+        .task-header { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
-        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 14px; }
+        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 12px; }
         .task-card.completed .checkbox::after { display: block; }
         
         .task-title-group { flex: 1; }
-        .task-title { font-size: 14px; font-weight: 700; color: #f3f4f6; }
-        .task-tags { display: flex; gap: 6px; margin-top: 4px; }
-        .task-tag { font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #242f4d; color: #93c5fd; font-weight: 600; }
-        .task-duration { font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #312e81; color: #c7d2fe; font-weight: 700; }
+        .task-title { font-size: 13px; font-weight: 700; color: #f3f4f6; }
+        .task-tags { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
+        .task-tag { font-size: 9px; padding: 2px 5px; border-radius: 4px; background: #242f4d; color: #93c5fd; font-weight: 600; }
+        .task-duration { font-size: 9px; padding: 2px 5px; border-radius: 4px; background: #312e81; color: #c7d2fe; font-weight: 700; }
 
-        .task-details { background: #0f1623; border-radius: 10px; padding: 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
-        .task-details strong { color: #e5e7eb; }
-        .task-sub-info { color: #f59e0b; margin-top: 4px; font-size: 10.5px; }
+        .task-details { background: #0f1623; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
+        
+        /* Visual Exercise Diagram (SVG/Canvas Demo) */
+        .exercise-visual { display: flex; align-items: center; gap: 10px; background: #1e293b; padding: 8px; border-radius: 8px; margin-top: 4px; }
+        .exercise-svg { width: 40px; height: 40px; background: #0f172a; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-weight: bold; font-size: 18px; flex-shrink: 0; }
+        .exercise-desc { font-size: 10px; color: #cbd5e1; }
 
         /* Timer UI */
-        .timer-box { display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 8px 12px; border-radius: 8px; margin-top: 4px; }
-        .timer-val { font-size: 16px; font-weight: 800; color: #38bdf8; font-family: monospace; }
-        .timer-btn { background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .timer-box { display: flex; align-items: center; justify-content: space-between; background: #0f172a; padding: 6px 10px; border-radius: 8px; margin-top: 4px; }
+        .timer-val { font-size: 14px; font-weight: 800; color: #38bdf8; font-family: monospace; }
+        .timer-btn { background: #0284c7; color: white; border: none; padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; cursor: pointer; }
 
-        .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; margin-top: 24px; display: block; width: 100%; text-align: center; text-decoration: underline; }
+        /* Rest Overlay Banner */
+        .rest-banner { display: none; background: linear-gradient(90deg, #d97706, #b45309); color: white; text-align: center; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 800; margin-top: 4px; animation: pulse 1s infinite alternate; }
+        @keyframes pulse { 0% { opacity: 0.8; } 100% { opacity: 1; } }
+
+        /* Tracker Tab (Metrics) */
+        .tracker-sec { display: flex; flex-direction: column; gap: 12px; }
+        .input-group { display: flex; gap: 8px; }
+        .input-group input { flex: 1; background: var(--card); border: 1px solid var(--card-border); color: white; padding: 8px 10px; border-radius: 8px; font-size: 12px; outline: none; }
+        .btn-primary { background: var(--accent); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        
+        .history-list { background: var(--card); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; max-height: 150px; overflow-y: auto; font-size: 11px; }
+        .history-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed var(--card-border); }
+
+        /* Market List Modal/Box */
+        .market-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 10px; }
+        .market-title { font-size: 12px; font-weight: 800; color: var(--orange); margin-bottom: 6px; }
+        .market-item { font-size: 11px; color: #cbd5e1; padding: 3px 0; display: flex; align-items: center; gap: 6px; }
+
+        /* Backup / Reset Footer */
+        .footer-tools { display: flex; justify-content: space-between; gap: 8px; margin-top: 20px; }
+        .tool-btn { flex: 1; background: #1e293b; border: 1px solid var(--card-border); color: var(--text-dim); padding: 8px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; text-align: center; }
+
+        /* Onboarding Tour Overlay */
+        .tour-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .tour-card { background: var(--card); border: 2px solid var(--accent); border-radius: 16px; padding: 20px; max-width: 350px; text-align: center; }
+        .tour-card h2 { font-size: 18px; color: white; margin-bottom: 10px; }
+        .tour-card p { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5; }
+        .tour-step-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="header">
+    <!-- Onboarding Tour Modal -->
+    <div class="tour-overlay" id="tourOverlay" style="display: none;">
+        <div class="tour-card">
+            <h2 id="tourTitle">Hoş Geldin! 👋</h2>
+            <p id="tourText">60 Günlük AI Koçum Pro'ya adım attın! Sana özel hazırlanmış sıralı antrenman, makro takibi ve AI desteği ile hedeflerine ulaşmaya hazırsın.</p>
+            <button class="tour-step-btn" onclick="nextTourStep()">Devam Et ➔</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header" id="stepHeader">
         <div class="header-title">
             <h1>60 Günlük AI Koçum</h1>
-            <p id="subTitle">Akıllı & Sıralı Takip Sistemi</p>
+            <p id="subTitle">Eksiksiz Akıllı Koçluk Sistemi</p>
         </div>
-        <select id="daySelect" class="day-select" onchange="changeDay()">
-            <option value="pazartesi">Pazartesi</option>
-            <option value="sali">Salı</option>
-            <option value="carsamba">Çarşamba</option>
-            <option value="persembe">Perşembe</option>
-            <option value="cuma">Cuma</option>
-            <option value="cumartesi">Cumartesi</option>
-            <option value="pazar">Pazar</option>
-        </select>
+        <div style="display: flex; gap: 6px; align-items: center;">
+            <div class="streak-badge" id="streakBadge">🔥 <span id="streakCount">0</span> Gün</div>
+            <select id="daySelect" class="day-select" onchange="changeDay()">
+                <option value="pazartesi">Pazartesi</option>
+                <option value="sali">Salı</option>
+                <option value="carsamba">Çarşamba</option>
+                <option value="persembe">Perşembe</option>
+                <option value="cuma">Cuma</option>
+                <option value="cumartesi">Cumartesi</option>
+                <option value="pazar">Pazar</option>
+            </select>
+        </div>
     </div>
 
+    <!-- Mod Selector (Energy Level) -->
+    <div class="energy-selector" id="stepEnergy">
+        <button class="energy-btn active" id="modeNormal" onclick="setEnergyMode('normal')">⚡ Normal Mod</button>
+        <button class="energy-btn" id="modeLow" onclick="setEnergyMode('low')">💤 Düşük Enerji (-20%)</button>
+        <button class="energy-btn" id="modeHigh" onclick="setEnergyMode('high')">🔥 Yüksek Enerji (+20%)</button>
+    </div>
+
+    <!-- Navigation Tabs -->
     <div class="tabs">
-        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme</div>
+        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme & Makro</div>
         <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Spor (Sıralı Mod)</div>
+        <div class="tab-btn" id="tabTracker" onclick="switchTab('tracker')">📊 Ölçü & Kilo Takibi</div>
+        <div class="tab-btn" id="tabMarket" onclick="switchTab('market')">🛒 Market Listesi</div>
     </div>
 
-    <div class="ai-box">
+    <!-- AI Advice Box -->
+    <div class="ai-box" id="stepAi">
         <div class="ai-header">
             <span class="ai-badge">🤖 AI Koç Tavsiyesi</span>
             <button class="ai-btn" onclick="generateAiTip()">💡 Yeni AI İpucu Üret</button>
         </div>
-        <div id="aiTip">Yükleniyor...</div>
+        <div id="aiTip">Sistem hazırlanıyor...</div>
     </div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-val" id="progressPct">%0</div>
-            <div class="stat-lbl">Tamamlanan İlerleme</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Hedefi 💧</div>
-            <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
-            <div class="water-btn-group">
-                <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
-                <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
+    <!-- Main View Content -->
+    <div id="mainView">
+        <!-- Stats Bar -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val" id="progressPct">%0</div>
+                <div class="stat-lbl">Tamamlanan İlerleme</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Hedefi 💧</div>
+                <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
+                <div class="water-btn-group">
+                    <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
+                    <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
+                </div>
             </div>
         </div>
+
+        <!-- Macro Section (Beslenme Sekmesinde Görünür) -->
+        <div class="macro-card" id="macroCard">
+            <div class="macro-row">
+                <span>Günlük Toplam Protein:</span>
+                <span id="macroProteinVal" style="color:#10b981;">0g / 130g</span>
+            </div>
+            <div class="macro-bar-bg"><div class="macro-bar-fill" id="macroBarFill"></div></div>
+            <div class="macro-row" style="font-size:10px; color:var(--text-dim);">
+                <span>Tahmini Kalori: ~1500 kcal</span>
+                <span>Hedef: Yağ Yakımı</span>
+            </div>
+        </div>
+
+        <!-- Task List -->
+        <div class="task-list" id="taskList"></div>
     </div>
 
-    <div class="task-list" id="taskList"></div>
+    <!-- Tracker View (Kilo & Ölçü) -->
+    <div id="trackerView" style="display: none;" class="tracker-sec">
+        <div class="task-card">
+            <h3 style="font-size:13px; color:white;">📉 Kilo & Ölçü Kaydı Gir</h3>
+            <div class="input-group">
+                <input type="number" id="inputWeight" placeholder="Kilo (kg)">
+                <input type="number" id="inputWaist" placeholder="Bel (cm)">
+                <button class="btn-primary" onclick="saveMetric()">Kaydet</button>
+            </div>
+        </div>
+        <div class="task-card">
+            <h3 style="font-size:13px; color:white; margin-bottom:8px;">📜 Geçmiş Ölçümler</h3>
+            <div class="history-list" id="historyList">Kayıt bulunamadı.</div>
+        </div>
+    </div>
 
-    <button class="reset-btn" onclick="resetCurrentDay()">🔄 Bu Günü Sıfırla</button>
+    <!-- Market List View -->
+    <div id="marketView" style="display: none;">
+        <div class="market-box">
+            <div class="market-title">🛒 Haftalık Akıllı Market Listesi</div>
+            <div id="marketItems"></div>
+        </div>
+    </div>
+
+    <!-- Tools & Backup Footer -->
+    <div class="footer-tools">
+        <button class="tool-btn" onclick="exportData()">💾 Verileri İndir (Yedekle)</button>
+        <button class="tool-btn" onclick="importData()">📂 Veri Yükle</button>
+        <button class="tool-btn" onclick="resetCurrentDay()" style="color:#f87171;">🔄 Günü Sıfırla</button>
+    </div>
 
     <script>
+        // Web Audio API for Sound Alert
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(800, ctx.currentTime);
+                osc.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.4);
+            } catch(e) {}
+        }
+
         const aiPrompts = {
             beslenme: [
-                "Metabolizmanı canlı tutmak için protein öğünlerini geciktirme. Tükettiğin her öğün sonrası 1 bardak su ekle.",
-                "Kan şekerini dengede tutmak için lifli sebzelere öncelik ver. Yemek yerken yavaş çiğnemeyi unutma.",
-                "Eğer tatlı krizi yaşarsan 1 fincan sade filtre kahve veya yeşil çay içerek iştahını baskılayabilirsin."
+                "Protein öğünlerini aksatma! Kas kaybını önlemek ve metabolizmanı canlı tutmak için proteini her öğüne yay.",
+                "Eğer tatlı krizin gelirse 1 fincan sade yeşil çay veya filtre kahve iştahı baskılar.",
+                "Su tüketimini ihmal etme. Her öğün öncesi içeceğin 2 bardak su sindirimi hızlandırır."
             ],
             spor: [
-                "Hareketleri acele etmeden, kasındaki gerilimi hissederek yap. Negatif tekrarlarda (inerken) yavaşla.",
-                "Set aralarında 45-60 saniye dinlenmeyi aşma. Nabzı optimum yağ yakım seviyesinde tutuyoruz.",
-                "Sırayı bozmadan ilerle. Her hareket bir sonraki kas grubunu hazırlamak üzere tasarlandı!"
+                "Hareketi acele etmeden, negatif süreyi (inerken) yavaş tutarak yap. Kas içi gerilim maksimum olsun!",
+                "Dinlenme sürelerine sadık kal. Süre bitince uyarı sesini duyduğunda hemen diğer sete geç.",
+                "Sırayı bozma! Her kilit açıldığında bir sonraki ana kas grubun uyarılıyor."
             ]
         };
 
         const dietRoutines = {
             pazartesi: [
-                { id: "dp1", title: "09:00 - Uyanış & Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su.", alt: "Alternatif: Limonlu Su" },
-                { id: "dp2", title: "12:30 - Protein Öğleni", duration: "20 Dk", tag: "~450 Kalori | 40g Protein", details: "3 Haşlanmış Yumurta + 3 YK Lor + 1 Dilim Tam Buğday Ekmek.", alt: "Alternatif: 2 Dilim Süzme Peynir" },
-                { id: "dp3", title: "16:00 - Ara Öğün", duration: "5 Dk", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık.", alt: "Alternatif: 2 Adet Ceviz" },
-                { id: "dp4", title: "19:00 - Akşam Yemeği", duration: "25 Dk", tag: "~500 Kalori | 45g Protein", details: "250g Tavuk Sote + Bol Salata + 1 Dilim Ekmek.", alt: "Alternatif: 200g Yağsız Köfte" }
+                { id: "dp1", title: "09:00 - Uyanış & Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su.", alt: "Alternatif: Limonlu Su", protein: 0 },
+                { id: "dp2", title: "12:30 - Protein Öğleni", duration: "20 Dk", tag: "~450 Kalori", details: "3 Haşlanmış Yumurta + 3 YK Lor + 1 Dilim Tam Buğday Ekmek.", alt: "Alternatif: 2 Dilim Süzme Peynir", protein: 40 },
+                { id: "dp3", title: "16:00 - Ara Öğün", duration: "5 Dk", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık.", alt: "Alternatif: 2 Ceviz", protein: 5 },
+                { id: "dp4", title: "19:00 - Akşam Yemeği", duration: "25 Dk", tag: "~500 Kalori", details: "250g Tavuk Sote + Bol Salata.", alt: "Alternatif: 200g Yağsız Köfte", protein: 45 }
             ],
             sali: [
-                { id: "ds1", title: "09:00 - Su Detoksu", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Tarçınlı Su" },
-                { id: "ds2", title: "12:30 - Ton Balıklı Salata", duration: "15 Dk", tag: "~400 Kalori | 38g Protein", details: "2 Kutu Ton Balığı + Bol Yeşillik.", alt: "Alternatif: 160g Haşlanmış Tavuk" },
-                { id: "ds3", title: "16:00 - Meyve Arası", duration: "5 Dk", tag: "~80 Kalori", details: "1 Adet Yeşil Elma.", alt: "Alternatif: 2 Salatalık" },
-                { id: "ds4", title: "19:00 - Lorlu Omlet", duration: "15 Dk", tag: "~380 Kalori | 32g Protein", details: "3 Yumurtalı Lorlu Omlet + Salata.", alt: "Alternatif: Menemen" }
+                { id: "ds1", title: "09:00 - Su Detoksu", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Tarçınlı Su", protein: 0 },
+                { id: "ds2", title: "12:30 - Ton Balıklı Salata", duration: "15 Dk", tag: "~400 Kalori", details: "2 Kutu Ton Balığı + Bol Yeşillik.", alt: "Alternatif: 160g Haşlanmış Tavuk", protein: 38 },
+                { id: "ds3", title: "16:00 - Meyve Arası", duration: "5 Dk", tag: "~80 Kalori", details: "1 Adet Yeşil Elma.", alt: "Alternatif: 2 Salatalık", protein: 1 },
+                { id: "ds4", title: "19:00 - Lorlu Omlet", duration: "15 Dk", tag: "~380 Kalori", details: "3 Yumurtalı Lorlu Omlet + Salata.", alt: "Alternatif: Menemen", protein: 32 }
             ],
             carsamba: [
-                { id: "dc1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Sirkeli Su" },
-                { id: "dc2", title: "12:30 - Mercimek & Lor", duration: "20 Dk", tag: "~350 Kalori", details: "1 Kase Mercimek Çorbası + 100g Lorlu Salata.", alt: "Alternatif: Ezogelin Çorbası" },
-                { id: "dc3", title: "16:00 - Kuruyemiş", duration: "5 Dk", tag: "~180 Kalori", details: "3 Tam Ceviz İçi.", alt: "Alternatif: 10 Badem" },
-                { id: "dc4", title: "19:00 - Tavuk Göğsü", duration: "25 Dk", tag: "~450 Kalori | 50g Protein", details: "250g Haşlanmış/Izgara Tavuk Göğsü + Salata.", alt: "Alternatif: 250g Fırın Balık" }
+                { id: "dc1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Sirkeli Su", protein: 0 },
+                { id: "dc2", title: "12:30 - Mercimek & Lor", duration: "20 Dk", tag: "~350 Kalori", details: "1 Kase Mercimek Çorbası + 100g Lorlu Salata.", alt: "Alternatif: Ezogelin", protein: 25 },
+                { id: "dc3", title: "16:00 - Kuruyemiş", duration: "5 Dk", tag: "~180 Kalori", details: "3 Tam Ceviz İçi.", alt: "Alternatif: 10 Badem", protein: 4 },
+                { id: "dc4", title: "19:00 - Tavuk Göğsü", duration: "25 Dk", tag: "~450 Kalori", details: "250g Haşlanmış/Izgara Tavuk Göğsü + Salata.", alt: "Alternatif: 250g Fırın Balık", protein: 50 }
             ],
             persembe: [
-                { id: "dpe1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Nane-Limonlu Su" },
-                { id: "dpe2", title: "12:30 - Low-Carb Menü", duration: "15 Dk", tag: "~360 Kalori", details: "3 Haşlanmış Yumurta + 100g Lor + Salatalık.", alt: "Alternatif: 150g Süzme Yoğurt" },
-                { id: "dpe3", title: "16:00 - Ayran / Yoğurt", duration: "5 Dk", tag: "~100 Kalori", details: "1 Bardak Ayran veya Yoğurt.", alt: "Alternatif: 1 Bardak Kefir" },
-                { id: "dpe4", title: "19:00 - Sebze & Tavuk", duration: "25 Dk", tag: "~420 Kalori", details: "150g Tavuk Göğsü + Mantar/Kabak Sote.", alt: "Alternatif: Tavuklu Brokoli" }
+                { id: "dpe1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Nane-Limonlu Su", protein: 0 },
+                { id: "dpe2", title: "12:30 - Low-Carb Menü", duration: "15 Dk", tag: "~360 Kalori", details: "3 Haşlanmış Yumurta + 100g Lor + Salatalık.", alt: "Alternatif: 150g Süzme Yoğurt", protein: 35 },
+                { id: "dpe3", title: "16:00 - Ayran / Yoğurt", duration: "5 Dk", tag: "~100 Kalori", details: "1 Bardak Ayran veya Yoğurt.", alt: "Alternatif: 1 Bardak Kefir", protein: 8 },
+                { id: "dpe4", title: "19:00 - Sebze & Tavuk", duration: "25 Dk", tag: "~420 Kalori", details: "150g Tavuk Göğsü + Mantar Sote.", alt: "Alternatif: Tavuklu Brokoli", protein: 35 }
             ],
             cuma: [
-                { id: "dcu1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Detoks Suyu" },
-                { id: "dcu2", title: "12:30 - Ton Balığı", duration: "15 Dk", tag: "~380 Kalori", details: "160g Ton Balıklı Salata + 1 Dilim Ekmek.", alt: "Alternatif: Izgara Somon" },
-                { id: "dcu3", title: "16:00 - Badem", duration: "5 Dk", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 Fındık" },
-                { id: "dcu4", title: "19:00 - Cuma Menemeni", duration: "20 Dk", tag: "~420 Kalori", details: "3 Yumurtalı Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Kıymalı Yumurta" }
+                { id: "dcu1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Detoks Suyu", protein: 0 },
+                { id: "dcu2", title: "12:30 - Ton Balığı", duration: "15 Dk", tag: "~380 Kalori", details: "160g Ton Balıklı Salata + 1 Dilim Ekmek.", alt: "Alternatif: Izgara Somon", protein: 36 },
+                { id: "dcu3", title: "16:00 - Badem", duration: "5 Dk", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 Fındık", protein: 5 },
+                { id: "dcu4", title: "19:00 - Cuma Menemeni", duration: "20 Dk", tag: "~420 Kalori", details: "3 Yumurtalı Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Kıymalı Yumurta", protein: 28 }
             ],
             cumartesi: [
-                { id: "dcm1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden Suyu" },
-                { id: "dcm2", title: "12:30 - Hafta Sonu Kahvaltısı", duration: "20 Dk", tag: "~450 Kalori", details: "3 Yumurtalı Lorlu Omlet + 5 Zeytin + 1 Dilim Ekmek.", alt: "Alternatif: Menemen" },
-                { id: "dcm3", title: "16:00 - Meyve", duration: "5 Dk", tag: "~100 Kalori", details: "1 Adet Muz veya Elma.", alt: "Alternatif: 1 Kase Çilek" },
-                { id: "dcm4", title: "19:00 - Tavuk Izgara", duration: "25 Dk", tag: "~480 Kalori", details: "250g Tavuk Pirzola/Göğüs + Salata.", alt: "Alternatif: 250g Bonfile" }
+                { id: "dcm1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden Suyu", protein: 0 },
+                { id: "dcm2", title: "12:30 - Hafta Sonu Kahvaltısı", duration: "20 Dk", tag: "~450 Kalori", details: "3 Yumurtalı Lorlu Omlet + 5 Zeytin.", alt: "Alternatif: Menemen", protein: 32 },
+                { id: "dcm3", title: "16:00 - Meyve", duration: "5 Dk", tag: "~100 Kalori", details: "1 Adet Muz veya Elma.", alt: "Alternatif: 1 Kase Çilek", protein: 1 },
+                { id: "dcm4", title: "19:00 - Tavuk Izgara", duration: "25 Dk", tag: "~480 Kalori", details: "250g Tavuk Pirzola/Göğüs + Salata.", alt: "Alternatif: 250g Bonfile", protein: 48 }
             ],
             pazar: [
-                { id: "dpz1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık Limonlu Su" },
-                { id: "dpz2", title: "12:30 - Pazar Kahvaltısı", duration: "20 Dk", tag: "~400 Kalori", details: "3 Haşlanmış Yumurta + Zeytin + Lor + Söğüş.", alt: "Alternatif: Sahanda Yumurta" },
-                { id: "dpz3", title: "16:00 - Pul Biberli Yoğurt", duration: "5 Dk", tag: "~110 Kalori", details: "1 Kase Yoğurt + Pul Biber + Limon.", alt: "Alternatif: 1 Bardak Ayran" },
-                { id: "dpz4", title: "19:00 - Hafif Sebze Yemeği", duration: "20 Dk", tag: "~320 Kalori", details: "1 Tabak Mercimek Yemeği + Salata.", alt: "Alternatif: Zeytinyağlı Sebze" }
+                { id: "dpz1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık Limonlu Su", protein: 0 },
+                { id: "dpz2", title: "12:30 - Pazar Kahvaltısı", duration: "20 Dk", tag: "~400 Kalori", details: "3 Haşlanmış Yumurta + Zeytin + Lor.", alt: "Alternatif: Sahanda Yumurta", protein: 30 },
+                { id: "dpz3", title: "16:00 - Pul Biberli Yoğurt", duration: "5 Dk", tag: "~110 Kalori", details: "1 Kase Yoğurt + Pul Biber + Limon.", alt: "Alternatif: 1 Bardak Ayran", protein: 8 },
+                { id: "dpz4", title: "19:00 - Hafif Sebze Yemeği", duration: "20 Dk", tag: "~320 Kalori", details: "1 Tabak Mercimek Yemeği + Salata.", alt: "Alternatif: Zeytinyağlı Sebze", protein: 15 }
             ]
         };
 
         const sportRoutines = {
             pazartesi: [
-                { id: "sp1", title: "1. Tempolu Isınma", duration: "5 Dk", seconds: 300, tag: "Nabız Hazırlığı", details: "Yerinde tempolu adımlama & kol çevirme.", alt: "Temposu: Nabız koldayken 100-120 bpm hedefle.", rest: "Dinlenme: Yok" },
-                { id: "sp2", title: "2. Sandalye Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Bacak & Kalça", details: "Sandalyeye hafif dokunup topuklardan güç alarak kalk.", alt: "Tempo: 2 sn iniş, 1 sn çıkış.", rest: "Dinlenme: Set araları 45 Sn" },
-                { id: "sp3", title: "3. Duvar Şınavı", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Göğüs & Omuz", details: "Duvardan 2 adım geride eller duvarda şınav.", alt: "Form: Vücudunu tahta gibi düz tut.", rest: "Dinlenme: Set araları 45 Sn" },
-                { id: "sp4", title: "4. Statik Plank", duration: "3 Set x 30 Sn", seconds: 90, tag: "Tüm Karın", details: "Dirsekler üstünde düz duruş.", alt: "Form: Karın kaslarını ve kalçanı sık.", rest: "Dinlenme: Set araları 30 Sn" },
-                { id: "sp5", title: "5. Bacak & Bel Esneme", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Kasları esneterek nabzı düşür.", alt: "Püf Nokta: Derin nefes al.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "sp1", title: "1. Tempolu Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Yerinde tempolu adımlama & kol çevirme.", alt: "Tempo: Nabız 100-120 bpm.", rest: 0, icon: "🏃" },
+                { id: "sp2", title: "2. Sandalye Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Bacak & Kalça", details: "Sandalyeye dokunup topuktan güç alarak kalk.", alt: "Tempo: 2 sn iniş, 1 sn çıkış.", rest: 45, icon: "🦵" },
+                { id: "sp3", title: "3. Duvar Şınavı", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Göğüs & Omuz", details: "Duvardan 2 adım geride eller duvarda şınav.", alt: "Form: Vücut ok gibi düz.", rest: 45, icon: "💪" },
+                { id: "sp4", title: "4. Statik Plank", duration: "3 Set x 30 Sn", baseSec: 90, tag: "Tüm Karın", details: "Dirsekler üstünde düz duruş.", alt: "Form: Karın ve kalçayı sık.", rest: 30, icon: "🧘" },
+                { id: "sp5", title: "5. Bacak & Bel Esneme", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Kasları esneterek nabzı düşür.", alt: "Derin nefes al.", rest: 0, icon: "🧘‍♂️" }
             ],
             sali: [
-                { id: "ss1", title: "1. Eklem Isınması", duration: "5 Dk", seconds: 300, tag: "Mobilite", details: "Omuz daireleri ve hafif yerinde yürüyüş.", alt: "Form: Omuzları dairesel geniş çevir.", rest: "Dinlenme: Yok" },
-                { id: "ss2", title: "2. Yağ Yakım Kardiyosu", duration: "20 Dk", seconds: 1200, tag: "Interval Kardiyo", details: "2 Dk Koşu/Jog + 2 Dk Tempolu Yürüyüş (5 Tur).", alt: "Tempo: Konuşabileceğin hızda kal.", rest: "Dinlenme: Yürüyüş kısımları aktif dinlenmedir." },
-                { id: "ss3", title: "3. Yüksek Açı Şınav", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Alt Göğüs", details: "Eller masa/sandalye kenarında şınav.", alt: "Püf Nokta: Dirsekleri 45 derece geriye bük.", rest: "Dinlenme: 45 Sn" },
-                { id: "ss4", title: "4. Mekik (Crunch)", duration: "3 Set x 15 Tekrar", seconds: 180, tag: "Üst Karın", details: "Sırtüstü dizler bükük, kürek kemiklerini kaldır.", alt: "Form: Çeneyi göğse gömme.", rest: "Dinlenme: 30 Sn" },
-                { id: "ss5", title: "5. Soğuma Esnemesi", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Sırt ve bacak kaslarını rahatlat.", alt: "Nefes: Yavaş ve derin.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "ss1", title: "1. Eklem Isınması", duration: "5 Dk", baseSec: 300, tag: "Mobilite", details: "Omuz daireleri ve hafif yürüyüş.", alt: "Omuzları dairesel çevir.", rest: 0, icon: "🔄" },
+                { id: "ss2", title: "2. Yağ Yakım Kardiyosu", duration: "20 Dk", baseSec: 1200, tag: "Kardiyo", details: "2 Dk Jog + 2 Dk Tempolu Yürüyüş (5 Tur).", alt: "Konuşabileceğin hızda kal.", rest: 0, icon: "🔥" },
+                { id: "ss3", title: "3. Yüksek Açı Şınav", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Alt Göğüs", details: "Eller masa/sandalye kenarında şınav.", alt: "Dirsekler 45 derece geriye.", rest: 45, icon: "💪" },
+                { id: "ss4", title: "4. Mekik (Crunch)", duration: "3 Set x 15 Tekrar", baseSec: 180, tag: "Üst Karın", details: "Sırtüstü dizler bükük, kürek kemiklerini kaldır.", alt: "Çeneyi göğse gömme.", rest: 30, icon: "🎯" },
+                { id: "ss5", title: "5. Soğuma Esnemesi", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Sırt ve bacak esnetme.", alt: "Derin nefes al.", rest: 0, icon: "🧘" }
             ],
             carsamba: [
-                { id: "sc1", title: "1. Mobilite Isınması", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Kalça ve bel dairesel hareketler.", alt: "Form: Belini zorlamadan çevir.", rest: "Dinlenme: Yok" },
-                { id: "sc2", title: "2. Sumo Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "İç Bacak", details: "Geniş duruş, parmak uçları dışa baksın.", alt: "Tempo: Yavaş in, hızlı kalk.", rest: "Dinlenme: 45 Sn" },
-                { id: "sc3", title: "3. Diz Üstü Şınav", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Göğüs & Kol", details: "Dizler yerde şınav.", alt: "Form: Göğsünü yere iyice yaklaştır.", rest: "Dinlenme: 45 Sn" },
-                { id: "sc4", title: "4. Yan Plank", duration: "2 Set x 20 Sn", seconds: 80, tag: "Yan Karın", details: "Dirsek üstünde yan duruş.", alt: "Püf Nokta: Kalçayı aşağı düşürme.", rest: "Dinlenme: 30 Sn" },
-                { id: "sc5", title: "5. Tüm Vücut Esneme", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Tüm kasları gevşet.", alt: "Form: Sabit esne.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "sc1", title: "1. Mobilite Isınması", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Kalça ve bel dairesel hareketler.", alt: "Belini zorlamadan çevir.", rest: 0, icon: "🌀" },
+                { id: "sc2", title: "2. Sumo Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "İç Bacak", details: "Geniş duruş, parmak uçları dışa baksın.", alt: "Yavaş in, hızlı kalk.", rest: 45, icon: "🦵" },
+                { id: "sc3", title: "3. Diz Üstü Şınav", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Göğüs & Kol", details: "Dizler yerde şınav.", alt: "Göğsü yere yaklaştır.", rest: 45, icon: "💪" },
+                { id: "sc4", title: "4. Yan Plank", duration: "2 Set x 20 Sn", baseSec: 80, tag: "Yan Karın", details: "Dirsek üstünde yan duruş.", alt: "Kalçayı aşağı düşürme.", rest: 30, icon: "⚡" },
+                { id: "sc5", title: "5. Tüm Vücut Esneme", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Tüm kasları gevşet.", alt: "Sabit esne.", rest: 0, icon: "🧘" }
             ],
             persembe: [
-                { id: "spe1", title: "1. Dinamik Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Tempolu adımlama ve kol sallama.", alt: "Tempo: Nabız kademeli yükselsin.", rest: "Dinlenme: Yok" },
-                { id: "spe2", title: "2. Sabit Tempo Kardiyo", duration: "25 Dk", seconds: 1500, tag: "Kardiyo", details: "Tempolu sokak veya ev içi adımlama.", alt: "Püf Nokta: Duraklamadan temponu koru.", rest: "Dinlenme: Yok" },
-                { id: "spe3", title: "3. Triceps Dips", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Arka Kol", details: "Sandalye kenarında kalçayı indir/kaldır.", alt: "Form: Dirsekleri arkaya bük.", rest: "Dinlenme: 45 Sn" },
-                { id: "spe4", title: "4. Glute Bridge", duration: "3 Set x 15 Tekrar", seconds: 180, tag: "Kalça & Bel", details: "Sırtüstü yatıp kalçayı havaya kaldır.", alt: "Form: Tepede kalçayı 1 sn sık.", rest: "Dinlenme: 30 Sn" },
-                { id: "spe5", title: "5. Soğuma Esnemesi", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Kolları ve bacakları esnet.", alt: "Form: Yavaş nefes.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "spe1", title: "1. Dinamik Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Tempolu adımlama ve kol sallama.", alt: "Nabız yükselsin.", rest: 0, icon: "🚶" },
+                { id: "spe2", title: "2. Tempolu Kardiyo", duration: "25 Dk", baseSec: 1500, tag: "Kardiyo", details: "Tempolu sokak veya ev içi adımlama.", alt: "Temponu koru.", rest: 0, icon: "🏃" },
+                { id: "spe3", title: "3. Triceps Dips", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Arka Kol", details: "Sandalye kenarında kalçayı indir/kaldır.", alt: "Dirsekleri arkaya bük.", rest: 45, icon: "🏋️" },
+                { id: "spe4", title: "4. Glute Bridge", duration: "3 Set x 15 Tekrar", baseSec: 180, tag: "Kalça & Bel", details: "Sırtüstü yatıp kalçayı havaya kaldır.", alt: "Tepede kalçayı 1 sn sık.", rest: 30, icon: "🍑" },
+                { id: "spe5", title: "5. Soğuma Esnemesi", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Kolları ve bacakları esnet.", alt: "Yavaş nefes.", rest: 0, icon: "🧘" }
             ],
             cuma: [
-                { id: "scu1", title: "1. High Knee Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Yerinde dizleri yukarı çekerek adımla.", alt: "Tempo: Ritmini koru.", rest: "Dinlenme: Yok" },
-                { id: "scu2", title: "2. Yavaş Tempo Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Bacak", details: "3 saniyede in, 1 saniyede kalk.", alt: "Püf Nokta: Kas içi gerilimi artır.", rest: "Dinlenme: 45 Sn" },
-                { id: "scu3", title: "3. Şınav Varyasyonu", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Üst Vücut", details: "Masa veya duvar şınavı.", alt: "Form: Gövde ok gibi düz.", rest: "Dinlenme: 45 Sn" },
-                { id: "scu4", title: "4. Plank Challenge", duration: "3 Set x 30 Sn", seconds: 90, tag: "Core Gücü", details: "Düz duruş plank.", alt: "Form: Düzenli nefes al.", rest: "Dinlenme: 30 Sn" },
-                { id: "scu5", title: "5. Cuma Soğuması", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Derin kas esnemesi.", alt: "Püf Nokta: Zihni ve kası gevşet.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "scu1", title: "1. High Knee Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Dizleri yukarı çekerek adımla.", alt: "Ritmini koru.", rest: 0, icon: "🦵" },
+                { id: "scu2", title: "2. Yavaş Tempo Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Bacak", details: "3 saniyede in, 1 saniyede kalk.", alt: "Kas içi gerilimi artır.", rest: 45, icon: "🏋️" },
+                { id: "scu3", title: "3. Şınav Varyasyonu", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Üst Vücut", details: "Masa veya duvar şınavı.", alt: "Gövde ok gibi düz.", rest: 45, icon: "💪" },
+                { id: "scu4", title: "4. Plank Challenge", duration: "3 Set x 30 Sn", baseSec: 90, tag: "Core Gücü", details: "Düz duruş plank.", alt: "Düzenli nefes al.", rest: 30, icon: "🧘" },
+                { id: "scu5", title: "5. Cuma Soğuması", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Derin kas esnemesi.", alt: "Zihni ve kası gevşet.", rest: 0, icon: "🧘‍♂️" }
             ],
             cumartesi: [
-                { id: "scm1", title: "1. Hafif Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Yavaş tempo adımlama.", alt: "Tempo: Hafif.", rest: "Dinlenme: Yok" },
-                { id: "scm2", title: "2. Uzun Kardiyo", duration: "30 Dk", seconds: 1800, tag: "Yağ Yakımı", details: "Kesintisiz hafif jog veya tempolu yürüyüş.", alt: "Püf Nokta: Temponu sabitle.", rest: "Dinlenme: Yok" },
-                { id: "scm3", title: "3. Superman Hareketi", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Sırt & Bel", details: "Yüzüstü yatıp göğüs ve bacakları kaldır.", alt: "Form: Tepede 1 sn bekle.", rest: "Dinlenme: 45 Sn" },
-                { id: "scm4", title: "4. Cat-Cow Esneme", duration: "5 Dk", seconds: 300, tag: "Omurga Sağlığı", details: "Kedi-deve duruşu ile omurgayı esnet.", alt: "Nefes: Yuvarlanırken nefes ver.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "scm1", title: "1. Hafif Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Yavaş tempo adımlama.", alt: "Temponu hafif tut.", rest: 0, icon: "🚶" },
+                { id: "scm2", title: "2. Uzun Kardiyo", duration: "30 Dk", baseSec: 1800, tag: "Yağ Yakımı", details: "Kesintisiz hafif jog veya yürüyüş.", alt: "Temponu sabitle.", rest: 0, icon: "🏃" },
+                { id: "scm3", title: "3. Superman Hareketi", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Sırt & Bel", details: "Yüzüstü yatıp göğüs ve bacakları kaldır.", alt: "Tepede 1 sn bekle.", rest: 45, icon: "🦸" },
+                { id: "scm4", title: "4. Cat-Cow Esneme", duration: "5 Dk", baseSec: 300, tag: "Omurga", details: "Kedi-deve duruşu ile esne.", alt: "Nefes vererek yuvarlan.", rest: 0, icon: "🧘" }
             ],
             pazar: [
-                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", duration: "15 Dk", seconds: 900, tag: "Kan Dolaşımı", details: "Çok hafif tempoda ev/dışarı yürüyüşü.", alt: "Amaç: Yorulmadan dolaşım sağlamak.", rest: "Dinlenme: Yok" },
-                { id: "spz2", title: "2. Yoga & Derin Esneme", duration: "15 Dk", seconds: 900, tag: "Yenilenme", details: "Tüm vücudu rahatlatma hareketleri.", alt: "Püf Nokta: Kasları yeni haftaya hazırla.", rest: "Dinlenme: Tamamlandı!" }
+                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", duration: "15 Dk", baseSec: 900, tag: "Dolaşım", details: "Hafif tempoda ev/dışarı yürüyüşü.", alt: "Yorulmadan dolaşım sağla.", rest: 0, icon: "🚶" },
+                { id: "spz2", title: "2. Yoga & Derin Esneme", duration: "15 Dk", baseSec: 900, tag: "Yenilenme", details: "Tüm vücudu rahatlatma hareketleri.", alt: "Kasları yeni haftaya hazırla.", rest: 0, icon: "🧘" }
             ]
         };
 
+        const marketList = [
+            "🥩 2 Kg Tavuk Göğsü / Pirzola",
+            "🥚 2 Koli Yumurta (30'lu)",
+            "🧀 1 Kg Yağsız Lor Peyniri",
+            "🐟 4 Kutu Ton Balığı",
+            "🥬 2 Demet Maydanoz, Roka, Kıvırcık",
+            "🥒 1 Kg Salatalık & Yeşil Elma",
+            "🥜 1 Paket Çiğ Badem / Ceviz İçi"
+        ];
+
         let currentDay = "pazartesi";
         let currentTab = "beslenme";
+        let energyMode = "normal"; // normal, low, high
         let activeTimers = {};
+        let tourStep = 0;
+
+        const tourSteps = [
+            { title: "Hoş Geldin! 👋", text: "60 Günlük AI Koçum Pro'ya adım attın! Sana özel hazırlanmış sıralı antrenman, makro takibi ve AI desteği ile hedeflerine ulaşmaya hazırsın." },
+            { title: "🔥 Seri (Streak) Mantığı", text: "Her gün görevlerini tamamladıkça serin artar. Kesintisiz devam ederek motivasyonunu yüksek tut!" },
+            { title: "⚡ Enerji Modu Seçimi", text: "O gün yorgunsan 'Düşük Enerji' modunu seç. AI, antrenman sürelerini otomatik hafifletir!" },
+            { title: "🤖 AI İpuçları & Sıralı Spor", text: "Spor bölümündeki hareketler sırayla açılır. Biri bitmeden diğeri kilitlidir. Her sette canlı dinlenme sayacı çalışır!" },
+            { title: "Hazırsın! 💪", text: "Artık başlayabilirsin. Başarılar!" }
+        ];
+
+        function checkTour() {
+            if (!localStorage.getItem("tour_completed")) {
+                document.getElementById("tourOverlay").style.display = "flex";
+                updateTourUI();
+            }
+        }
+
+        function updateTourUI() {
+            document.getElementById("tourTitle").innerText = tourSteps[tourStep].title;
+            document.getElementById("tourText").innerText = tourSteps[tourStep].text;
+        }
+
+        function nextTourStep() {
+            tourStep++;
+            if (tourStep >= tourSteps.length) {
+                document.getElementById("tourOverlay").style.display = "none";
+                localStorage.setItem("tour_completed", "true");
+            } else {
+                updateTourUI();
+            }
+        }
 
         function checkAutoReset() {
             const now = new Date();
@@ -240,8 +414,24 @@
             const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
             
             if (lastDate !== todayStr) {
+                // Check Streak logic
+                let streak = parseInt(localStorage.getItem("streak_count") || "0");
+                const yesterday = new Date();
+                yesterday.setDate(now.getDate() - 1);
+                const yestStr = `${yesterday.getFullYear()}-${yesterday.getMonth() + 1}-${yesterday.getDate()}`;
+
+                if (lastDate === yestStr) {
+                    streak += 1;
+                } else if (lastDate) {
+                    streak = 1; // Reset streak if missed a day
+                } else {
+                    streak = 1;
+                }
+                
+                localStorage.setItem("streak_count", streak.toString());
                 localStorage.setItem("water_amount", "0");
                 localStorage.setItem("last_active_date", todayStr);
+                
                 currentDay = dayKeys[dayIndex];
                 document.getElementById("daySelect").value = currentDay;
             }
@@ -249,6 +439,8 @@
 
         function init() {
             checkAutoReset();
+            checkTour();
+
             const now = new Date();
             const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
             currentDay = dayKeys[now.getDay()];
@@ -256,20 +448,22 @@
 
             renderApp();
             updateWaterUI();
+            renderMetrics();
+            renderMarket();
 
-            setInterval(() => {
-                const checkNow = new Date();
-                const checkTodayStr = `${checkNow.getFullYear()}-${checkNow.getMonth() + 1}-${checkNow.getDate()}`;
-                if (localStorage.getItem("last_active_date") !== checkTodayStr) {
-                    checkAutoReset();
-                    renderApp();
-                    updateWaterUI();
-                }
-            }, 20000);
+            document.getElementById("streakCount").innerText = localStorage.getItem("streak_count") || "1";
+        }
+
+        function setEnergyMode(mode) {
+            energyMode = mode;
+            document.getElementById("modeNormal").classList.toggle("active", mode === 'normal');
+            document.getElementById("modeLow").classList.toggle("active", mode === 'low');
+            document.getElementById("modeHigh").classList.toggle("active", mode === 'high');
+            renderApp();
         }
 
         function generateAiTip() {
-            const tips = aiPrompts[currentTab];
+            const tips = aiPrompts[currentTab] || aiPrompts['beslenme'];
             const randomTip = tips[Math.floor(Math.random() * tips.length)];
             document.getElementById("aiTip").innerText = randomTip;
         }
@@ -281,9 +475,19 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            document.getElementById("tabBeslenme").classList.toggle("active", tab === 'beslenme');
-            document.getElementById("tabSpor").classList.toggle("active", tab === 'spor');
-            renderApp();
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            if (tab === 'beslenme') document.getElementById("tabBeslenme").classList.add('active');
+            if (tab === 'spor') document.getElementById("tabSpor").classList.add('active');
+            if (tab === 'tracker') document.getElementById("tabTracker").classList.add('active');
+            if (tab === 'market') document.getElementById("tabMarket").classList.add('active');
+
+            document.getElementById("mainView").style.display = (tab === 'beslenme' || tab === 'spor') ? 'block' : 'none';
+            document.getElementById("trackerView").style.display = (tab === 'tracker') ? 'flex' : 'none';
+            document.getElementById("marketView").style.display = (tab === 'market') ? 'block' : 'none';
+            document.getElementById("macroCard").style.display = (tab === 'beslenme') ? 'flex' : 'none';
+
+            if (tab === 'beslenme' || tab === 'spor') renderApp();
         }
 
         function renderApp() {
@@ -293,27 +497,47 @@
             
             const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
             let completedCount = 0;
-            let previousCompleted = true; // İlk hareket açık başlar
+            let currentProtein = 0;
+            let previousCompleted = true; // First task is unlocked
 
             activeTasks.forEach((task, index) => {
                 const key = `task_${currentDay}_${currentTab}_${task.id}`;
                 const isDone = localStorage.getItem(key) === "true";
-                if (isDone) completedCount++;
+                if (isDone) {
+                    completedCount++;
+                    if (task.protein) currentProtein += task.protein;
+                }
 
-                // Spor sekmesinde sıralı açılma kuralı
                 const isLocked = currentTab === 'spor' && !previousCompleted && !isDone;
+
+                // Adjust seconds according to Energy Mode
+                let seconds = task.baseSec || 180;
+                if (energyMode === 'low') seconds = Math.round(seconds * 0.8);
+                if (energyMode === 'high') seconds = Math.round(seconds * 1.2);
 
                 const card = document.createElement("div");
                 card.className = `task-card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
                 
                 let timerHtml = "";
-                if (currentTab === 'spor' && task.seconds) {
-                    timerHtml = `
-                        <div class="timer-box">
-                            <span class="timer-val" id="timer_${task.id}">${formatTime(task.seconds)}</span>
-                            <button class="timer-btn" onclick="event.stopPropagation(); startTimer('${task.id}', ${task.seconds})">▶️ Kronometre Başlat</button>
+                let visualHtml = "";
+
+                if (currentTab === 'spor') {
+                    visualHtml = `
+                        <div class="exercise-visual">
+                            <div class="exercise-svg">${task.icon || '🏋️'}</div>
+                            <div class="exercise-desc"><strong>Hedef Bölge:</strong> ${task.tag}<br><strong>Form:</strong> ${task.alt}</div>
                         </div>
                     `;
+
+                    if (seconds) {
+                        timerHtml = `
+                            <div class="timer-box">
+                                <span class="timer-val" id="timer_${task.id}">${formatTime(seconds)}</span>
+                                <button class="timer-btn" onclick="event.stopPropagation(); startTimer('${task.id}', ${seconds}, ${task.rest || 0})">▶️ Başlat</button>
+                            </div>
+                            <div class="rest-banner" id="restBanner_${task.id}">⏱️ DİNLENME SÜRESİ BAŞLADI (45 SN)</div>
+                        `;
+                    }
                 }
 
                 card.innerHTML = `
@@ -324,23 +548,31 @@
                             <div class="task-tags">
                                 <span class="task-tag">${task.tag}</span>
                                 <span class="task-duration">⏱️ ${task.duration}</span>
+                                ${task.protein ? `<span class="task-tag" style="background:#065f46; color:#a7f3d0;">+${task.protein}g Protein</span>` : ''}
                             </div>
                         </div>
                     </div>
                     <div class="task-details">
                         <strong>Ayrıntı:</strong> ${task.details}<br>
-                        <div class="task-sub-info">💡 <strong>Püf Nokta / Alternatif:</strong> ${task.alt}</div>
-                        ${task.rest ? `<div style="color:#60a5fa; margin-top:2px;">🔄 <strong>Dinlenme:</strong> ${task.rest}</div>` : ''}
+                        <div style="color:#f59e0b; margin-top:3px;">💡 <strong>Püf Nokta:</strong> ${task.alt}</div>
                     </div>
+                    ${visualHtml}
                     ${timerHtml}
                 `;
                 
                 listEl.appendChild(card);
-                previousCompleted = isDone; // Sonraki kart için kilit durumunu güncelle
+                previousCompleted = isDone;
             });
 
+            // Update Progress & Macros
             const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
             document.getElementById("progressPct").innerText = `%${pct}`;
+
+            if (currentTab === 'beslenme') {
+                document.getElementById("macroProteinVal").innerText = `${currentProtein}g / 130g`;
+                const macroPct = Math.min(100, Math.round((currentProtein / 130) * 100));
+                document.getElementById("macroBarFill").style.width = `${macroPct}%`;
+            }
         }
 
         function toggleTask(key) {
@@ -355,17 +587,41 @@
             return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
         }
 
-        function startTimer(id, totalSec) {
+        function startTimer(id, totalSec, restTime) {
             if (activeTimers[id]) clearInterval(activeTimers[id]);
             let currentSec = totalSec;
             const timerEl = document.getElementById(`timer_${id}`);
+            const restBanner = document.getElementById(`restBanner_${id}`);
             
             activeTimers[id] = setInterval(() => {
                 currentSec--;
                 if (timerEl) timerEl.innerText = formatTime(currentSec);
                 if (currentSec <= 0) {
                     clearInterval(activeTimers[id]);
-                    if (timerEl) timerEl.innerText = "SÜRE BİTTİ! 💪";
+                    playBeep();
+                    if (timerEl) timerEl.innerText = "TAMAMLANDI! 💪";
+
+                    // Trigger Dynamic Rest Timer if applicable
+                    if (restTime > 0 && restBanner) {
+                        startRestTimer(id, restTime, restBanner);
+                    }
+                }
+            }, 1000);
+        }
+
+        function startRestTimer(id, restSec, bannerEl) {
+            bannerEl.style.display = "block";
+            let rSec = restSec;
+            bannerEl.innerText = `⏱️ DİNLENME SÜRESİ: ${rSec} SN`;
+
+            const rTimer = setInterval(() => {
+                rSec--;
+                bannerEl.innerText = `⏱️ DİNLENME SÜRESİ: ${rSec} SN`;
+                if (rSec <= 0) {
+                    clearInterval(rTimer);
+                    playBeep();
+                    bannerEl.innerText = "🔥 DİNLENME BİTTİ! DİĞER SETE GEÇ!";
+                    setTimeout(() => { bannerEl.style.display = "none"; }, 3000);
                 }
             }, 1000);
         }
@@ -382,8 +638,78 @@
             document.getElementById("waterVal").innerText = `${curr.toFixed(1)} / 4.0 L`;
         }
 
+        // Metrics / Tracker Logic
+        function saveMetric() {
+            const w = document.getElementById("inputWeight").value;
+            const wa = document.getElementById("inputWaist").value;
+            if (!w && !wa) return alert("Lütfen kilo veya bel ölçüsü girin!");
+
+            const metrics = JSON.parse(localStorage.getItem("user_metrics") || "[]");
+            const dateStr = new Date().toLocaleDateString("tr-TR");
+            metrics.unshift({ date: dateStr, weight: w || "-", waist: wa || "-" });
+            localStorage.setItem("user_metrics", JSON.stringify(metrics));
+
+            document.getElementById("inputWeight").value = "";
+            document.getElementById("inputWaist").value = "";
+            renderMetrics();
+        }
+
+        function renderMetrics() {
+            const list = document.getElementById("historyList");
+            const metrics = JSON.parse(localStorage.getItem("user_metrics") || "[]");
+            if (metrics.length === 0) {
+                list.innerHTML = "Kayıt bulunamadı.";
+                return;
+            }
+            list.innerHTML = metrics.map(m => `
+                <div class="history-item">
+                    <span>📅 ${m.date}</span>
+                    <span>⚖️ ${m.weight} kg | 📏 ${m.waist} cm</span>
+                </div>
+            `).join("");
+        }
+
+        function renderMarket() {
+            const container = document.getElementById("marketItems");
+            container.innerHTML = marketList.map(item => `<div class="market-item">${item}</div>`).join("");
+        }
+
+        // Backup & Restore (JSON)
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(localStorage));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `60_gunlik_kocum_yedek_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.readAsText(file, 'UTF-8');
+                reader.onload = readerEvent => {
+                    try {
+                        const content = JSON.parse(readerEvent.target.result);
+                        Object.keys(content).forEach(key => {
+                            localStorage.setItem(key, content[key]);
+                        });
+                        alert("Veriler başarıyla yüklendi!");
+                        init();
+                    } catch(err) {
+                        alert("Geçersiz dosya formatı!");
+                    }
+                }
+            }
+            input.click();
+        }
+
         function resetCurrentDay() {
-            if (confirm("Bu günün verilerini sıfırlamak istiyor musun?")) {
+            if (confirm("Bu günün verilerini sıfırlamak istediğinden emin misin?")) {
                 const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
                 activeTasks.forEach(task => {
                     localStorage.removeItem(`task_${currentDay}_${currentTab}_${task.id}`);
