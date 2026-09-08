@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60 Günlük AI Koçum Ultimate Pro</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
+    <title>60 Günlük AI Koçum Pro</title>
+    <!-- Web App & PWA Manifest -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiLAogICJpY29ucyI6IFt7CiAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDt1dGY4LDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgNTEyIDUxMic+PHJlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyMwYjBmMTknLz48dGV4dCB4PSc1MCUnIHk9JzYwJycgZm9udC1zaXplPSczMDAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZpbGw9JyMyNTYzZWInPsnE4TwvdGV4dD48L3N2Zz4iLAogICAgInNpemVzIjogIjUxMng1MTIiLAogICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICBdXQp9">
     <style>
         :root {
             --bg: #0b0f19;
@@ -14,194 +15,192 @@
             --text: #f3f4f6;
             --text-dim: #9ca3af;
             --green: #10b981;
-            --ai-purple: #8b5cf6;
+            --purple: #8b5cf6;
             --orange: #f59e0b;
+            --red: #ef4444;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 60px; }
+        body { background-color: var(--bg); color: var(--text); padding: 12px; max-width: 500px; margin: 0 auto; padding-bottom: 70px; }
         
-        /* Header & Streak Bar */
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; margin-top: 10px; }
-        .header-title h1 { font-size: 20px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* Header & Main Progress */
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; margin-top: 6px; }
+        .header-title h1 { font-size: 18px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .header-title p { font-size: 11px; color: var(--text-dim); }
 
-        .streak-badge { background: #312e81; border: 1px solid #4338ca; color: #fbbf24; padding: 6px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px; }
+        .streak-badge { background: #312e81; border: 1px solid #4338ca; color: #fbbf24; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 800; }
 
-        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 8px 10px; border-radius: 10px; font-weight: 600; font-size: 12px; outline: none; cursor: pointer; }
+        /* 60 Day Big Progress Bar */
+        .program-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .prog-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; margin-bottom: 6px; }
+        .prog-bar-bg { background: #0f172a; height: 10px; border-radius: 5px; overflow: hidden; width: 100%; margin-bottom: 6px; }
+        .prog-bar-fill { background: linear-gradient(90deg, #2563eb, #10b981); height: 100%; width: 0%; transition: width 0.4s; }
+        .prog-sub { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-dim); }
 
-        /* Navigation Tabs */
-        .tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-        .tab-btn { flex: 1; padding: 10px 8px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 10px; font-weight: 700; font-size: 11px; cursor: pointer; text-align: center; white-space: nowrap; }
-        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+        /* Day Selector Carousel */
+        .day-carousel { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scroll-behavior: smooth; }
+        .day-chip { flex: 0 0 auto; padding: 6px 12px; background: var(--card); border: 1px solid var(--card-border); border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--text-dim); cursor: pointer; text-align: center; }
+        .day-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .day-chip.completed-day::after { content: " ✓"; color: var(--green); }
 
-        /* AI Box & Dynamic Mode */
-        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 14px; padding: 12px; margin-bottom: 14px; font-size: 12px; line-height: 1.4; color: #ddd6fe; }
-        .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-        .ai-badge { background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-        .ai-btn { background: #4c1d95; border: 1px solid #6d28d9; color: #e9d5ff; padding: 3px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: 600; }
-
-        .energy-selector { display: flex; gap: 6px; margin-bottom: 14px; background: #0f172a; padding: 6px; border-radius: 10px; border: 1px solid var(--card-border); }
+        /* Energy & Controls */
+        .energy-selector { display: flex; gap: 4px; margin-bottom: 12px; background: #0f172a; padding: 4px; border-radius: 8px; border: 1px solid var(--card-border); }
         .energy-btn { flex: 1; padding: 6px; border: none; border-radius: 6px; background: transparent; color: var(--text-dim); font-size: 10px; font-weight: 700; cursor: pointer; }
         .energy-btn.active { background: #1e293b; color: #38bdf8; border: 1px solid #0284c7; }
 
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .stat-val { font-size: 20px; font-weight: 800; color: white; margin: 2px 0; }
+        /* Tabs */
+        .tabs { display: flex; gap: 4px; margin-bottom: 12px; }
+        .tab-btn { flex: 1; padding: 8px 4px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; text-align: center; }
+        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* AI Box */
+        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; font-size: 11px; line-height: 1.4; color: #ddd6fe; }
+        .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .ai-badge { background: #7c3aed; color: white; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; }
+
+        /* Stats & Macros */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; }
+        .stat-val { font-size: 16px; font-weight: 800; color: white; margin: 2px 0; }
         .stat-lbl { font-size: 10px; color: var(--text-dim); }
 
-        .water-btn-group { display: flex; gap: 4px; width: 100%; margin-top: 6px; }
-        .water-btn { flex: 1; padding: 4px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .water-controls { display: flex; gap: 4px; margin-top: 6px; justify-content: center; }
+        .water-btn { padding: 3px 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 4px; font-size: 9px; font-weight: 700; cursor: pointer; }
 
-        /* Macro Progress Bars */
-        .macro-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 14px; display: flex; flex-direction: column; gap: 8px; }
-        .macro-row { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; }
-        .macro-bar-bg { background: #0f172a; height: 8px; border-radius: 4px; overflow: hidden; width: 100%; }
-        .macro-bar-fill { background: linear-gradient(90deg, #10b981, #059669); height: 100%; width: 0%; transition: width 0.3s; }
-
-        /* Task List & Exercise Cards */
-        .task-list { display: flex; flex-direction: column; gap: 10px; }
-        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 8px; position: relative; }
-        .task-card.locked { opacity: 0.35; pointer-events: none; filter: grayscale(1); }
-        .task-card.completed { opacity: 0.6; text-decoration: line-through; }
+        /* Tasks & Exercises */
+        .task-list { display: flex; flex-direction: column; gap: 8px; }
+        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+        .task-card.locked { opacity: 0.4; filter: grayscale(1); pointer-events: none; }
+        .task-card.completed { opacity: 0.65; text-decoration: line-through; }
         
-        .task-header { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .task-header { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .checkbox { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
-        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 12px; }
+        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 11px; }
         .task-card.completed .checkbox::after { display: block; }
         
-        .task-title-group { flex: 1; }
-        .task-title { font-size: 13px; font-weight: 700; color: #f3f4f6; }
-        .task-tags { display: flex; gap: 4px; margin-top: 3px; flex-wrap: wrap; }
+        .task-title { font-size: 12px; font-weight: 700; color: #f3f4f6; flex: 1; }
         .task-tag { font-size: 9px; padding: 2px 5px; border-radius: 4px; background: #242f4d; color: #93c5fd; font-weight: 600; }
-        .task-duration { font-size: 9px; padding: 2px 5px; border-radius: 4px; background: #312e81; color: #c7d2fe; font-weight: 700; }
 
-        .task-details { background: #0f1623; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
-        
-        /* Visual Exercise Diagram (SVG/Canvas Demo) */
-        .exercise-visual { display: flex; align-items: center; gap: 10px; background: #1e293b; padding: 8px; border-radius: 8px; margin-top: 4px; }
-        .exercise-svg { width: 40px; height: 40px; background: #0f172a; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #60a5fa; font-weight: bold; font-size: 18px; flex-shrink: 0; }
-        .exercise-desc { font-size: 10px; color: #cbd5e1; }
+        .task-details { background: #0f1623; border-radius: 6px; padding: 6px 8px; font-size: 10px; color: #9ca3af; line-height: 1.3; border-left: 3px solid var(--accent); }
 
         /* Timer UI */
-        .timer-box { display: flex; align-items: center; justify-content: space-between; background: #0f172a; padding: 6px 10px; border-radius: 8px; margin-top: 4px; }
-        .timer-val { font-size: 14px; font-weight: 800; color: #38bdf8; font-family: monospace; }
-        .timer-btn { background: #0284c7; color: white; border: none; padding: 4px 8px; border-radius: 5px; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .timer-box { display: flex; align-items: center; justify-content: space-between; background: #0f172a; padding: 6px 8px; border-radius: 6px; margin-top: 4px; }
+        .timer-val { font-size: 13px; font-weight: 800; color: #38bdf8; font-family: monospace; }
+        .timer-btn-group { display: flex; gap: 4px; }
+        .timer-btn { background: #0284c7; color: white; border: none; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 700; cursor: pointer; }
 
-        /* Rest Overlay Banner */
-        .rest-banner { display: none; background: linear-gradient(90deg, #d97706, #b45309); color: white; text-align: center; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 800; margin-top: 4px; animation: pulse 1s infinite alternate; }
-        @keyframes pulse { 0% { opacity: 0.8; } 100% { opacity: 1; } }
-
-        /* Tracker Tab (Metrics) */
-        .tracker-sec { display: flex; flex-direction: column; gap: 12px; }
-        .input-group { display: flex; gap: 8px; }
-        .input-group input { flex: 1; background: var(--card); border: 1px solid var(--card-border); color: white; padding: 8px 10px; border-radius: 8px; font-size: 12px; outline: none; }
-        .btn-primary { background: var(--accent); color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; }
+        /* Chart Canvas */
+        .chart-container { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; margin-top: 10px; }
         
-        .history-list { background: var(--card); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; max-height: 150px; overflow-y: auto; font-size: 11px; }
-        .history-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed var(--card-border); }
+        /* Modal & Profile Settings */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; }
+        .modal-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+        .form-group input, .form-group select { width: 100%; background: #0f172a; border: 1px solid var(--card-border); color: white; padding: 8px; border-radius: 6px; font-size: 12px; outline: none; }
 
-        /* Market List Modal/Box */
-        .market-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 10px; }
-        .market-title { font-size: 12px; font-weight: 800; color: var(--orange); margin-bottom: 6px; }
-        .market-item { font-size: 11px; color: #cbd5e1; padding: 3px 0; display: flex; align-items: center; gap: 6px; }
-
-        /* Backup / Reset Footer */
-        .footer-tools { display: flex; justify-content: space-between; gap: 8px; margin-top: 20px; }
-        .tool-btn { flex: 1; background: #1e293b; border: 1px solid var(--card-border); color: var(--text-dim); padding: 8px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; text-align: center; }
-
-        /* Onboarding Tour Overlay */
-        .tour-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .tour-card { background: var(--card); border: 2px solid var(--accent); border-radius: 16px; padding: 20px; max-width: 350px; text-align: center; }
-        .tour-card h2 { font-size: 18px; color: white; margin-bottom: 10px; }
-        .tour-card p { font-size: 12px; color: var(--text-dim); margin-bottom: 16px; line-height: 1.5; }
-        .tour-step-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; }
+        .btn-primary { background: var(--accent); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; width: 100%; text-align: center; }
+        
+        .footer-tools { display: flex; justify-content: space-between; gap: 6px; margin-top: 16px; }
+        .tool-btn { flex: 1; background: #1e293b; border: 1px solid var(--card-border); color: var(--text-dim); padding: 6px; border-radius: 6px; font-size: 9px; font-weight: 700; cursor: pointer; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- Onboarding Tour Modal -->
-    <div class="tour-overlay" id="tourOverlay" style="display: none;">
-        <div class="tour-card">
-            <h2 id="tourTitle">Hoş Geldin! 👋</h2>
-            <p id="tourText">60 Günlük AI Koçum Pro'ya adım attın! Sana özel hazırlanmış sıralı antrenman, makro takibi ve AI desteği ile hedeflerine ulaşmaya hazırsın.</p>
-            <button class="tour-step-btn" onclick="nextTourStep()">Devam Et ➔</button>
+    <!-- Profile Settings Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-card">
+            <h3 style="font-size:14px; margin-bottom:12px; color:white;">⚙️ Profil & Hedef Ayarları</h3>
+            <div class="form-group">
+                <label>Cinsiyet</label>
+                <select id="profGender"><option value="male">Erkek</option><option value="female">Kadın</option></select>
+            </div>
+            <div class="form-group"><label>Yaş</label><input type="number" id="profAge" value="25"></div>
+            <div class="form-group"><label>Boy (cm)</label><input type="number" id="profHeight" value="175"></div>
+            <div class="form-group"><label>Güncel Kilo (kg)</label><input type="number" id="profWeight" value="80"></div>
+            <div class="form-group"><label>Hedef Kilo (kg)</label><input type="number" id="profTargetWeight" value="70"></div>
+            <div class="form-group">
+                <label>Aktivite Seviyesi</label>
+                <select id="profActivity">
+                    <option value="1.2">Masabaşı / Hareketsiz</option>
+                    <option value="1.375">Hafif Hareketli (1-3 Gün Spor)</option>
+                    <option value="1.55" selected>Orta Hareketli (3-5 Gün Spor)</option>
+                    <option value="1.725">Çok Hareketli (6-7 Gün Spor)</option>
+                </select>
+            </div>
+            <div class="form-group"><label>Günlük Su Hedefi (Litre)</label><input type="number" step="0.5" id="profWaterGoal" value="3.0"></div>
+            <button class="btn-primary" onclick="saveProfile()">Kaydet ve Hesapla</button>
         </div>
     </div>
 
     <!-- Header -->
-    <div class="header" id="stepHeader">
+    <div class="header">
         <div class="header-title">
-            <h1>60 Günlük AI Koçum</h1>
-            <p id="subTitle">Eksiksiz Akıllı Koçluk Sistemi</p>
+            <h1>60 Günlük AI Koçum Pro</h1>
+            <p id="userWelcome">Kişiselleştirilmiş Dönüşüm Programı</p>
         </div>
         <div style="display: flex; gap: 6px; align-items: center;">
             <div class="streak-badge" id="streakBadge">🔥 <span id="streakCount">0</span> Gün</div>
-            <select id="daySelect" class="day-select" onchange="changeDay()">
-                <option value="pazartesi">Pazartesi</option>
-                <option value="sali">Salı</option>
-                <option value="carsamba">Çarşamba</option>
-                <option value="persembe">Perşembe</option>
-                <option value="cuma">Cuma</option>
-                <option value="cumartesi">Cumartesi</option>
-                <option value="pazar">Pazar</option>
-            </select>
+            <button onclick="openProfileModal()" style="background:var(--card); border:1px solid var(--card-border); color:white; padding:4px 8px; border-radius:6px; font-size:11px; cursor:pointer;">⚙️</button>
         </div>
     </div>
 
-    <!-- Mod Selector (Energy Level) -->
-    <div class="energy-selector" id="stepEnergy">
+    <!-- 60 Day Big Progress Card -->
+    <div class="program-card">
+        <div class="prog-head">
+            <span id="currentDayTitle">GÜN 1 / 60</span>
+            <span id="currentPhaseTitle" style="color:var(--purple)">Faz 1: Adaptasyon</span>
+        </div>
+        <div class="prog-bar-bg"><div class="prog-bar-fill" id="overallProgFill"></div></div>
+        <div class="prog-sub">
+            <span id="overallProgPct">%0 Tamamlandı</span>
+            <span id="daysLeftText">Kalan: 60 Gün</span>
+        </div>
+    </div>
+
+    <!-- Day Carousel Selector -->
+    <div class="day-carousel" id="dayCarousel"></div>
+
+    <!-- Energy Level Selector -->
+    <div class="energy-selector">
         <button class="energy-btn active" id="modeNormal" onclick="setEnergyMode('normal')">⚡ Normal Mod</button>
-        <button class="energy-btn" id="modeLow" onclick="setEnergyMode('low')">💤 Düşük Enerji (-20%)</button>
-        <button class="energy-btn" id="modeHigh" onclick="setEnergyMode('high')">🔥 Yüksek Enerji (+20%)</button>
+        <button class="energy-btn" id="modeLow" onclick="setEnergyMode('low')">💤 Düşük (-20%)</button>
+        <button class="energy-btn" id="modeHigh" onclick="setEnergyMode('high')">🔥 Yüksek (+20%)</button>
     </div>
 
-    <!-- Navigation Tabs -->
+    <!-- Tabs -->
     <div class="tabs">
-        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme & Makro</div>
-        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Spor (Sıralı Mod)</div>
-        <div class="tab-btn" id="tabTracker" onclick="switchTab('tracker')">📊 Ölçü & Kilo Takibi</div>
-        <div class="tab-btn" id="tabMarket" onclick="switchTab('market')">🛒 Market Listesi</div>
+        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme</div>
+        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Spor</div>
+        <div class="tab-btn" id="tabTracker" onclick="switchTab('tracker')">📊 Kilo & Ölçü</div>
+        <div class="tab-btn" id="tabMarket" onclick="switchTab('market')">🛒 Market</div>
     </div>
 
-    <!-- AI Advice Box -->
-    <div class="ai-box" id="stepAi">
+    <!-- AI Engine Box -->
+    <div class="ai-box">
         <div class="ai-header">
-            <span class="ai-badge">🤖 AI Koç Tavsiyesi</span>
-            <button class="ai-btn" onclick="generateAiTip()">💡 Yeni AI İpucu Üret</button>
+            <span class="ai-badge">🤖 Akıllı AI Koç Analizi</span>
         </div>
-        <div id="aiTip">Sistem hazırlanıyor...</div>
+        <div id="aiTipText">Verileriniz analiz ediliyor...</div>
     </div>
 
-    <!-- Main View Content -->
+    <!-- Main Dynamic Content -->
     <div id="mainView">
-        <!-- Stats Bar -->
+        <!-- Daily Stats Bar -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-val" id="progressPct">%0</div>
-                <div class="stat-lbl">Tamamlanan İlerleme</div>
+                <div class="stat-lbl">Günlük Hedef Kalori / Makro</div>
+                <div class="stat-val" id="macroCalVal" style="font-size:13px; color:var(--green)">1800 kcal</div>
+                <div class="stat-lbl" id="macroBreakdown" style="font-size:9px; color:var(--text-dim)">P: 130g | K: 180g | Y: 50g</div>
             </div>
             <div class="stat-card">
-                <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Hedefi 💧</div>
-                <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
-                <div class="water-btn-group">
-                    <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
-                    <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
+                <div class="stat-lbl">Su Takibi 💧</div>
+                <div class="stat-val" id="waterVal" style="font-size:13px; color:#38bdf8;">0.0 / 3.0 L</div>
+                <div class="water-controls">
+                    <button class="water-btn" onclick="addWater(0.25)">+250ml</button>
+                    <button class="water-btn" onclick="addWater(0.5)">+500ml</button>
+                    <button class="water-btn" onclick="addWater(-0.25)" style="color:var(--red)">-250ml</button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Macro Section (Beslenme Sekmesinde Görünür) -->
-        <div class="macro-card" id="macroCard">
-            <div class="macro-row">
-                <span>Günlük Toplam Protein:</span>
-                <span id="macroProteinVal" style="color:#10b981;">0g / 130g</span>
-            </div>
-            <div class="macro-bar-bg"><div class="macro-bar-fill" id="macroBarFill"></div></div>
-            <div class="macro-row" style="font-size:10px; color:var(--text-dim);">
-                <span>Tahmini Kalori: ~1500 kcal</span>
-                <span>Hedef: Yağ Yakımı</span>
             </div>
         </div>
 
@@ -209,39 +208,46 @@
         <div class="task-list" id="taskList"></div>
     </div>
 
-    <!-- Tracker View (Kilo & Ölçü) -->
-    <div id="trackerView" style="display: none;" class="tracker-sec">
+    <!-- Tracker View -->
+    <div id="trackerView" style="display: none;">
         <div class="task-card">
-            <h3 style="font-size:13px; color:white;">📉 Kilo & Ölçü Kaydı Gir</h3>
-            <div class="input-group">
-                <input type="number" id="inputWeight" placeholder="Kilo (kg)">
-                <input type="number" id="inputWaist" placeholder="Bel (cm)">
-                <button class="btn-primary" onclick="saveMetric()">Kaydet</button>
+            <h3 style="font-size:12px; color:white;">📉 Yeni Ölçüm Ekle</h3>
+            <div style="display:flex; gap:6px; margin-top:6px;">
+                <input type="number" id="inputWeight" placeholder="Kilo (kg)" style="flex:1; background:#0f172a; border:1px solid var(--card-border); color:white; padding:6px; border-radius:6px; font-size:11px;">
+                <input type="number" id="inputWaist" placeholder="Bel (cm)" style="flex:1; background:#0f172a; border:1px solid var(--card-border); color:white; padding:6px; border-radius:6px; font-size:11px;">
+                <button class="btn-primary" style="width:auto;" onclick="saveMetric()">Ekle</button>
             </div>
         </div>
-        <div class="task-card">
-            <h3 style="font-size:13px; color:white; margin-bottom:8px;">📜 Geçmiş Ölçümler</h3>
-            <div class="history-list" id="historyList">Kayıt bulunamadı.</div>
+        
+        <!-- SVG Chart -->
+        <div class="chart-container">
+            <h4 style="font-size:11px; color:var(--text-dim); margin-bottom:6px;">Kilo İlerleme Grafiği (Son Kayıtlar)</h4>
+            <svg id="weightChart" viewBox="0 0 300 100" style="width:100%; height:100px; overflow:visible;"></svg>
+        </div>
+
+        <div class="task-card" style="margin-top:10px;">
+            <h3 style="font-size:12px; color:white; margin-bottom:6px;">📜 Geçmiş Ölçümler</h3>
+            <div id="historyList" style="font-size:10px; max-height:120px; overflow-y:auto;">Kayıt yok.</div>
         </div>
     </div>
 
-    <!-- Market List View -->
+    <!-- Market View -->
     <div id="marketView" style="display: none;">
-        <div class="market-box">
-            <div class="market-title">🛒 Haftalık Akıllı Market Listesi</div>
-            <div id="marketItems"></div>
+        <div class="task-card">
+            <h3 style="font-size:12px; color:var(--orange); margin-bottom:6px;">🛒 Aktif Faz Reçetesine Göre Akıllı Market Listesi</h3>
+            <div id="marketListContainer" style="display:flex; flex-direction:column; gap:6px;"></div>
         </div>
     </div>
 
-    <!-- Tools & Backup Footer -->
+    <!-- Footer Tools -->
     <div class="footer-tools">
-        <button class="tool-btn" onclick="exportData()">💾 Verileri İndir (Yedekle)</button>
+        <button class="tool-btn" onclick="exportData()">💾 Veri İndir</button>
         <button class="tool-btn" onclick="importData()">📂 Veri Yükle</button>
-        <button class="tool-btn" onclick="resetCurrentDay()" style="color:#f87171;">🔄 Günü Sıfırla</button>
+        <button class="tool-btn" onclick="resetAppData()" style="color:var(--red);">🔄 Tümünü Sıfırla</button>
     </div>
 
     <script>
-        // Web Audio API for Sound Alert
+        // Web Audio Beep sound for Timer
         function playBeep() {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -251,476 +257,517 @@
                 osc.connect(ctx.destination);
                 osc.start();
                 osc.stop(ctx.currentTime + 0.4);
-            } catch(e) {}
+            } catch(e){}
         }
 
-        const aiPrompts = {
-            beslenme: [
-                "Protein öğünlerini aksatma! Kas kaybını önlemek ve metabolizmanı canlı tutmak için proteini her öğüne yay.",
-                "Eğer tatlı krizin gelirse 1 fincan sade yeşil çay veya filtre kahve iştahı baskılar.",
-                "Su tüketimini ihmal etme. Her öğün öncesi içeceğin 2 bardak su sindirimi hızlandırır."
-            ],
-            spor: [
-                "Hareketi acele etmeden, negatif süreyi (inerken) yavaş tutarak yap. Kas içi gerilim maksimum olsun!",
-                "Dinlenme sürelerine sadık kal. Süre bitince uyarı sesini duyduğunda hemen diğer sete geç.",
-                "Sırayı bozma! Her kilit açıldığında bir sonraki ana kas grubun uyarılıyor."
-            ]
-        };
-
-        const dietRoutines = {
-            pazartesi: [
-                { id: "dp1", title: "09:00 - Uyanış & Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su.", alt: "Alternatif: Limonlu Su", protein: 0 },
-                { id: "dp2", title: "12:30 - Protein Öğleni", duration: "20 Dk", tag: "~450 Kalori", details: "3 Haşlanmış Yumurta + 3 YK Lor + 1 Dilim Tam Buğday Ekmek.", alt: "Alternatif: 2 Dilim Süzme Peynir", protein: 40 },
-                { id: "dp3", title: "16:00 - Ara Öğün", duration: "5 Dk", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık.", alt: "Alternatif: 2 Ceviz", protein: 5 },
-                { id: "dp4", title: "19:00 - Akşam Yemeği", duration: "25 Dk", tag: "~500 Kalori", details: "250g Tavuk Sote + Bol Salata.", alt: "Alternatif: 200g Yağsız Köfte", protein: 45 }
-            ],
-            sali: [
-                { id: "ds1", title: "09:00 - Su Detoksu", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Tarçınlı Su", protein: 0 },
-                { id: "ds2", title: "12:30 - Ton Balıklı Salata", duration: "15 Dk", tag: "~400 Kalori", details: "2 Kutu Ton Balığı + Bol Yeşillik.", alt: "Alternatif: 160g Haşlanmış Tavuk", protein: 38 },
-                { id: "ds3", title: "16:00 - Meyve Arası", duration: "5 Dk", tag: "~80 Kalori", details: "1 Adet Yeşil Elma.", alt: "Alternatif: 2 Salatalık", protein: 1 },
-                { id: "ds4", title: "19:00 - Lorlu Omlet", duration: "15 Dk", tag: "~380 Kalori", details: "3 Yumurtalı Lorlu Omlet + Salata.", alt: "Alternatif: Menemen", protein: 32 }
-            ],
-            carsamba: [
-                { id: "dc1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Sirkeli Su", protein: 0 },
-                { id: "dc2", title: "12:30 - Mercimek & Lor", duration: "20 Dk", tag: "~350 Kalori", details: "1 Kase Mercimek Çorbası + 100g Lorlu Salata.", alt: "Alternatif: Ezogelin", protein: 25 },
-                { id: "dc3", title: "16:00 - Kuruyemiş", duration: "5 Dk", tag: "~180 Kalori", details: "3 Tam Ceviz İçi.", alt: "Alternatif: 10 Badem", protein: 4 },
-                { id: "dc4", title: "19:00 - Tavuk Göğsü", duration: "25 Dk", tag: "~450 Kalori", details: "250g Haşlanmış/Izgara Tavuk Göğsü + Salata.", alt: "Alternatif: 250g Fırın Balık", protein: 50 }
-            ],
-            persembe: [
-                { id: "dpe1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Nane-Limonlu Su", protein: 0 },
-                { id: "dpe2", title: "12:30 - Low-Carb Menü", duration: "15 Dk", tag: "~360 Kalori", details: "3 Haşlanmış Yumurta + 100g Lor + Salatalık.", alt: "Alternatif: 150g Süzme Yoğurt", protein: 35 },
-                { id: "dpe3", title: "16:00 - Ayran / Yoğurt", duration: "5 Dk", tag: "~100 Kalori", details: "1 Bardak Ayran veya Yoğurt.", alt: "Alternatif: 1 Bardak Kefir", protein: 8 },
-                { id: "dpe4", title: "19:00 - Sebze & Tavuk", duration: "25 Dk", tag: "~420 Kalori", details: "150g Tavuk Göğsü + Mantar Sote.", alt: "Alternatif: Tavuklu Brokoli", protein: 35 }
-            ],
-            cuma: [
-                { id: "dcu1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Detoks Suyu", protein: 0 },
-                { id: "dcu2", title: "12:30 - Ton Balığı", duration: "15 Dk", tag: "~380 Kalori", details: "160g Ton Balıklı Salata + 1 Dilim Ekmek.", alt: "Alternatif: Izgara Somon", protein: 36 },
-                { id: "dcu3", title: "16:00 - Badem", duration: "5 Dk", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 Fındık", protein: 5 },
-                { id: "dcu4", title: "19:00 - Cuma Menemeni", duration: "20 Dk", tag: "~420 Kalori", details: "3 Yumurtalı Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Kıymalı Yumurta", protein: 28 }
-            ],
-            cumartesi: [
-                { id: "dcm1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden Suyu", protein: 0 },
-                { id: "dcm2", title: "12:30 - Hafta Sonu Kahvaltısı", duration: "20 Dk", tag: "~450 Kalori", details: "3 Yumurtalı Lorlu Omlet + 5 Zeytin.", alt: "Alternatif: Menemen", protein: 32 },
-                { id: "dcm3", title: "16:00 - Meyve", duration: "5 Dk", tag: "~100 Kalori", details: "1 Adet Muz veya Elma.", alt: "Alternatif: 1 Kase Çilek", protein: 1 },
-                { id: "dcm4", title: "19:00 - Tavuk Izgara", duration: "25 Dk", tag: "~480 Kalori", details: "250g Tavuk Pirzola/Göğüs + Salata.", alt: "Alternatif: 250g Bonfile", protein: 48 }
-            ],
-            pazar: [
-                { id: "dpz1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık Limonlu Su", protein: 0 },
-                { id: "dpz2", title: "12:30 - Pazar Kahvaltısı", duration: "20 Dk", tag: "~400 Kalori", details: "3 Haşlanmış Yumurta + Zeytin + Lor.", alt: "Alternatif: Sahanda Yumurta", protein: 30 },
-                { id: "dpz3", title: "16:00 - Pul Biberli Yoğurt", duration: "5 Dk", tag: "~110 Kalori", details: "1 Kase Yoğurt + Pul Biber + Limon.", alt: "Alternatif: 1 Bardak Ayran", protein: 8 },
-                { id: "dpz4", title: "19:00 - Hafif Sebze Yemeği", duration: "20 Dk", tag: "~320 Kalori", details: "1 Tabak Mercimek Yemeği + Salata.", alt: "Alternatif: Zeytinyağlı Sebze", protein: 15 }
-            ]
-        };
-
-        const sportRoutines = {
-            pazartesi: [
-                { id: "sp1", title: "1. Tempolu Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Yerinde tempolu adımlama & kol çevirme.", alt: "Tempo: Nabız 100-120 bpm.", rest: 0, icon: "🏃" },
-                { id: "sp2", title: "2. Sandalye Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Bacak & Kalça", details: "Sandalyeye dokunup topuktan güç alarak kalk.", alt: "Tempo: 2 sn iniş, 1 sn çıkış.", rest: 45, icon: "🦵" },
-                { id: "sp3", title: "3. Duvar Şınavı", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Göğüs & Omuz", details: "Duvardan 2 adım geride eller duvarda şınav.", alt: "Form: Vücut ok gibi düz.", rest: 45, icon: "💪" },
-                { id: "sp4", title: "4. Statik Plank", duration: "3 Set x 30 Sn", baseSec: 90, tag: "Tüm Karın", details: "Dirsekler üstünde düz duruş.", alt: "Form: Karın ve kalçayı sık.", rest: 30, icon: "🧘" },
-                { id: "sp5", title: "5. Bacak & Bel Esneme", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Kasları esneterek nabzı düşür.", alt: "Derin nefes al.", rest: 0, icon: "🧘‍♂️" }
-            ],
-            sali: [
-                { id: "ss1", title: "1. Eklem Isınması", duration: "5 Dk", baseSec: 300, tag: "Mobilite", details: "Omuz daireleri ve hafif yürüyüş.", alt: "Omuzları dairesel çevir.", rest: 0, icon: "🔄" },
-                { id: "ss2", title: "2. Yağ Yakım Kardiyosu", duration: "20 Dk", baseSec: 1200, tag: "Kardiyo", details: "2 Dk Jog + 2 Dk Tempolu Yürüyüş (5 Tur).", alt: "Konuşabileceğin hızda kal.", rest: 0, icon: "🔥" },
-                { id: "ss3", title: "3. Yüksek Açı Şınav", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Alt Göğüs", details: "Eller masa/sandalye kenarında şınav.", alt: "Dirsekler 45 derece geriye.", rest: 45, icon: "💪" },
-                { id: "ss4", title: "4. Mekik (Crunch)", duration: "3 Set x 15 Tekrar", baseSec: 180, tag: "Üst Karın", details: "Sırtüstü dizler bükük, kürek kemiklerini kaldır.", alt: "Çeneyi göğse gömme.", rest: 30, icon: "🎯" },
-                { id: "ss5", title: "5. Soğuma Esnemesi", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Sırt ve bacak esnetme.", alt: "Derin nefes al.", rest: 0, icon: "🧘" }
-            ],
-            carsamba: [
-                { id: "sc1", title: "1. Mobilite Isınması", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Kalça ve bel dairesel hareketler.", alt: "Belini zorlamadan çevir.", rest: 0, icon: "🌀" },
-                { id: "sc2", title: "2. Sumo Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "İç Bacak", details: "Geniş duruş, parmak uçları dışa baksın.", alt: "Yavaş in, hızlı kalk.", rest: 45, icon: "🦵" },
-                { id: "sc3", title: "3. Diz Üstü Şınav", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Göğüs & Kol", details: "Dizler yerde şınav.", alt: "Göğsü yere yaklaştır.", rest: 45, icon: "💪" },
-                { id: "sc4", title: "4. Yan Plank", duration: "2 Set x 20 Sn", baseSec: 80, tag: "Yan Karın", details: "Dirsek üstünde yan duruş.", alt: "Kalçayı aşağı düşürme.", rest: 30, icon: "⚡" },
-                { id: "sc5", title: "5. Tüm Vücut Esneme", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Tüm kasları gevşet.", alt: "Sabit esne.", rest: 0, icon: "🧘" }
-            ],
-            persembe: [
-                { id: "spe1", title: "1. Dinamik Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Tempolu adımlama ve kol sallama.", alt: "Nabız yükselsin.", rest: 0, icon: "🚶" },
-                { id: "spe2", title: "2. Tempolu Kardiyo", duration: "25 Dk", baseSec: 1500, tag: "Kardiyo", details: "Tempolu sokak veya ev içi adımlama.", alt: "Temponu koru.", rest: 0, icon: "🏃" },
-                { id: "spe3", title: "3. Triceps Dips", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Arka Kol", details: "Sandalye kenarında kalçayı indir/kaldır.", alt: "Dirsekleri arkaya bük.", rest: 45, icon: "🏋️" },
-                { id: "spe4", title: "4. Glute Bridge", duration: "3 Set x 15 Tekrar", baseSec: 180, tag: "Kalça & Bel", details: "Sırtüstü yatıp kalçayı havaya kaldır.", alt: "Tepede kalçayı 1 sn sık.", rest: 30, icon: "🍑" },
-                { id: "spe5", title: "5. Soğuma Esnemesi", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Kolları ve bacakları esnet.", alt: "Yavaş nefes.", rest: 0, icon: "🧘" }
-            ],
-            cuma: [
-                { id: "scu1", title: "1. High Knee Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Dizleri yukarı çekerek adımla.", alt: "Ritmini koru.", rest: 0, icon: "🦵" },
-                { id: "scu2", title: "2. Yavaş Tempo Squat", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Bacak", details: "3 saniyede in, 1 saniyede kalk.", alt: "Kas içi gerilimi artır.", rest: 45, icon: "🏋️" },
-                { id: "scu3", title: "3. Şınav Varyasyonu", duration: "3 Set x 12 Tekrar", baseSec: 180, tag: "Üst Vücut", details: "Masa veya duvar şınavı.", alt: "Gövde ok gibi düz.", rest: 45, icon: "💪" },
-                { id: "scu4", title: "4. Plank Challenge", duration: "3 Set x 30 Sn", baseSec: 90, tag: "Core Gücü", details: "Düz duruş plank.", alt: "Düzenli nefes al.", rest: 30, icon: "🧘" },
-                { id: "scu5", title: "5. Cuma Soğuması", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Derin kas esnemesi.", alt: "Zihni ve kası gevşet.", rest: 0, icon: "🧘‍♂️" }
-            ],
-            cumartesi: [
-                { id: "scm1", title: "1. Hafif Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Yavaş tempo adımlama.", alt: "Temponu hafif tut.", rest: 0, icon: "🚶" },
-                { id: "scm2", title: "2. Uzun Kardiyo", duration: "30 Dk", baseSec: 1800, tag: "Yağ Yakımı", details: "Kesintisiz hafif jog veya yürüyüş.", alt: "Temponu sabitle.", rest: 0, icon: "🏃" },
-                { id: "scm3", title: "3. Superman Hareketi", duration: "3 Set x 10 Tekrar", baseSec: 180, tag: "Sırt & Bel", details: "Yüzüstü yatıp göğüs ve bacakları kaldır.", alt: "Tepede 1 sn bekle.", rest: 45, icon: "🦸" },
-                { id: "scm4", title: "4. Cat-Cow Esneme", duration: "5 Dk", baseSec: 300, tag: "Omurga", details: "Kedi-deve duruşu ile esne.", alt: "Nefes vererek yuvarlan.", rest: 0, icon: "🧘" }
-            ],
-            pazar: [
-                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", duration: "15 Dk", baseSec: 900, tag: "Dolaşım", details: "Hafif tempoda ev/dışarı yürüyüşü.", alt: "Yorulmadan dolaşım sağla.", rest: 0, icon: "🚶" },
-                { id: "spz2", title: "2. Yoga & Derin Esneme", duration: "15 Dk", baseSec: 900, tag: "Yenilenme", details: "Tüm vücudu rahatlatma hareketleri.", alt: "Kasları yeni haftaya hazırla.", rest: 0, icon: "🧘" }
-            ]
-        };
-
-        const marketList = [
-            "🥩 2 Kg Tavuk Göğsü / Pirzola",
-            "🥚 2 Koli Yumurta (30'lu)",
-            "🧀 1 Kg Yağsız Lor Peyniri",
-            "🐟 4 Kutu Ton Balığı",
-            "🥬 2 Demet Maydanoz, Roka, Kıvırcık",
-            "🥒 1 Kg Salatalık & Yeşil Elma",
-            "🥜 1 Paket Çiğ Badem / Ceviz İçi"
-        ];
-
-        let currentDay = "pazartesi";
+        // Global State
+        let selectedDay = 1; // 1 to 60
         let currentTab = "beslenme";
-        let energyMode = "normal"; // normal, low, high
-        let activeTimers = {};
-        let tourStep = 0;
+        let energyMode = "normal";
+        let activeTimer = null;
+        let timerEndTimestamp = null;
 
-        const tourSteps = [
-            { title: "Hoş Geldin! 👋", text: "60 Günlük AI Koçum Pro'ya adım attın! Sana özel hazırlanmış sıralı antrenman, makro takibi ve AI desteği ile hedeflerine ulaşmaya hazırsın." },
-            { title: "🔥 Seri (Streak) Mantığı", text: "Her gün görevlerini tamamladıkça serin artar. Kesintisiz devam ederek motivasyonunu yüksek tut!" },
-            { title: "⚡ Enerji Modu Seçimi", text: "O gün yorgunsan 'Düşük Enerji' modunu seç. AI, antrenman sürelerini otomatik hafifletir!" },
-            { title: "🤖 AI İpuçları & Sıralı Spor", text: "Spor bölümündeki hareketler sırayla açılır. Biri bitmeden diğeri kilitlidir. Her sette canlı dinlenme sayacı çalışır!" },
-            { title: "Hazırsın! 💪", text: "Artık başlayabilirsin. Başarılar!" }
-        ];
-
-        function checkTour() {
-            if (!localStorage.getItem("tour_completed")) {
-                document.getElementById("tourOverlay").style.display = "flex";
-                updateTourUI();
-            }
+        // Base Data Engine: 60 Days Dynamic Generator
+        function getPhaseDetails(day) {
+            if (day <= 10) return { phase: 1, title: "Faz 1: Adaptasyon", multiplier: 1.0 };
+            if (day <= 20) return { phase: 2, title: "Faz 2: Temel Kondisyon", multiplier: 1.1 };
+            if (day <= 30) return { phase: 3, title: "Faz 3: Hacim & Kas", multiplier: 1.25 };
+            if (day <= 40) return { phase: 4, title: "Faz 4: Dayanıklılık", multiplier: 1.35 };
+            if (day <= 50) return { phase: 5, title: "Faz 5: Güç & Yağ Yakımı", multiplier: 1.5 };
+            return { phase: 6, title: "Faz 6: İleri Seviye Peak", multiplier: 1.65 };
         }
 
-        function updateTourUI() {
-            document.getElementById("tourTitle").innerText = tourSteps[tourStep].title;
-            document.getElementById("tourText").innerText = tourSteps[tourStep].text;
+        function generateDayDiet(day) {
+            const phase = getPhaseDetails(day);
+            return [
+                { id: `d_${day}_1`, title: "08:30 - Güne Başlangıç & Hidrasyon", duration: "2 Dk", tag: "Su", details: "2 Büyük Bardak Ilık Su + Limon.", alt: "Alternatif: Sade Su", protein: 0 },
+                { id: `d_${day}_2`, title: "12:30 - Protein Ağırlıklı Öğle Yemeği", duration: "20 Dk", tag: "Ana Öğün", details: `${Math.round(150 * phase.multiplier)}g Haşlanmış Tavuk / Ton Balığı + Bol Yeşillik.`, alt: "Alternatif: 3 Yumurtalı Lorlu Omlet", protein: Math.round(30 * phase.multiplier) },
+                { id: `d_${day}_3`, title: "16:00 - Enerji Arası", duration: "5 Dk", tag: "Ara Öğün", details: "1 Avuç Çiğ Badem/Ceviz + 1 Yeşil Elma.", alt: "Alternatif: 1 Bardak Ayran", protein: 5 },
+                { id: `d_${day}_4`, title: "19:00 - Akşam Denge Öğünü", duration: "25 Dk", tag: "Ana Öğün", details: `${Math.round(200 * phase.multiplier)}g Izgara Et/Köfte veya Sebze Yemeği + Salata.`, alt: "Alternatif: 200g Fırın Balık", protein: Math.round(35 * phase.multiplier) }
+            ];
         }
 
-        function nextTourStep() {
-            tourStep++;
-            if (tourStep >= tourSteps.length) {
-                document.getElementById("tourOverlay").style.display = "none";
-                localStorage.setItem("tour_completed", "true");
+        function generateDaySport(day) {
+            const phase = getPhaseDetails(day);
+            const baseSets = phase.phase; // Faz yükseldikçe set/tekrar artar (Progressive Overload)
+            const baseReps = 8 + (phase.phase * 2);
+
+            return [
+                { id: `s_${day}_1`, title: "1. Dinamik Isınma", duration: "5 Dk", baseSec: 300, tag: "Isınma", details: "Yerinde tempolu adımlama & kol çevirme.", rest: 0 },
+                { id: `s_${day}_2`, title: "2. Sandalye Squat (Bacak)", duration: `${baseSets} Set x ${baseReps} Tekrar`, baseSec: 180, tag: "Bacak", details: "Sandalyeye dokunup topuktan güç alarak kalk.", rest: 45, reps: baseReps, sets: baseSets },
+                { id: `s_${day}_3`, title: "3. Şınav Varyasyonu (Göğüs)", duration: `${baseSets} Set x ${baseReps - 2} Tekrar`, baseSec: 180, tag: "Üst Vücut", details: "Duvarda veya diz üstü şınav.", rest: 45, reps: baseReps - 2, sets: baseSets },
+                { id: `s_${day}_4`, title: "4. Statik Plank (Core)", duration: `${baseSets} Set x ${20 + phase.phase * 5} Sn`, baseSec: 120, tag: "Karın", details: "Dirsekler üzerinde gövde ok gibi düz.", rest: 30 },
+                { id: `s_${day}_5`, title: "5. Soğuma & Esneme", duration: "5 Dk", baseSec: 300, tag: "Soğuma", details: "Derin nefes eşliğinde tüm kasları esnet.", rest: 0 }
+            ];
+        }
+
+        // Core App Initialization
+        function initApp() {
+            checkProfileExists();
+            renderDayCarousel();
+            renderCurrentView();
+            runAiEngine();
+            registerServiceWorker();
+        }
+
+        function checkProfileExists() {
+            const prof = localStorage.getItem("user_profile");
+            if (!prof) {
+                openProfileModal();
             } else {
-                updateTourUI();
+                const data = JSON.parse(prof);
+                document.getElementById("userWelcome").innerText = `Hoş geldin! (Hedef: ${data.targetWeight} kg)`;
             }
         }
 
-        function checkAutoReset() {
-            const now = new Date();
-            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-            const lastDate = localStorage.getItem("last_active_date");
-            const dayIndex = now.getDay();
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
+        function openProfileModal() {
+            const prof = JSON.parse(localStorage.getItem("user_profile") || "{}");
+            if (prof.gender) document.getElementById("profGender").value = prof.gender;
+            if (prof.age) document.getElementById("profAge").value = prof.age;
+            if (prof.height) document.getElementById("profHeight").value = prof.height;
+            if (prof.weight) document.getElementById("profWeight").value = prof.weight;
+            if (prof.targetWeight) document.getElementById("profTargetWeight").value = prof.targetWeight;
+            if (prof.waterGoal) document.getElementById("profWaterGoal").value = prof.waterGoal;
             
-            if (lastDate !== todayStr) {
-                // Check Streak logic
-                let streak = parseInt(localStorage.getItem("streak_count") || "0");
-                const yesterday = new Date();
-                yesterday.setDate(now.getDate() - 1);
-                const yestStr = `${yesterday.getFullYear()}-${yesterday.getMonth() + 1}-${yesterday.getDate()}`;
-
-                if (lastDate === yestStr) {
-                    streak += 1;
-                } else if (lastDate) {
-                    streak = 1; // Reset streak if missed a day
-                } else {
-                    streak = 1;
-                }
-                
-                localStorage.setItem("streak_count", streak.toString());
-                localStorage.setItem("water_amount", "0");
-                localStorage.setItem("last_active_date", todayStr);
-                
-                currentDay = dayKeys[dayIndex];
-                document.getElementById("daySelect").value = currentDay;
-            }
+            document.getElementById("profileModal").style.display = "flex";
         }
 
-        function init() {
-            checkAutoReset();
-            checkTour();
+        function saveProfile() {
+            const prof = {
+                gender: document.getElementById("profGender").value,
+                age: parseFloat(document.getElementById("profAge").value) || 25,
+                height: parseFloat(document.getElementById("profHeight").value) || 170,
+                weight: parseFloat(document.getElementById("profWeight").value) || 70,
+                targetWeight: parseFloat(document.getElementById("profTargetWeight").value) || 65,
+                activity: parseFloat(document.getElementById("profActivity").value) || 1.55,
+                waterGoal: parseFloat(document.getElementById("profWaterGoal").value) || 3.0
+            };
 
-            const now = new Date();
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
-            currentDay = dayKeys[now.getDay()];
-            document.getElementById("daySelect").value = currentDay;
+            // Harris-Benedict BMR & TDEE Calculation
+            let bmr = (10 * prof.weight) + (6.25 * prof.height) - (5 * prof.age);
+            bmr += (prof.gender === "male") ? 5 : -161;
+            const tdee = Math.round(bmr * prof.activity - 400); // 400 kcal açık (Yağ yakımı)
 
-            renderApp();
-            updateWaterUI();
-            renderMetrics();
-            renderMarket();
+            prof.targetCal = tdee;
+            prof.targetProtein = Math.round(prof.weight * 1.8); // 1.8g / kg
+            prof.targetCarbs = Math.round((tdee * 0.4) / 4);
+            prof.targetFat = Math.round((tdee * 0.25) / 9);
 
-            document.getElementById("streakCount").innerText = localStorage.getItem("streak_count") || "1";
+            localStorage.setItem("user_profile", JSON.stringify(prof));
+            
+            // Eğer ilk kilo kaydı yoksa ekle
+            const history = JSON.parse(localStorage.getItem("metrics_history") || "[]");
+            if (history.length === 0) {
+                history.push({ date: new Date().toLocaleDateString('tr-TR'), weight: prof.weight, waist: '-' });
+                localStorage.setItem("metrics_history", JSON.stringify(history));
+            }
+
+            document.getElementById("profileModal").style.display = "none";
+            initApp();
+        }
+
+        function calculateCurrentDayProgress(day) {
+            const diet = generateDayDiet(day);
+            const sport = generateDaySport(day);
+            const completedDiet = JSON.parse(localStorage.getItem(`completed_day_${day}_beslenme`) || "{}");
+            const completedSport = JSON.parse(localStorage.getItem(`completed_day_${day}_spor`) || "{}");
+
+            let total = diet.length + sport.length;
+            let done = 0;
+
+            diet.forEach(item => { if (completedDiet[item.id]) done++; });
+            sport.forEach(item => { if (completedSport[item.id]) done++; });
+
+            return Math.round((done / total) * 100);
+        }
+
+        function renderDayCarousel() {
+            const container = document.getElementById("dayCarousel");
+            container.innerHTML = "";
+
+            for (let i = 1; i <= 60; i++) {
+                const pct = calculateCurrentDayProgress(i);
+                const chip = document.createElement("div");
+                chip.className = `day-chip ${i === selectedDay ? 'active' : ''} ${pct >= 75 ? 'completed-day' : ''}`;
+                chip.innerText = `${i}. Gün`;
+                chip.onclick = () => {
+                    selectedDay = i;
+                    renderDayCarousel();
+                    renderCurrentView();
+                    runAiEngine();
+                };
+                container.appendChild(chip);
+            }
+            updateStreakAndOverallProgress();
+        }
+
+        function updateStreakAndOverallProgress() {
+            let totalCompletedDays = 0;
+            let currentStreak = 0;
+
+            for (let i = 1; i <= 60; i++) {
+                const pct = calculateCurrentDayProgress(i);
+                if (pct >= 75) {
+                    totalCompletedDays++;
+                    currentStreak++;
+                } else if (i < selectedDay) {
+                    currentStreak = 0; // Seri kırıldı
+                }
+            }
+
+            document.getElementById("streakCount").innerText = currentStreak;
+            
+            const overallPct = Math.round((totalCompletedDays / 60) * 100);
+            document.getElementById("overallProgPct").innerText = `%${overallPct} Tamamlandı`;
+            document.getElementById("overallProgFill").style.width = `${overallPct}%`;
+            document.getElementById("daysLeftText").innerText = `Kalan: ${60 - totalCompletedDays} Gün`;
+
+            const phaseInfo = getPhaseDetails(selectedDay);
+            document.getElementById("currentDayTitle").innerText = `GÜN ${selectedDay} / 60`;
+            document.getElementById("currentPhaseTitle").innerText = phaseInfo.title;
         }
 
         function setEnergyMode(mode) {
             energyMode = mode;
-            document.getElementById("modeNormal").classList.toggle("active", mode === 'normal');
-            document.getElementById("modeLow").classList.toggle("active", mode === 'low');
-            document.getElementById("modeHigh").classList.toggle("active", mode === 'high');
-            renderApp();
-        }
-
-        function generateAiTip() {
-            const tips = aiPrompts[currentTab] || aiPrompts['beslenme'];
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-            document.getElementById("aiTip").innerText = randomTip;
-        }
-
-        function changeDay() {
-            currentDay = document.getElementById("daySelect").value;
-            renderApp();
+            document.querySelectorAll(".energy-btn").forEach(b => b.classList.remove("active"));
+            if (mode === 'normal') document.getElementById("modeNormal").classList.add("active");
+            if (mode === 'low') document.getElementById("modeLow").classList.add("active");
+            if (mode === 'high') document.getElementById("modeHigh").classList.add("active");
+            renderCurrentView();
         }
 
         function switchTab(tab) {
             currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            if (tab === 'beslenme') document.getElementById("tabBeslenme").classList.add('active');
-            if (tab === 'spor') document.getElementById("tabSpor").classList.add('active');
-            if (tab === 'tracker') document.getElementById("tabTracker").classList.add('active');
-            if (tab === 'market') document.getElementById("tabMarket").classList.add('active');
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            document.getElementById("mainView").style.display = "none";
+            document.getElementById("trackerView").style.display = "none";
+            document.getElementById("marketView").style.display = "none";
 
-            document.getElementById("mainView").style.display = (tab === 'beslenme' || tab === 'spor') ? 'block' : 'none';
-            document.getElementById("trackerView").style.display = (tab === 'tracker') ? 'flex' : 'none';
-            document.getElementById("marketView").style.display = (tab === 'market') ? 'block' : 'none';
-            document.getElementById("macroCard").style.display = (tab === 'beslenme') ? 'flex' : 'none';
-
-            if (tab === 'beslenme' || tab === 'spor') renderApp();
+            if (tab === "beslenme" || tab === "spor") {
+                document.getElementById("tab" + (tab === "beslenme" ? "Beslenme" : "Spor")).classList.add("active");
+                document.getElementById("mainView").style.display = "block";
+            } else if (tab === "tracker") {
+                document.getElementById("tabTracker").classList.add("active");
+                document.getElementById("trackerView").style.display = "block";
+                renderChartAndHistory();
+            } else if (tab === "market") {
+                document.getElementById("tabMarket").classList.add("active");
+                document.getElementById("marketView").style.display = "block";
+                renderSmartMarketList();
+            }
+            renderCurrentView();
         }
 
-        function renderApp() {
-            generateAiTip();
-            const listEl = document.getElementById("taskList");
-            listEl.innerHTML = "";
-            
-            const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-            let completedCount = 0;
-            let currentProtein = 0;
-            let previousCompleted = true; // First task is unlocked
+        function renderCurrentView() {
+            if (currentTab !== "beslenme" && currentTab !== "spor") return;
 
-            activeTasks.forEach((task, index) => {
-                const key = `task_${currentDay}_${currentTab}_${task.id}`;
-                const isDone = localStorage.getItem(key) === "true";
-                if (isDone) {
-                    completedCount++;
-                    if (task.protein) currentProtein += task.protein;
-                }
+            const listContainer = document.getElementById("taskList");
+            listContainer.innerHTML = "";
 
-                const isLocked = currentTab === 'spor' && !previousCompleted && !isDone;
+            const prof = JSON.parse(localStorage.getItem("user_profile") || "{}");
+            const waterGoal = prof.waterGoal || 3.0;
 
-                // Adjust seconds according to Energy Mode
-                let seconds = task.baseSec || 180;
-                if (energyMode === 'low') seconds = Math.round(seconds * 0.8);
-                if (energyMode === 'high') seconds = Math.round(seconds * 1.2);
+            // Render Macro & Water Header
+            document.getElementById("macroCalVal").innerText = `${prof.targetCal || 1800} kcal`;
+            document.getElementById("macroBreakdown").innerText = `P: ${prof.targetProtein || 120}g | K: ${prof.targetCarbs || 180}g | Y: ${prof.targetFat || 50}g`;
+
+            const waterAmt = parseFloat(localStorage.getItem(`water_day_${selectedDay}`) || "0");
+            document.getElementById("waterVal").innerText = `${waterAmt.toFixed(2)} / ${waterGoal.toFixed(1)} L`;
+
+            const items = (currentTab === "beslenme") ? generateDayDiet(selectedDay) : generateDaySport(selectedDay);
+            const completedState = JSON.parse(localStorage.getItem(`completed_day_${selectedDay}_${currentTab}`) || "{}");
+
+            let previousCompleted = true;
+
+            items.forEach((item) => {
+                const isCompleted = !!completedState[item.id];
+                const isLocked = (currentTab === "spor") && !previousCompleted && !isCompleted;
 
                 const card = document.createElement("div");
-                card.className = `task-card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
-                
-                let timerHtml = "";
-                let visualHtml = "";
+                card.className = `task-card ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
 
-                if (currentTab === 'spor') {
-                    visualHtml = `
-                        <div class="exercise-visual">
-                            <div class="exercise-svg">${task.icon || '🏋️'}</div>
-                            <div class="exercise-desc"><strong>Hedef Bölge:</strong> ${task.tag}<br><strong>Form:</strong> ${task.alt}</div>
-                        </div>
-                    `;
-
-                    if (seconds) {
-                        timerHtml = `
-                            <div class="timer-box">
-                                <span class="timer-val" id="timer_${task.id}">${formatTime(seconds)}</span>
-                                <button class="timer-btn" onclick="event.stopPropagation(); startTimer('${task.id}', ${seconds}, ${task.rest || 0})">▶️ Başlat</button>
-                            </div>
-                            <div class="rest-banner" id="restBanner_${task.id}">⏱️ DİNLENME SÜRESİ BAŞLADI (45 SN)</div>
-                        `;
-                    }
+                let durationText = item.duration;
+                // Enerji moduna göre Spor tekrarlarını ayarla
+                if (currentTab === "spor" && item.sets) {
+                    let adjustedSets = item.sets;
+                    let adjustedReps = item.reps;
+                    if (energyMode === 'low') { adjustedSets = Math.max(2, item.sets - 1); adjustedReps = Math.max(6, item.reps - 2); }
+                    if (energyMode === 'high') { adjustedSets += 1; }
+                    durationText = `${adjustedSets} Set x ${adjustedReps} Tekrar`;
                 }
 
-                card.innerHTML = `
-                    <div class="task-header" onclick="toggleTask('${key}')">
+                let html = `
+                    <div class="task-header" onclick="toggleTask('${item.id}', ${isLocked})">
                         <div class="checkbox"></div>
-                        <div class="task-title-group">
-                            <div class="task-title">${isLocked ? '🔒 ' : ''}${task.title}</div>
-                            <div class="task-tags">
-                                <span class="task-tag">${task.tag}</span>
-                                <span class="task-duration">⏱️ ${task.duration}</span>
-                                ${task.protein ? `<span class="task-tag" style="background:#065f46; color:#a7f3d0;">+${task.protein}g Protein</span>` : ''}
-                            </div>
-                        </div>
+                        <div class="task-title">${item.title}</div>
+                        <span class="task-tag">${durationText}</span>
                     </div>
                     <div class="task-details">
-                        <strong>Ayrıntı:</strong> ${task.details}<br>
-                        <div style="color:#f59e0b; margin-top:3px;">💡 <strong>Püf Nokta:</strong> ${task.alt}</div>
+                        ${item.details}<br>
+                        <span style="color:#60a5fa; font-size:9px;">💡 ${item.alt}</span>
                     </div>
-                    ${visualHtml}
-                    ${timerHtml}
                 `;
-                
-                listEl.appendChild(card);
-                previousCompleted = isDone;
+
+                if (currentTab === "spor" && item.rest > 0) {
+                    html += `
+                        <div class="timer-box">
+                            <span style="font-size:10px; color:var(--text-dim);">Set Arası Dinlenme:</span>
+                            <span class="timer-val" id="timer_val_${item.id}">${item.rest}s</span>
+                            <div class="timer-btn-group">
+                                <button class="timer-btn" onclick="startTimer('${item.id}', ${item.rest})">▶ Başlat</button>
+                                <button class="timer-btn" onclick="addTimerTime('${item.id}', 15)">+15s</button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = html;
+                listContainer.appendChild(card);
+
+                previousCompleted = isCompleted;
             });
-
-            // Update Progress & Macros
-            const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
-            document.getElementById("progressPct").innerText = `%${pct}`;
-
-            if (currentTab === 'beslenme') {
-                document.getElementById("macroProteinVal").innerText = `${currentProtein}g / 130g`;
-                const macroPct = Math.min(100, Math.round((currentProtein / 130) * 100));
-                document.getElementById("macroBarFill").style.width = `${macroPct}%`;
-            }
         }
 
-        function toggleTask(key) {
-            const val = localStorage.getItem(key) === "true";
-            localStorage.setItem(key, !val);
-            renderApp();
-        }
-
-        function formatTime(sec) {
-            const m = Math.floor(sec / 60);
-            const s = sec % 60;
-            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function startTimer(id, totalSec, restTime) {
-            if (activeTimers[id]) clearInterval(activeTimers[id]);
-            let currentSec = totalSec;
-            const timerEl = document.getElementById(`timer_${id}`);
-            const restBanner = document.getElementById(`restBanner_${id}`);
+        function toggleTask(id, isLocked) {
+            if (isLocked) return;
+            const completedState = JSON.parse(localStorage.getItem(`completed_day_${selectedDay}_${currentTab}`) || "{}");
+            completedState[id] = !completedState[id];
+            localStorage.setItem(`completed_day_${selectedDay}_${currentTab}`, JSON.stringify(completedState));
             
-            activeTimers[id] = setInterval(() => {
-                currentSec--;
-                if (timerEl) timerEl.innerText = formatTime(currentSec);
-                if (currentSec <= 0) {
-                    clearInterval(activeTimers[id]);
-                    playBeep();
-                    if (timerEl) timerEl.innerText = "TAMAMLANDI! 💪";
-
-                    // Trigger Dynamic Rest Timer if applicable
-                    if (restTime > 0 && restBanner) {
-                        startRestTimer(id, restTime, restBanner);
-                    }
-                }
-            }, 1000);
-        }
-
-        function startRestTimer(id, restSec, bannerEl) {
-            bannerEl.style.display = "block";
-            let rSec = restSec;
-            bannerEl.innerText = `⏱️ DİNLENME SÜRESİ: ${rSec} SN`;
-
-            const rTimer = setInterval(() => {
-                rSec--;
-                bannerEl.innerText = `⏱️ DİNLENME SÜRESİ: ${rSec} SN`;
-                if (rSec <= 0) {
-                    clearInterval(rTimer);
-                    playBeep();
-                    bannerEl.innerText = "🔥 DİNLENME BİTTİ! DİĞER SETE GEÇ!";
-                    setTimeout(() => { bannerEl.style.display = "none"; }, 3000);
-                }
-            }, 1000);
+            renderDayCarousel();
+            renderCurrentView();
+            runAiEngine();
         }
 
         function addWater(amount) {
-            let curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            curr = Math.min(4.0, curr + amount);
-            localStorage.setItem("water_amount", curr.toFixed(1));
-            updateWaterUI();
+            const prof = JSON.parse(localStorage.getItem("user_profile") || "{}");
+            const maxGoal = (prof.waterGoal || 3.0) + 1.5;
+            let current = parseFloat(localStorage.getItem(`water_day_${selectedDay}`) || "0");
+            current = Math.max(0, Math.min(maxGoal, current + amount));
+            localStorage.setItem(`water_day_${selectedDay}`, current.toString());
+            
+            renderCurrentView();
+            runAiEngine();
         }
 
-        function updateWaterUI() {
-            const curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            document.getElementById("waterVal").innerText = `${curr.toFixed(1)} / 4.0 L`;
+        // Timer with precise timestamps
+        function startTimer(id, defaultSec) {
+            if (activeTimer) clearInterval(activeTimer);
+
+            const restMultiplier = energyMode === 'low' ? 1.3 : 1.0;
+            const totalSec = Math.round(defaultSec * restMultiplier);
+            timerEndTimestamp = Date.now() + (totalSec * 1000);
+
+            const valEl = document.getElementById(`timer_val_${id}`);
+
+            activeTimer = setInterval(() => {
+                const remainingSec = Math.ceil((timerEndTimestamp - Date.now()) / 1000);
+                if (valEl) valEl.innerText = `${remainingSec}s`;
+
+                if (remainingSec <= 0) {
+                    clearInterval(activeTimer);
+                    playBeep();
+                    if (valEl) valEl.innerText = "Süre Bitti! 🔔";
+                }
+            }, 500);
         }
 
-        // Metrics / Tracker Logic
+        function addTimerTime(id, extraSec) {
+            if (timerEndTimestamp) {
+                timerEndTimestamp += (extraSec * 1000);
+            }
+        }
+
+        // Real AI Engine (Rules & Data Driven)
+        function runAiEngine() {
+            const prof = JSON.parse(localStorage.getItem("user_profile") || "{}");
+            const history = JSON.parse(localStorage.getItem("metrics_history") || "[]");
+            const waterAmt = parseFloat(localStorage.getItem(`water_day_${selectedDay}`) || "0");
+            const dayProg = calculateCurrentDayProgress(selectedDay);
+
+            let feedback = [];
+
+            // Kilo Değişim Analizi
+            if (history.length >= 2) {
+                const latest = history[0].weight;
+                const prev = history[1].weight;
+                const diff = (latest - prev).toFixed(1);
+                if (diff < 0) {
+                    feedback.push(`Mükemmel! Son ölçümüne göre **${Math.abs(diff)} kg** verdin.`);
+                } else if (diff > 0) {
+                    feedback.push(`Son ölçümde +${diff} kg artış var. Ödem olabilir, su tüketimini artır.`);
+                }
+            }
+
+            // Su Analizi
+            if (waterAmt < (prof.waterGoal || 3.0) * 0.5) {
+                feedback.push(`Bugün su hedefleninin henüz altındasın (${waterAmt.toFixed(1)} L). Metabolizma için su şart!`);
+            } else {
+                feedback.push(`Su tüketimin harika gidiyor! 💧`);
+            }
+
+            // İlerleme Analizi
+            if (dayProg === 100) {
+                feedback.push(`Gün ${selectedDay} hedeflerinin %100'ünü tamamladın! Şampiyon modu açık 🔥`);
+            } else if (dayProg >= 50) {
+                feedback.push(`Günün yarısından fazlasını tamamladın (%${dayProg}). Harika devam ediyorsun!`);
+            }
+
+            const name = prof.gender === 'male' ? 'Mert' : 'Şampiyon';
+            document.getElementById("aiTipText").innerHTML = feedback.length > 0 
+                ? `${name}, ${feedback.join(" ")}` 
+                : `${name}, Gün ${selectedDay} için hazırlıkların tamam. Adım adım hedefe ilerliyoruz!`;
+        }
+
+        // Metrics & Chart Rendering
         function saveMetric() {
-            const w = document.getElementById("inputWeight").value;
-            const wa = document.getElementById("inputWaist").value;
-            if (!w && !wa) return alert("Lütfen kilo veya bel ölçüsü girin!");
+            const w = parseFloat(document.getElementById("inputWeight").value);
+            const waist = document.getElementById("inputWaist").value || "-";
 
-            const metrics = JSON.parse(localStorage.getItem("user_metrics") || "[]");
-            const dateStr = new Date().toLocaleDateString("tr-TR");
-            metrics.unshift({ date: dateStr, weight: w || "-", waist: wa || "-" });
-            localStorage.setItem("user_metrics", JSON.stringify(metrics));
+            if (!w) return;
+
+            const history = JSON.parse(localStorage.getItem("metrics_history") || "[]");
+            history.unshift({ date: new Date().toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'}), weight: w, waist: waist });
+            localStorage.setItem("metrics_history", JSON.stringify(history));
+
+            // Profildeki kiloyu güncelle
+            const prof = JSON.parse(localStorage.getItem("user_profile") || "{}");
+            prof.weight = w;
+            localStorage.setItem("user_profile", JSON.stringify(prof));
 
             document.getElementById("inputWeight").value = "";
             document.getElementById("inputWaist").value = "";
-            renderMetrics();
+
+            renderChartAndHistory();
+            runAiEngine();
         }
 
-        function renderMetrics() {
-            const list = document.getElementById("historyList");
-            const metrics = JSON.parse(localStorage.getItem("user_metrics") || "[]");
-            if (metrics.length === 0) {
-                list.innerHTML = "Kayıt bulunamadı.";
+        function renderChartAndHistory() {
+            const history = JSON.parse(localStorage.getItem("metrics_history") || "[]");
+            const historyContainer = document.getElementById("historyList");
+
+            if (history.length === 0) {
+                historyContainer.innerHTML = "Kayıt yok.";
                 return;
             }
-            list.innerHTML = metrics.map(m => `
-                <div class="history-item">
-                    <span>📅 ${m.date}</span>
-                    <span>⚖️ ${m.weight} kg | 📏 ${m.waist} cm</span>
+
+            historyContainer.innerHTML = history.map(h => `
+                <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--card-border);">
+                    <span>📅 ${h.date}</span>
+                    <span>⚖️ ${h.weight} kg</span>
+                    <span>📏 Bel: ${h.waist} cm</span>
                 </div>
+            `).join("");
+
+            // SVG Chart Drawing
+            const svg = document.getElementById("weightChart");
+            if (history.length < 2) {
+                svg.innerHTML = `<text x="50%" y="50%" fill="#9ca3af" font-size="10" text-anchor="middle">Grafik için en az 2 kayıt gerekli</text>`;
+                return;
+            }
+
+            const chartData = [...history].reverse().slice(-7); // Son 7 kayıt
+            const weights = chartData.map(d => d.weight);
+            const maxW = Math.max(...weights) + 1;
+            const minW = Math.min(...weights) - 1;
+
+            let points = "";
+            chartData.forEach((d, i) => {
+                const x = (i / (chartData.length - 1)) * 280 + 10;
+                const y = 90 - ((d.weight - minW) / (maxW - minW)) * 80;
+                points += `${x},${y} `;
+            });
+
+            svg.innerHTML = `
+                <polyline fill="none" stroke="#2563eb" stroke-width="3" points="${points}" />
+                ${chartData.map((d, i) => {
+                    const x = (i / (chartData.length - 1)) * 280 + 10;
+                    const y = 90 - ((d.weight - minW) / (maxW - minW)) * 80;
+                    return `<circle cx="${x}" cy="${y}" r="4" fill="#10b981" />`;
+                }).join("")}
+            `;
+        }
+
+        // Dynamic Smart Market List
+        function renderSmartMarketList() {
+            const phase = getPhaseDetails(selectedDay);
+            const container = document.getElementById("marketListContainer");
+
+            const baseList = [
+                `🥩 ${Math.round(1.5 * phase.multiplier)} kg Tavuk Göğsü / Hindi`,
+                `🥚 ${Math.round(2 * phase.multiplier)} Koli Yumurta (30'lu)`,
+                `🧀 1.5 kg Yağsız Lor Peyniri`,
+                `🐟 6 Kutu Ton Balığı`,
+                `🥬 3 Demet Yeşillik (Roka, Maydanoz, Marul)`,
+                `🥜 1 Paket Çiğ Badem / Ceviz İçi`,
+                `🍏 1 Kg Yeşil Elma / Yulaf`
+            ];
+
+            const savedState = JSON.parse(localStorage.getItem(`market_checked_phase_${phase.phase}`) || "{}");
+
+            container.innerHTML = baseList.map((item, idx) => `
+                <label style="display:flex; align-items:center; gap:8px; font-size:11px; color:#cbd5e1; cursor:pointer;">
+                    <input type="checkbox" ${savedState[idx] ? 'checked' : ''} onchange="toggleMarketItem(${phase.phase}, ${idx})">
+                    <span>${item}</span>
+                </label>
             `).join("");
         }
 
-        function renderMarket() {
-            const container = document.getElementById("marketItems");
-            container.innerHTML = marketList.map(item => `<div class="market-item">${item}</div>`).join("");
+        function toggleMarketItem(phase, idx) {
+            const savedState = JSON.parse(localStorage.getItem(`market_checked_phase_${phase}`) || "{}");
+            savedState[idx] = !savedState[idx];
+            localStorage.setItem(`market_checked_phase_${phase}`, JSON.stringify(savedState));
         }
 
-        // Backup & Restore (JSON)
+        // Data Export / Import / Reset
         function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(localStorage));
-            const downloadAnchor = document.createElement('a');
-            downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", `60_gunlik_kocum_yedek_${new Date().toISOString().slice(0,10)}.json`);
-            document.body.appendChild(downloadAnchor);
-            downloadAnchor.click();
-            downloadAnchor.remove();
+            const blob = new Blob([JSON.stringify(localStorage)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = `60gunluk_ai_kocum_yedek_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
         }
 
         function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "application/json";
             input.onchange = e => {
-                const file = e.target.files[0];
                 const reader = new FileReader();
-                reader.readAsText(file, 'UTF-8');
-                reader.onload = readerEvent => {
+                reader.onload = event => {
                     try {
-                        const content = JSON.parse(readerEvent.target.result);
-                        Object.keys(content).forEach(key => {
-                            localStorage.setItem(key, content[key]);
-                        });
+                        const data = JSON.parse(event.target.result);
+                        Object.keys(data).forEach(k => localStorage.setItem(k, data[k]));
                         alert("Veriler başarıyla yüklendi!");
-                        init();
-                    } catch(err) {
-                        alert("Geçersiz dosya formatı!");
-                    }
-                }
-            }
+                        location.reload();
+                    } catch(err) { alert("Geçersiz yedek dosyası!"); }
+                };
+                reader.readAsText(e.target.files[0]);
+            };
             input.click();
         }
 
-        function resetCurrentDay() {
-            if (confirm("Bu günün verilerini sıfırlamak istediğinden emin misin?")) {
-                const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-                activeTasks.forEach(task => {
-                    localStorage.removeItem(`task_${currentDay}_${currentTab}_${task.id}`);
-                });
-                localStorage.setItem("water_amount", "0");
-                updateWaterUI();
-                renderApp();
+        function resetAppData() {
+            if (confirm("TÜM VERİLERİNİZ SIFIRLANACAK! Emin misiniz?")) {
+                localStorage.clear();
+                location.reload();
             }
         }
 
-        init();
+        // Inline Service Worker Registration for Offline PWA
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
+                    self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+                    self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+            }
+        }
+
+        window.onload = initApp;
     </script>
 </body>
 </html>
