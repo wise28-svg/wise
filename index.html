@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60 Günlük AI Koçum</title>
+    <title>60 Günlük AI Koçum Pro</title>
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
     <style>
         :root {
@@ -11,12 +11,10 @@
             --card: #151c2e;
             --card-border: #232d42;
             --accent: #2563eb;
-            --accent-hover: #1d4ed8;
             --text: #f3f4f6;
             --text-dim: #9ca3af;
             --green: #10b981;
             --ai-purple: #8b5cf6;
-            --ai-bg: #1e1b4b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 40px; }
@@ -31,9 +29,11 @@
         .tab-btn { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center; }
         .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
 
-        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 16px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #ddd6fe; position: relative; overflow: hidden; }
-        .ai-badge { display: inline-flex; align-items: center; gap: 4px; background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; }
-        
+        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 16px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #ddd6fe; }
+        .ai-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .ai-badge { background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+        .ai-btn { background: #4c1d95; border: 1px solid #6d28d9; color: #e9d5ff; padding: 3px 8px; border-radius: 8px; font-size: 10px; cursor: pointer; font-weight: 600; }
+
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .stat-val { font-size: 22px; font-weight: 800; color: white; margin: 2px 0; }
@@ -43,22 +43,30 @@
         .water-btn { flex: 1; padding: 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
         .task-list { display: flex; flex-direction: column; gap: 12px; }
-        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: all 0.2s; }
-        .task-card.completed { opacity: 0.45; text-decoration: line-through; filter: grayscale(0.8); }
+        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s; position: relative; }
+        .task-card.locked { opacity: 0.4; pointer-events: none; filter: grayscale(1); }
+        .task-card.completed { opacity: 0.5; text-decoration: line-through; }
         
         .task-header { display: flex; align-items: center; gap: 12px; }
-        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+        .checkbox { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
         .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
         .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 14px; }
         .task-card.completed .checkbox::after { display: block; }
         
         .task-title-group { flex: 1; }
         .task-title { font-size: 14px; font-weight: 700; color: #f3f4f6; }
-        .task-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #242f4d; color: #93c5fd; font-weight: 600; margin-top: 2px; }
-        
+        .task-tags { display: flex; gap: 6px; margin-top: 4px; }
+        .task-tag { font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #242f4d; color: #93c5fd; font-weight: 600; }
+        .task-duration { font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #312e81; color: #c7d2fe; font-weight: 700; }
+
         .task-details { background: #0f1623; border-radius: 10px; padding: 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
         .task-details strong { color: #e5e7eb; }
-        .task-alt { color: #f59e0b; margin-top: 4px; font-size: 10.5px; }
+        .task-sub-info { color: #f59e0b; margin-top: 4px; font-size: 10.5px; }
+
+        /* Timer UI */
+        .timer-box { display: flex; align-items: center; justify-content: space-between; background: #1e293b; padding: 8px 12px; border-radius: 8px; margin-top: 4px; }
+        .timer-val { font-size: 16px; font-weight: 800; color: #38bdf8; font-family: monospace; }
+        .timer-btn { background: #0284c7; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
         .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; margin-top: 24px; display: block; width: 100%; text-align: center; text-decoration: underline; }
     </style>
@@ -68,7 +76,7 @@
     <div class="header">
         <div class="header-title">
             <h1>60 Günlük AI Koçum</h1>
-            <p id="subTitle">Akıllı Takip & Adaptif Program</p>
+            <p id="subTitle">Akıllı & Sıralı Takip Sistemi</p>
         </div>
         <select id="daySelect" class="day-select" onchange="changeDay()">
             <option value="pazartesi">Pazartesi</option>
@@ -82,12 +90,15 @@
     </div>
 
     <div class="tabs">
-        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme Planı</div>
-        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Detaylı Spor</div>
+        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme</div>
+        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Spor (Sıralı Mod)</div>
     </div>
 
     <div class="ai-box">
-        <div class="ai-badge">🤖 AI Koç Tavsiyesi</div>
+        <div class="ai-header">
+            <span class="ai-badge">🤖 AI Koç Tavsiyesi</span>
+            <button class="ai-btn" onclick="generateAiTip()">💡 Yeni AI İpucu Üret</button>
+        </div>
         <div id="aiTip">Yükleniyor...</div>
     </div>
 
@@ -111,139 +122,126 @@
     <button class="reset-btn" onclick="resetCurrentDay()">🔄 Bu Günü Sıfırla</button>
 
     <script>
-        // AI Koç Tavsiyeleri
-        const aiTips = {
-            beslenme: {
-                pazartesi: "Haftaya güçlü bir protein girişi yapıyoruz! Yumurta ve tavuk kas dokunu korurken yağ yakımını maksimumda tutar. Acıktığında bol su tüket.",
-                sali: "Bugün omega-3 ve yüksek protein günü. Ton balığı metabolizmanı hızlandıracak. Yeşilliği bol tutarak mide hacmini doldur.",
-                carsamba: "Sıcak mercimek çorbası ve tavuk kombini sindirimini rahatlatır. Akşam yemeğinden sonra karbonhidratı tamamen kesiyoruz.",
-                persembe: "Sebze ve lor peyniri birleşimi vücuttaki ödemi atmana yardımcı olur. Bugün tuz miktarını biraz kısabilirsin.",
-                cuma: "Cuma enerjisi! Menemen ve ton balığı ile hem lezzetli hem disiplinli bir kapanış yapıyoruz. Tatlı krizine karşı 1 fincan sade kahve iç.",
-                cumartesi: "Hafta sonu temposunda protein dengesini bozma. Meyve öğününü antrenmandan veya yürüyüşten önce tüket.",
-                pazar: "Haftalık detoks ve dinlenme günü. Sindirim sistemini dinlendiriyoruz. Bol su içip yeni haftaya zihnen hazırlan."
-            },
-            spor: {
-                pazartesi: "Bacak ve karın odaklı kuvvet günü. Squat yaparken dizlerinin içe kaçmamasına dikkat et. Topuklarına basarak kalk.",
-                sali: "Kardiyo & Core günü! Koşarken ciğerlerini zorlamayacak tempoda kal. Yanında konuşabilecek hızda koşmak en çok yağı yakar.",
-                carsamba: "Üst vücut & Göğüs odağı. Duvarda/Masada şınav çekerken dirseklerini vücuduna 45 derece açıyla tut, omuzlarını yorma.",
-                persembe: "Yağ yakım kardiyosu ve arka kol! Triceps dips yaparken sırtını sandalyeye yakın tut, yükü tamamen kollara ver.",
-                cuma: "Tüm vücut sıkılaşma günü! Plank duruşunda kalçanı çok yukarı kaldırma, vücudunu bir tahta gibi düz tut.",
-                cumartesi: "Düşük tempo uzun kardiyo günü. Nabzını sabit tutarak 25 dakika tempolu yürü/jog yap. Bel için Superman hareketini unutma.",
-                pazar: "Aktif toparlanma ve esneme günü! Kasların büyüdüğü ve yağ yakımının devam ettiği gün bugündür. Esnemeleri derin yap."
-            }
-        };
-
-        // Detaylı Beslenme Programı (Gramaj, Makro, Alternatif)
-        const dietRoutines = {
-            pazartesi: [
-                { id: "dp1", title: "09:00 - Uyanış & Su", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su (İçine birkaç damla limon sıkabilirsin).", alt: "Alternatif: Sade maden suyu veya ılık yeşil çay." },
-                { id: "dp2", title: "12:30 - Protein Patlaması Öğleni", tag: "~450 Kalori | 40g Protein", details: "3 Tam Haşlanmış Yumurta + 3 Yemek Kaşığı Lor Peyniri + 1 Dilim Tam Buğday/Kepek Ekmek + Salatalık.", alt: "Alternatif: Lor yerine 2 dilim süzme peynir veya 3 yemek kaşığı süzme yoğurt." },
-                { id: "dp3", title: "16:00 - Ara Öğün & Enerji", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık (Yaklaşık 10-12 adet).", alt: "Alternatif: 2 adet ceviz içi veya 1 tatlı kaşığı fıstık ezmesi." },
-                { id: "dp4", title: "19:00 - Ana Akşam Yemeği", tag: "~500 Kalori | 45g Protein", details: "250g Tavuk Göğsü Sote (1 tatlı kaşığı zeytinyağı ile) + Bol Yeşillikli Yağsız Salata + 1 Dilim Ekmek.", alt: "Alternatif: Tavuk yerine 250g ızgara/sote hindi göğsü veya 200g yağsız köfte." }
+        const aiPrompts = {
+            beslenme: [
+                "Metabolizmanı canlı tutmak için protein öğünlerini geciktirme. Tükettiğin her öğün sonrası 1 bardak su ekle.",
+                "Kan şekerini dengede tutmak için lifli sebzelere öncelik ver. Yemek yerken yavaş çiğnemeyi unutma.",
+                "Eğer tatlı krizi yaşarsan 1 fincan sade filtre kahve veya yeşil çay içerek iştahını baskılayabilirsin."
             ],
-            sali: [
-                { id: "ds1", title: "09:00 - Uyanış Su Detoksu", tag: "Hidrasyon", details: "2 Bardak Su. Gün boyu ödem atımını başlatır.", alt: "Alternatif: 1 bardak tarçınlı su." },
-                { id: "ds2", title: "12:30 - Ton Balıklı Salata Öğleni", tag: "~400 Kalori | 38g Protein", details: "2 Kutu Küçük Ton Balığı (Suyu/Yağı süzülmüş) + Bol Göbek, Salatalık, Roka Salatalık.", alt: "Alternatif: Ton balığı yerine 160g haşlanmış / ızgara tavuk." },
-                { id: "ds3", title: "16:00 - Ferahlatıcı Ara Öğün", tag: "~80 Kalori", details: "1 Adet Orta Boy Yeşil Elma veya 2 Adet Çıtır Salatalık.", alt: "Alternatif: 1 kase çilek veya 1 adet kivi." },
-                { id: "ds4", title: "19:00 - Pratik Lorlu Omlet", tag: "~380 Kalori | 32g Protein", details: "3 Yumurta ve 3 Yemek Kaşığı Lor ile Yapılmış Yağsız Omlet + Domates/Biber.", alt: "Alternatif: Yumurtalı menemen veya 200g lorlu pul biberli yoğurt." }
-            ],
-            carsamba: [
-                { id: "dc1", title: "09:00 - Güne Başlangıç Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık sirkeli su." },
-                { id: "dc2", title: "12:30 - Sıcak Mercimek & Lor", tag: "~350 Kalori | 22g Protein", details: "1 Kase Yağsız Mercimek Çorbası + 100g Lor Peynirli Yeşillik Salatası.", alt: "Alternatif: Ezogelin çorbası veya 1 kase sebze çorbası." },
-                { id: "dc3", title: "16:00 - Odaklanma Ara Öğünü", tag: "~180 Kalori", details: "3 Adet Tam Ceviz İçi veya 10 Adet Çiğ Badem.", alt: "Alternatif: 15 adet kavrulmamış kabak çekirdeği." },
-                { id: "dc4", title: "19:00 - Saf Tavuk Göğsü", tag: "~450 Kalori | 50g Protein", details: "250g Haşlanmış veya Baharatlı Tavuk Göğsü + Bol Limonlu Salata.", alt: "Alternatif: 250g fırında yağsız balık (çipura/levrek)." }
-            ],
-            persembe: [
-                { id: "dpe1", title: "09:00 - Sabah Hidrasyonu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Limonlu ve nane yapraklı su." },
-                { id: "dpe2", title: "12:30 - Low-Carb Öğle Menüsü", tag: "~360 Kalori | 35g Protein", details: "3 Haşlanmış Yumurta + 100g Lor Peyniri + Söğüş Biber/Salatalık.", alt: "Alternatif: 150g süzme yoğurt içine 3 haşlanmış yumurta beyazı." },
-                { id: "dpe3", title: "16:00 - Probiyotik Arası", tag: "~100 Kalori", details: "1 Su Bardağı Ayran veya 3 Yemek Kaşığı Ev Yoğurdu.", alt: "Alternatif: 1 bardak kefir." },
-                { id: "dpe4", title: "19:00 - Sebze Sote & Tavuk", tag: "~420 Kalori | 35g Protein", details: "150g Tavuk Göğsü + 1 Tabak Mantar/Kabak Sote (Az zeytinyağlı).", alt: "Alternatif: Tavuklu brokolı/fırın sebze." }
-            ],
-            cuma: [
-                { id: "dcu1", title: "09:00 - Cuma Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Yeşillikli detoks suyu." },
-                { id: "dcu2", title: "12:30 - Omega-3 Yüklemesi", tag: "~380 Kalori | 35g Protein", details: "160g Ton Balığı + Bol Yeşillikli Salata + 1 Dilim Ekmek.", alt: "Alternatif: 200g Izgara Somon veya Mackerell." },
-                { id: "dcu3", title: "16:00 - Tok Tutucu Atıştırmalık", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 adet fındık." },
-                { id: "dcu4", title: "19:00 - Lezzetli Cuma Menemeni", tag: "~420 Kalori | 28g Protein", details: "3 Yumurtalı, Biberli Domatesli Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Lorlu kıymalı yumurta." }
-            ],
-            cumartesi: [
-                { id: "dcm1", title: "09:00 - Hafta Sonu Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden suyu." },
-                { id: "dcm2", title: "12:30 - Keyifli Hafta Sonu Kahvaltısı", tag: "~450 Kalori | 32g Protein", details: "3 Yumurtalı Bol Lorlu Maydanozlu Omlet + 5 Adet Zeytin + 1 Dilim Ekmek.", alt: "Alternatif: Menemen + 2 dilim peynir." },
-                { id: "dcm3", title: "16:00 - Doğal Şeker Yüklemesi", tag: "~100 Kalori", details: "1 Adet Orta Boy Muz veya 1 Adet Şeftali/Elma.", alt: "Alternatif: 1 avuç taze kitle/yaban mersini." },
-                { id: "dcm4", title: "19:00 - Tavuk Izgara & Salata", tag: "~480 Kalori | 48g Protein", details: "250g Izgara Tavuk Pirzola/Göğüs + Bol Salata.", alt: "Alternatif: 250g Izgara Bonfile/Köfte." }
-            ],
-            pazar: [
-                { id: "dpz1", title: "09:00 - Pazar Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık limonlu su." },
-                { id: "dpz2", title: "12:30 - Pazar Kahvaltı Tabağı", tag: "~400 Kalori | 30g Protein", details: "3 Haşlanmış Yumurta + 5 Adet Zeytin + 100g Lor + Yeşillik.", alt: "Alternatif: 2 Yumurtalı sahanda yumurta + Peynir." },
-                { id: "dpz3", title: "16:00 - Pul Biberli Yağ Yakıcı Yoğurt", tag: "~110 Kalori", details: "1 Kase Yoğurt + 1 Çay Kaşığı Pul Biber + Limon Suyu.", alt: "Alternatif: 1 bardak tuzsuz ayran." },
-                { id: "dpz4", title: "19:00 - Hafif Pazar Yemeği", tag: "~320 Kalori | 18g Protein", details: "1 Tabak Mercimek/Nohut Yemeği veya Çorba + Bol Salata.", alt: "Alternatif: Fırınlanmış zeytinyağlı sebze yemeği." }
+            spor: [
+                "Hareketleri acele etmeden, kasındaki gerilimi hissederek yap. Negatif tekrarlarda (inerken) yavaşla.",
+                "Set aralarında 45-60 saniye dinlenmeyi aşma. Nabzı optimum yağ yakım seviyesinde tutuyoruz.",
+                "Sırayı bozmadan ilerle. Her hareket bir sonraki kas grubunu hazırlamak üzere tasarlandı!"
             ]
         };
 
-        // Detaylı Spor Programı (Set, Tekrar, Form İpucu, Hedef Kas)
-        const sportRoutines = {
+        const dietRoutines = {
             pazartesi: [
-                { id: "sp1", title: "1. Isınma - Nabız Yükseltme", tag: "5 Dakika", details: "Yerinde tempolu adım atma / diz çekme. Eklemleri ve kalbi spora hazırlar.", alt: "Form İpucu: Derin nefes alıp ver, kolları aktif salla." },
-                { id: "sp2", title: "2. Sandalye Squat", tag: "3 Set x 12-15 Tekrar", details: "Hedef: Bacak & Kalça. Sandalyenin önüne geç, kalçanı geriye verip sandalyeye hafifçe dokunup kalk.", alt: "Form İpucu: Dizlerin ayak parmak ucunu geçmesin, ağırlığı topuklara ver." },
-                { id: "sp3", title: "3. Duvar Şınavı (Wall Push-up)", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs, Omuz & Triceps. Duvardan 2 adım geride dur, ellerini duvara koyup göğsünü yaklaştırıp it.", alt: "Form İpucu: Vücudunu baştan topuğa kadar ok gibi düz tut." },
-                { id: "sp4", title: "4. Statik Plank", tag: "3 Set x 20-30 Saniye", details: "Hedef: Tum Karın & Bel. Dirsekler zemin üstünde, vücut düz pozisyonda bekle.", alt: "Form İpucu: Karın kaslarını ve kalçanı sürekli sık, aşağı sarkma." },
-                { id: "sp5", title: "5. Soğuma & Bacak Esneme", tag: "5 Dakika", details: "Bacak ve bel kaslarını esneterek nabzı düşür.", alt: "Form İpucu: Her esnemede 15 saniye sabit bekle, zıplama." }
+                { id: "dp1", title: "09:00 - Uyanış & Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su.", alt: "Alternatif: Limonlu Su" },
+                { id: "dp2", title: "12:30 - Protein Öğleni", duration: "20 Dk", tag: "~450 Kalori | 40g Protein", details: "3 Haşlanmış Yumurta + 3 YK Lor + 1 Dilim Tam Buğday Ekmek.", alt: "Alternatif: 2 Dilim Süzme Peynir" },
+                { id: "dp3", title: "16:00 - Ara Öğün", duration: "5 Dk", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık.", alt: "Alternatif: 2 Adet Ceviz" },
+                { id: "dp4", title: "19:00 - Akşam Yemeği", duration: "25 Dk", tag: "~500 Kalori | 45g Protein", details: "250g Tavuk Sote + Bol Salata + 1 Dilim Ekmek.", alt: "Alternatif: 200g Yağsız Köfte" }
             ],
             sali: [
-                { id: "ss1", title: "1. Üst Vücut Isınması", tag: "5 Dakika", details: "Omuz daireleri, kol çevirme ve hafif tempoda yerinde yürüyüş.", alt: "Form İpucu: Omuz eklemlerini iyice ısıt." },
-                { id: "ss2", title: "2. Yağ Yakım Kardiyosu (Interval)", tag: "20 Dakika", details: "2 Dakika Hafif Tempo Jog/Koşu + 2 Dakika Tempolu Yürüyüş (5 Tur tekrarla).", alt: "Form İpucu: Koşarken adımlarını küçük tut, topuk üzerine sert basma." },
-                { id: "ss3", title: "3. Yüksek Açı Şınav (Masa/Sandalye)", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Alt Göğüs & Kol. Ellerini sağlam bir masaya koyarak şınav çek.", alt: "Form İpucu: Masanın kaymayacağından emin ol." },
-                { id: "ss4", title: "4. Mekik / Crunch", tag: "3 Set x 15 Tekrar", details: "Hedef: Üst Karın. Sırtüstü yat, dizleri bük, sadece kürek kemiklerini yerden kaldır.", alt: "Form İpucu: Boynunu çekme, çene ile göğüs arasında bir elma mesafesi bırak." },
-                { id: "ss5", title: "5. Bacak & Bel Soğuması", tag: "5 Dakika", details: "Arka bacak ve bel kaslarını esnet.", alt: "Form İpucu: Derin nefes alarak kasları rahatlat." }
+                { id: "ds1", title: "09:00 - Su Detoksu", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Tarçınlı Su" },
+                { id: "ds2", title: "12:30 - Ton Balıklı Salata", duration: "15 Dk", tag: "~400 Kalori | 38g Protein", details: "2 Kutu Ton Balığı + Bol Yeşillik.", alt: "Alternatif: 160g Haşlanmış Tavuk" },
+                { id: "ds3", title: "16:00 - Meyve Arası", duration: "5 Dk", tag: "~80 Kalori", details: "1 Adet Yeşil Elma.", alt: "Alternatif: 2 Salatalık" },
+                { id: "ds4", title: "19:00 - Lorlu Omlet", duration: "15 Dk", tag: "~380 Kalori | 32g Protein", details: "3 Yumurtalı Lorlu Omlet + Salata.", alt: "Alternatif: Menemen" }
             ],
             carsamba: [
-                { id: "sc1", title: "1. Mobilite Isınması", tag: "5 Dakika", details: "Kalça ve bel dönme hareketleri, yerinde yürüyüş.", alt: "Form İpucu: Eklemleri dairesel yumuşak hareket ettir." },
-                { id: "sc2", title: "2. Sumo Squat (Geniş Açı)", tag: "3 Set x 12 Tekrar", details: "Hedef: İç Bacak & Kalça. Bacakları omuz genişliğinden daha geniş aç, ayak parmakları dışa baksın.", alt: "Form İpucu: Çömelirken dizler ayak parmak yönünü takip etsin." },
-                { id: "sc3", title: "3. Diz Üstü Şınav", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Göğüs & Omuz. Dizler yerde, eller omuz genişliğinde şınav çek.", alt: "Form İpucu: Kalçanı geride bırakma, vücudunla birlikte öne in." },
-                { id: "sc4", title: "4. Yan Plank (Side Plank)", tag: "2 Set x 15-20 Sn (Her Yön)", details: "Hedef: Yan Karın & Bel. Tek dirsek üzerinde yan yatıp kalçayı havaya kaldır.", alt: "Form İpucu: Vücudun yan profilini tamamen düz tut." },
-                { id: "sc5", title: "5. Tüm Vücut Esneme", tag: "5 Dakika", details: "Tüm vücudu rahatlatma esnemesi.", alt: "Form İpucu: Kasları zorlamadan tatlı bir gerilme hisset." }
+                { id: "dc1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Sirkeli Su" },
+                { id: "dc2", title: "12:30 - Mercimek & Lor", duration: "20 Dk", tag: "~350 Kalori", details: "1 Kase Mercimek Çorbası + 100g Lorlu Salata.", alt: "Alternatif: Ezogelin Çorbası" },
+                { id: "dc3", title: "16:00 - Kuruyemiş", duration: "5 Dk", tag: "~180 Kalori", details: "3 Tam Ceviz İçi.", alt: "Alternatif: 10 Badem" },
+                { id: "dc4", title: "19:00 - Tavuk Göğsü", duration: "25 Dk", tag: "~450 Kalori | 50g Protein", details: "250g Haşlanmış/Izgara Tavuk Göğsü + Salata.", alt: "Alternatif: 250g Fırın Balık" }
             ],
             persembe: [
-                { id: "spe1", title: "1. Dinamik Isınma", tag: "5 Dakika", details: "Tempolu yürüyüş ve kol açıp kapama.", alt: "Form İpucu: Nabzı kademeli yükselt." },
-                { id: "spe2", title: "2. Sabit Tempo Kardiyo", tag: "20-25 Dakika", details: "Tempolu sokak yürüyüşü veya evde Stepper / tempolu adım.", alt: "Form İpucu: Yağ yakım nabzında kalmak için terlemeyi hisset ama tıkanma." },
-                { id: "spe3", title: "3. Sandalye Triceps Dips", tag: "3 Set x 10 Tekrar", details: "Hedef: Arka Kol (Sallanan Kısım). Sandalye kenarına ellerini koy, kalçayı aşağı indirip kollarla it.", alt: "Form İpucu: Dirseklerin dışa açılmasına izin verme, arkaya bük." },
-                { id: "spe4", title: "4. Kalça Kaldırma (Glute Bridge)", tag: "3 Set x 15 Tekrar", details: "Hedef: Kalça & Arka Bacak. Sırtüstü yat, dizler bükük. Kalçayı en tepeye kaldırıp 1 sn sık.", alt: "Form İpucu: Tepedeyken kalça kaslarını max seviyede sık." },
-                { id: "spe5", title: "5. Arka Kol & Bacak Esneme", tag: "5 Dakika", details: "Kolları ve bacakları rahatlat.", alt: "Form İpucu: Nefesini yavaşlat." }
+                { id: "dpe1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Nane-Limonlu Su" },
+                { id: "dpe2", title: "12:30 - Low-Carb Menü", duration: "15 Dk", tag: "~360 Kalori", details: "3 Haşlanmış Yumurta + 100g Lor + Salatalık.", alt: "Alternatif: 150g Süzme Yoğurt" },
+                { id: "dpe3", title: "16:00 - Ayran / Yoğurt", duration: "5 Dk", tag: "~100 Kalori", details: "1 Bardak Ayran veya Yoğurt.", alt: "Alternatif: 1 Bardak Kefir" },
+                { id: "dpe4", title: "19:00 - Sebze & Tavuk", duration: "25 Dk", tag: "~420 Kalori", details: "150g Tavuk Göğsü + Mantar/Kabak Sote.", alt: "Alternatif: Tavuklu Brokoli" }
             ],
             cuma: [
-                { id: "scu1", title: "1. Isınma & High Knee", tag: "5 Dakika", details: "Yerinde dizleri kalça hizasına hafifçe çekerek ısın.", alt: "Form İpucu: Zıplamadan tempolu yapabilirsin." },
-                { id: "scu2", title: "2. Yavaş Tempo Squat", tag: "3 Set x 12 Tekrar", details: "Hedef: Bacak Dayanıklılığı. 3 saniyede in, 1 saniyede patlayıcı şekilde kalk.", alt: "Form İpucu: Yavaş inmek kas liflerini maksimum çalıştırır." },
-                { id: "scu3", title: "3. Duvar / Masa Şınavı", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs ve Omuz güçlendirme.", alt: "Form İpucu: Nefes alarak in, nefes vererek kendini it." },
-                { id: "scu4", title: "4. Plank Challenge", tag: "3 Set x 30 Saniye", details: "Hedef: Karın kor gücü.", alt: "Form İpucu: Saniyeleri sayarken düzenli nefes alıp ver." },
-                { id: "scu5", title: "5. Cuma Soğuması", tag: "5 Dakika", details: "Haftalık yorgunluğu atmak için derin esneme.", alt: "Form İpucu: Kasları gevşet." }
+                { id: "dcu1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Detoks Suyu" },
+                { id: "dcu2", title: "12:30 - Ton Balığı", duration: "15 Dk", tag: "~380 Kalori", details: "160g Ton Balıklı Salata + 1 Dilim Ekmek.", alt: "Alternatif: Izgara Somon" },
+                { id: "dcu3", title: "16:00 - Badem", duration: "5 Dk", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 Fındık" },
+                { id: "dcu4", title: "19:00 - Cuma Menemeni", duration: "20 Dk", tag: "~420 Kalori", details: "3 Yumurtalı Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Kıymalı Yumurta" }
             ],
             cumartesi: [
-                { id: "scm1", title: "1. Kardiyo Isınması", tag: "5 Dakika", details: "Hafif tempo yürüyüş.", alt: "Form İpucu: Vücudu harekete hazırla." },
-                { id: "scm2", title: "2. Uzun Düşük Tempo Kardiyo", tag: "25-30 Dakika", details: "Kesintisiz hafif jog veya tempolu yürüyüş.", alt: "Form İpucu: Tamamen yağ yakım odaklı, hızlanmana gerek yok." },
-                { id: "scm3", title: "3. Superman (Sırt & Bel)", tag: "3 Set x 10 Tekrar", details: "Hedef: Bel & Duruş Düzeltme. Yüzüstü yat, göğsünü ve bacaklarını aynı anda 2 cm yukarı kaldır.", alt: "Form İpucu: Tepede 1 saniye bekle ve yavaşça in." },
-                { id: "scm4", title: "4. Sırt & Bel Esneme", tag: "5 Dakika", details: "Kedi-Deve (Cat-Cow) hareketi ile beli rahatlat.", alt: "Form İpucu: Omurgayı esnet." }
+                { id: "dcm1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden Suyu" },
+                { id: "dcm2", title: "12:30 - Hafta Sonu Kahvaltısı", duration: "20 Dk", tag: "~450 Kalori", details: "3 Yumurtalı Lorlu Omlet + 5 Zeytin + 1 Dilim Ekmek.", alt: "Alternatif: Menemen" },
+                { id: "dcm3", title: "16:00 - Meyve", duration: "5 Dk", tag: "~100 Kalori", details: "1 Adet Muz veya Elma.", alt: "Alternatif: 1 Kase Çilek" },
+                { id: "dcm4", title: "19:00 - Tavuk Izgara", duration: "25 Dk", tag: "~480 Kalori", details: "250g Tavuk Pirzola/Göğüs + Salata.", alt: "Alternatif: 250g Bonfile" }
             ],
             pazar: [
-                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", tag: "15 Dakika", details: "Evde veya dışarıda çok hafif adımlama.", alt: "Form İpucu: Amaç yorulmak değil, kan dolaşımını artırmak." },
-                { id: "spz2", title: "2. Tüm Vücut Yoga / Mobility Esneme", tag: "15 Dakika", details: "Omuz, bel, bacak ve kalça kaslarını derinlemesine esnet.", alt: "Form İpucu: Yeni haftaya kas ağrısız girmene yardımcı olur." }
+                { id: "dpz1", title: "09:00 - Su", duration: "2 Dk", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık Limonlu Su" },
+                { id: "dpz2", title: "12:30 - Pazar Kahvaltısı", duration: "20 Dk", tag: "~400 Kalori", details: "3 Haşlanmış Yumurta + Zeytin + Lor + Söğüş.", alt: "Alternatif: Sahanda Yumurta" },
+                { id: "dpz3", title: "16:00 - Pul Biberli Yoğurt", duration: "5 Dk", tag: "~110 Kalori", details: "1 Kase Yoğurt + Pul Biber + Limon.", alt: "Alternatif: 1 Bardak Ayran" },
+                { id: "dpz4", title: "19:00 - Hafif Sebze Yemeği", duration: "20 Dk", tag: "~320 Kalori", details: "1 Tabak Mercimek Yemeği + Salata.", alt: "Alternatif: Zeytinyağlı Sebze" }
+            ]
+        };
+
+        const sportRoutines = {
+            pazartesi: [
+                { id: "sp1", title: "1. Tempolu Isınma", duration: "5 Dk", seconds: 300, tag: "Nabız Hazırlığı", details: "Yerinde tempolu adımlama & kol çevirme.", alt: "Temposu: Nabız koldayken 100-120 bpm hedefle.", rest: "Dinlenme: Yok" },
+                { id: "sp2", title: "2. Sandalye Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Bacak & Kalça", details: "Sandalyeye hafif dokunup topuklardan güç alarak kalk.", alt: "Tempo: 2 sn iniş, 1 sn çıkış.", rest: "Dinlenme: Set araları 45 Sn" },
+                { id: "sp3", title: "3. Duvar Şınavı", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Göğüs & Omuz", details: "Duvardan 2 adım geride eller duvarda şınav.", alt: "Form: Vücudunu tahta gibi düz tut.", rest: "Dinlenme: Set araları 45 Sn" },
+                { id: "sp4", title: "4. Statik Plank", duration: "3 Set x 30 Sn", seconds: 90, tag: "Tüm Karın", details: "Dirsekler üstünde düz duruş.", alt: "Form: Karın kaslarını ve kalçanı sık.", rest: "Dinlenme: Set araları 30 Sn" },
+                { id: "sp5", title: "5. Bacak & Bel Esneme", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Kasları esneterek nabzı düşür.", alt: "Püf Nokta: Derin nefes al.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            sali: [
+                { id: "ss1", title: "1. Eklem Isınması", duration: "5 Dk", seconds: 300, tag: "Mobilite", details: "Omuz daireleri ve hafif yerinde yürüyüş.", alt: "Form: Omuzları dairesel geniş çevir.", rest: "Dinlenme: Yok" },
+                { id: "ss2", title: "2. Yağ Yakım Kardiyosu", duration: "20 Dk", seconds: 1200, tag: "Interval Kardiyo", details: "2 Dk Koşu/Jog + 2 Dk Tempolu Yürüyüş (5 Tur).", alt: "Tempo: Konuşabileceğin hızda kal.", rest: "Dinlenme: Yürüyüş kısımları aktif dinlenmedir." },
+                { id: "ss3", title: "3. Yüksek Açı Şınav", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Alt Göğüs", details: "Eller masa/sandalye kenarında şınav.", alt: "Püf Nokta: Dirsekleri 45 derece geriye bük.", rest: "Dinlenme: 45 Sn" },
+                { id: "ss4", title: "4. Mekik (Crunch)", duration: "3 Set x 15 Tekrar", seconds: 180, tag: "Üst Karın", details: "Sırtüstü dizler bükük, kürek kemiklerini kaldır.", alt: "Form: Çeneyi göğse gömme.", rest: "Dinlenme: 30 Sn" },
+                { id: "ss5", title: "5. Soğuma Esnemesi", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Sırt ve bacak kaslarını rahatlat.", alt: "Nefes: Yavaş ve derin.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            carsamba: [
+                { id: "sc1", title: "1. Mobilite Isınması", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Kalça ve bel dairesel hareketler.", alt: "Form: Belini zorlamadan çevir.", rest: "Dinlenme: Yok" },
+                { id: "sc2", title: "2. Sumo Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "İç Bacak", details: "Geniş duruş, parmak uçları dışa baksın.", alt: "Tempo: Yavaş in, hızlı kalk.", rest: "Dinlenme: 45 Sn" },
+                { id: "sc3", title: "3. Diz Üstü Şınav", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Göğüs & Kol", details: "Dizler yerde şınav.", alt: "Form: Göğsünü yere iyice yaklaştır.", rest: "Dinlenme: 45 Sn" },
+                { id: "sc4", title: "4. Yan Plank", duration: "2 Set x 20 Sn", seconds: 80, tag: "Yan Karın", details: "Dirsek üstünde yan duruş.", alt: "Püf Nokta: Kalçayı aşağı düşürme.", rest: "Dinlenme: 30 Sn" },
+                { id: "sc5", title: "5. Tüm Vücut Esneme", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Tüm kasları gevşet.", alt: "Form: Sabit esne.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            persembe: [
+                { id: "spe1", title: "1. Dinamik Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Tempolu adımlama ve kol sallama.", alt: "Tempo: Nabız kademeli yükselsin.", rest: "Dinlenme: Yok" },
+                { id: "spe2", title: "2. Sabit Tempo Kardiyo", duration: "25 Dk", seconds: 1500, tag: "Kardiyo", details: "Tempolu sokak veya ev içi adımlama.", alt: "Püf Nokta: Duraklamadan temponu koru.", rest: "Dinlenme: Yok" },
+                { id: "spe3", title: "3. Triceps Dips", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Arka Kol", details: "Sandalye kenarında kalçayı indir/kaldır.", alt: "Form: Dirsekleri arkaya bük.", rest: "Dinlenme: 45 Sn" },
+                { id: "spe4", title: "4. Glute Bridge", duration: "3 Set x 15 Tekrar", seconds: 180, tag: "Kalça & Bel", details: "Sırtüstü yatıp kalçayı havaya kaldır.", alt: "Form: Tepede kalçayı 1 sn sık.", rest: "Dinlenme: 30 Sn" },
+                { id: "spe5", title: "5. Soğuma Esnemesi", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Kolları ve bacakları esnet.", alt: "Form: Yavaş nefes.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            cuma: [
+                { id: "scu1", title: "1. High Knee Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Yerinde dizleri yukarı çekerek adımla.", alt: "Tempo: Ritmini koru.", rest: "Dinlenme: Yok" },
+                { id: "scu2", title: "2. Yavaş Tempo Squat", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Bacak", details: "3 saniyede in, 1 saniyede kalk.", alt: "Püf Nokta: Kas içi gerilimi artır.", rest: "Dinlenme: 45 Sn" },
+                { id: "scu3", title: "3. Şınav Varyasyonu", duration: "3 Set x 12 Tekrar", seconds: 180, tag: "Üst Vücut", details: "Masa veya duvar şınavı.", alt: "Form: Gövde ok gibi düz.", rest: "Dinlenme: 45 Sn" },
+                { id: "scu4", title: "4. Plank Challenge", duration: "3 Set x 30 Sn", seconds: 90, tag: "Core Gücü", details: "Düz duruş plank.", alt: "Form: Düzenli nefes al.", rest: "Dinlenme: 30 Sn" },
+                { id: "scu5", title: "5. Cuma Soğuması", duration: "5 Dk", seconds: 300, tag: "Soğuma", details: "Derin kas esnemesi.", alt: "Püf Nokta: Zihni ve kası gevşet.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            cumartesi: [
+                { id: "scm1", title: "1. Hafif Isınma", duration: "5 Dk", seconds: 300, tag: "Isınma", details: "Yavaş tempo adımlama.", alt: "Tempo: Hafif.", rest: "Dinlenme: Yok" },
+                { id: "scm2", title: "2. Uzun Kardiyo", duration: "30 Dk", seconds: 1800, tag: "Yağ Yakımı", details: "Kesintisiz hafif jog veya tempolu yürüyüş.", alt: "Püf Nokta: Temponu sabitle.", rest: "Dinlenme: Yok" },
+                { id: "scm3", title: "3. Superman Hareketi", duration: "3 Set x 10 Tekrar", seconds: 180, tag: "Sırt & Bel", details: "Yüzüstü yatıp göğüs ve bacakları kaldır.", alt: "Form: Tepede 1 sn bekle.", rest: "Dinlenme: 45 Sn" },
+                { id: "scm4", title: "4. Cat-Cow Esneme", duration: "5 Dk", seconds: 300, tag: "Omurga Sağlığı", details: "Kedi-deve duruşu ile omurgayı esnet.", alt: "Nefes: Yuvarlanırken nefes ver.", rest: "Dinlenme: Tamamlandı!" }
+            ],
+            pazar: [
+                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", duration: "15 Dk", seconds: 900, tag: "Kan Dolaşımı", details: "Çok hafif tempoda ev/dışarı yürüyüşü.", alt: "Amaç: Yorulmadan dolaşım sağlamak.", rest: "Dinlenme: Yok" },
+                { id: "spz2", title: "2. Yoga & Derin Esneme", duration: "15 Dk", seconds: 900, tag: "Yenilenme", details: "Tüm vücudu rahatlatma hareketleri.", alt: "Püf Nokta: Kasları yeni haftaya hazırla.", rest: "Dinlenme: Tamamlandı!" }
             ]
         };
 
         let currentDay = "pazartesi";
         let currentTab = "beslenme";
+        let activeTimers = {};
 
-        // Cihazın yerel saatine göre otomatik gün ve sıfırlama
         function checkAutoReset() {
             const now = new Date();
             const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
             const lastDate = localStorage.getItem("last_active_date");
-
-            const dayIndex = now.getDay(); // 0: Pazar, 1: Pazartesi...
+            const dayIndex = now.getDay();
             const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
             
             if (lastDate !== todayStr) {
                 localStorage.setItem("water_amount", "0");
                 localStorage.setItem("last_active_date", todayStr);
-                
                 currentDay = dayKeys[dayIndex];
                 document.getElementById("daySelect").value = currentDay;
             }
@@ -251,7 +249,6 @@
 
         function init() {
             checkAutoReset();
-            
             const now = new Date();
             const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
             currentDay = dayKeys[now.getDay()];
@@ -260,7 +257,6 @@
             renderApp();
             updateWaterUI();
 
-            // Cihaz saatini her 20 saniyede bir kontrol et (gece 00:00 olunca otomatik aksın)
             setInterval(() => {
                 const checkNow = new Date();
                 const checkTodayStr = `${checkNow.getFullYear()}-${checkNow.getMonth() + 1}-${checkNow.getDate()}`;
@@ -270,6 +266,12 @@
                     updateWaterUI();
                 }
             }, 20000);
+        }
+
+        function generateAiTip() {
+            const tips = aiPrompts[currentTab];
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            document.getElementById("aiTip").innerText = randomTip;
         }
 
         function changeDay() {
@@ -285,754 +287,56 @@
         }
 
         function renderApp() {
-            // AI İpucunu Güncelle
-            document.getElementById("aiTip").innerText = aiTips[currentTab][currentDay];
-
-            // Görev Listesini Güncelle
+            generateAiTip();
             const listEl = document.getElementById("taskList");
             listEl.innerHTML = "";
             
             const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
             let completedCount = 0;
+            let previousCompleted = true; // İlk hareket açık başlar
 
-            activeTasks.forEach(task => {
+            activeTasks.forEach((task, index) => {
                 const key = `task_${currentDay}_${currentTab}_${task.id}`;
                 const isDone = localStorage.getItem(key) === "true";
                 if (isDone) completedCount++;
 
+                // Spor sekmesinde sıralı açılma kuralı
+                const isLocked = currentTab === 'spor' && !previousCompleted && !isDone;
+
                 const card = document.createElement("div");
-                card.className = `task-card ${isDone ? 'completed' : ''}`;
-                card.onclick = () => toggleTask(key);
-                card.innerHTML = `
-                    <div class="task-header">
-                        <div class="checkbox"></div>
-                        <div class="task-title-group">
-                            <div class="task-title">${task.title}</div>
-                            <span class="task-tag">${task.tag}</span>
-                        </div>
-                    </div>
-                    <div class="task-details">
-                        <strong>Detay:</strong> ${task.details}
-                        <div class="task-alt">💡 <strong>${currentTab === 'beslenme' ? 'Alternatif' : 'Püf Nokta'}:</strong> ${task.alt}</div>
-                    </div>
-                `;
-                listEl.appendChild(card);
-            });
-
-            const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
-            document.getElementById("progressPct").innerText = `%${pct}`;
-        }
-
-        function toggleTask(key) {
-            const val = localStorage.getItem(key) === "true";
-            localStorage.setItem(key, !val);
-            renderApp();
-        }
-
-        function addWater(amount) {
-            let curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            curr = Math.min(4.0, curr + amount);
-            localStorage.setItem("water_amount", curr.toFixed(1));
-            updateWaterUI();
-        }
-
-        function updateWaterUI() {
-            const curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            document.getElementById("waterVal").innerText = `${curr.toFixed(1)} / 4.0 L`;
-        }
-
-        function resetCurrentDay() {
-            if (confirm("Bu günün verilerini sıfırlamak istiyor musun?")) {
-                const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-                activeTasks.forEach(task => {
-                    localStorage.removeItem(`task_${currentDay}_${currentTab}_${task.id}`);
-                });
-                localStorage.setItem("water_amount", "0");
-                updateWaterUI();
-                renderApp();
-            }
-        }
-
-        init();
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60 Günlük AI Koçum</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
-    <style>
-        :root {
-            --bg: #0b0f19;
-            --card: #151c2e;
-            --card-border: #232d42;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --text: #f3f4f6;
-            --text-dim: #9ca3af;
-            --green: #10b981;
-            --ai-purple: #8b5cf6;
-            --ai-bg: #1e1b4b;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 40px; }
-        
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; margin-top: 10px; }
-        .header-title h1 { font-size: 20px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header-title p { font-size: 11px; color: var(--text-dim); }
-
-        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 10px 12px; border-radius: 12px; font-weight: 600; font-size: 13px; outline: none; cursor: pointer; }
-
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-btn { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center; }
-        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 16px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #ddd6fe; position: relative; overflow: hidden; }
-        .ai-badge { display: inline-flex; align-items: center; gap: 4px; background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; }
-        
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .stat-val { font-size: 22px; font-weight: 800; color: white; margin: 2px 0; }
-        .stat-lbl { font-size: 11px; color: var(--text-dim); }
-
-        .water-btn-group { display: flex; gap: 6px; width: 100%; margin-top: 8px; }
-        .water-btn { flex: 1; padding: 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
-
-        .task-list { display: flex; flex-direction: column; gap: 12px; }
-        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: all 0.2s; }
-        .task-card.completed { opacity: 0.45; text-decoration: line-through; filter: grayscale(0.8); }
-        
-        .task-header { display: flex; align-items: center; gap: 12px; }
-        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-        .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
-        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 14px; }
-        .task-card.completed .checkbox::after { display: block; }
-        
-        .task-title-group { flex: 1; }
-        .task-title { font-size: 14px; font-weight: 700; color: #f3f4f6; }
-        .task-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #242f4d; color: #93c5fd; font-weight: 600; margin-top: 2px; }
-        
-        .task-details { background: #0f1623; border-radius: 10px; padding: 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
-        .task-details strong { color: #e5e7eb; }
-        .task-alt { color: #f59e0b; margin-top: 4px; font-size: 10.5px; }
-
-        .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; margin-top: 24px; display: block; width: 100%; text-align: center; text-decoration: underline; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <div class="header-title">
-            <h1>60 Günlük AI Koçum</h1>
-            <p id="subTitle">Akıllı Takip & Adaptif Program</p>
-        </div>
-        <select id="daySelect" class="day-select" onchange="changeDay()">
-            <option value="pazartesi">Pazartesi</option>
-            <option value="sali">Salı</option>
-            <option value="carsamba">Çarşamba</option>
-            <option value="persembe">Perşembe</option>
-            <option value="cuma">Cuma</option>
-            <option value="cumartesi">Cumartesi</option>
-            <option value="pazar">Pazar</option>
-        </select>
-    </div>
-
-    <div class="tabs">
-        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme Planı</div>
-        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Detaylı Spor</div>
-    </div>
-
-    <div class="ai-box">
-        <div class="ai-badge">🤖 AI Koç Tavsiyesi</div>
-        <div id="aiTip">Yükleniyor...</div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-val" id="progressPct">%0</div>
-            <div class="stat-lbl">Tamamlanan İlerleme</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Hedefi 💧</div>
-            <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
-            <div class="water-btn-group">
-                <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
-                <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="task-list" id="taskList"></div>
-
-    <button class="reset-btn" onclick="resetCurrentDay()">🔄 Bu Günü Sıfırla</button>
-
-    <script>
-        // AI Koç Tavsiyeleri
-        const aiTips = {
-            beslenme: {
-                pazartesi: "Haftaya güçlü bir protein girişi yapıyoruz! Yumurta ve tavuk kas dokunu korurken yağ yakımını maksimumda tutar. Acıktığında bol su tüket.",
-                sali: "Bugün omega-3 ve yüksek protein günü. Ton balığı metabolizmanı hızlandıracak. Yeşilliği bol tutarak mide hacmini doldur.",
-                carsamba: "Sıcak mercimek çorbası ve tavuk kombini sindirimini rahatlatır. Akşam yemeğinden sonra karbonhidratı tamamen kesiyoruz.",
-                persembe: "Sebze ve lor peyniri birleşimi vücuttaki ödemi atmana yardımcı olur. Bugün tuz miktarını biraz kısabilirsin.",
-                cuma: "Cuma enerjisi! Menemen ve ton balığı ile hem lezzetli hem disiplinli bir kapanış yapıyoruz. Tatlı krizine karşı 1 fincan sade kahve iç.",
-                cumartesi: "Hafta sonu temposunda protein dengesini bozma. Meyve öğününü antrenmandan veya yürüyüşten önce tüket.",
-                pazar: "Haftalık detoks ve dinlenme günü. Sindirim sistemini dinlendiriyoruz. Bol su içip yeni haftaya zihnen hazırlan."
-            },
-            spor: {
-                pazartesi: "Bacak ve karın odaklı kuvvet günü. Squat yaparken dizlerinin içe kaçmamasına dikkat et. Topuklarına basarak kalk.",
-                sali: "Kardiyo & Core günü! Koşarken ciğerlerini zorlamayacak tempoda kal. Yanında konuşabilecek hızda koşmak en çok yağı yakar.",
-                carsamba: "Üst vücut & Göğüs odağı. Duvarda/Masada şınav çekerken dirseklerini vücuduna 45 derece açıyla tut, omuzlarını yorma.",
-                persembe: "Yağ yakım kardiyosu ve arka kol! Triceps dips yaparken sırtını sandalyeye yakın tut, yükü tamamen kollara ver.",
-                cuma: "Tüm vücut sıkılaşma günü! Plank duruşunda kalçanı çok yukarı kaldırma, vücudunu bir tahta gibi düz tut.",
-                cumartesi: "Düşük tempo uzun kardiyo günü. Nabzını sabit tutarak 25 dakika tempolu yürü/jog yap. Bel için Superman hareketini unutma.",
-                pazar: "Aktif toparlanma ve esneme günü! Kasların büyüdüğü ve yağ yakımının devam ettiği gün bugündür. Esnemeleri derin yap."
-            }
-        };
-
-        // Detaylı Beslenme Programı (Gramaj, Makro, Alternatif)
-        const dietRoutines = {
-            pazartesi: [
-                { id: "dp1", title: "09:00 - Uyanış & Su", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su (İçine birkaç damla limon sıkabilirsin).", alt: "Alternatif: Sade maden suyu veya ılık yeşil çay." },
-                { id: "dp2", title: "12:30 - Protein Patlaması Öğleni", tag: "~450 Kalori | 40g Protein", details: "3 Tam Haşlanmış Yumurta + 3 Yemek Kaşığı Lor Peyniri + 1 Dilim Tam Buğday/Kepek Ekmek + Salatalık.", alt: "Alternatif: Lor yerine 2 dilim süzme peynir veya 3 yemek kaşığı süzme yoğurt." },
-                { id: "dp3", title: "16:00 - Ara Öğün & Enerji", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık (Yaklaşık 10-12 adet).", alt: "Alternatif: 2 adet ceviz içi veya 1 tatlı kaşığı fıstık ezmesi." },
-                { id: "dp4", title: "19:00 - Ana Akşam Yemeği", tag: "~500 Kalori | 45g Protein", details: "250g Tavuk Göğsü Sote (1 tatlı kaşığı zeytinyağı ile) + Bol Yeşillikli Yağsız Salata + 1 Dilim Ekmek.", alt: "Alternatif: Tavuk yerine 250g ızgara/sote hindi göğsü veya 200g yağsız köfte." }
-            ],
-            sali: [
-                { id: "ds1", title: "09:00 - Uyanış Su Detoksu", tag: "Hidrasyon", details: "2 Bardak Su. Gün boyu ödem atımını başlatır.", alt: "Alternatif: 1 bardak tarçınlı su." },
-                { id: "ds2", title: "12:30 - Ton Balıklı Salata Öğleni", tag: "~400 Kalori | 38g Protein", details: "2 Kutu Küçük Ton Balığı (Suyu/Yağı süzülmüş) + Bol Göbek, Salatalık, Roka Salatalık.", alt: "Alternatif: Ton balığı yerine 160g haşlanmış / ızgara tavuk." },
-                { id: "ds3", title: "16:00 - Ferahlatıcı Ara Öğün", tag: "~80 Kalori", details: "1 Adet Orta Boy Yeşil Elma veya 2 Adet Çıtır Salatalık.", alt: "Alternatif: 1 kase çilek veya 1 adet kivi." },
-                { id: "ds4", title: "19:00 - Pratik Lorlu Omlet", tag: "~380 Kalori | 32g Protein", details: "3 Yumurta ve 3 Yemek Kaşığı Lor ile Yapılmış Yağsız Omlet + Domates/Biber.", alt: "Alternatif: Yumurtalı menemen veya 200g lorlu pul biberli yoğurt." }
-            ],
-            carsamba: [
-                { id: "dc1", title: "09:00 - Güne Başlangıç Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık sirkeli su." },
-                { id: "dc2", title: "12:30 - Sıcak Mercimek & Lor", tag: "~350 Kalori | 22g Protein", details: "1 Kase Yağsız Mercimek Çorbası + 100g Lor Peynirli Yeşillik Salatası.", alt: "Alternatif: Ezogelin çorbası veya 1 kase sebze çorbası." },
-                { id: "dc3", title: "16:00 - Odaklanma Ara Öğünü", tag: "~180 Kalori", details: "3 Adet Tam Ceviz İçi veya 10 Adet Çiğ Badem.", alt: "Alternatif: 15 adet kavrulmamış kabak çekirdeği." },
-                { id: "dc4", title: "19:00 - Saf Tavuk Göğsü", tag: "~450 Kalori | 50g Protein", details: "250g Haşlanmış veya Baharatlı Tavuk Göğsü + Bol Limonlu Salata.", alt: "Alternatif: 250g fırında yağsız balık (çipura/levrek)." }
-            ],
-            persembe: [
-                { id: "dpe1", title: "09:00 - Sabah Hidrasyonu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Limonlu ve nane yapraklı su." },
-                { id: "dpe2", title: "12:30 - Low-Carb Öğle Menüsü", tag: "~360 Kalori | 35g Protein", details: "3 Haşlanmış Yumurta + 100g Lor Peyniri + Söğüş Biber/Salatalık.", alt: "Alternatif: 150g süzme yoğurt içine 3 haşlanmış yumurta beyazı." },
-                { id: "dpe3", title: "16:00 - Probiyotik Arası", tag: "~100 Kalori", details: "1 Su Bardağı Ayran veya 3 Yemek Kaşığı Ev Yoğurdu.", alt: "Alternatif: 1 bardak kefir." },
-                { id: "dpe4", title: "19:00 - Sebze Sote & Tavuk", tag: "~420 Kalori | 35g Protein", details: "150g Tavuk Göğsü + 1 Tabak Mantar/Kabak Sote (Az zeytinyağlı).", alt: "Alternatif: Tavuklu brokolı/fırın sebze." }
-            ],
-            cuma: [
-                { id: "dcu1", title: "09:00 - Cuma Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Yeşillikli detoks suyu." },
-                { id: "dcu2", title: "12:30 - Omega-3 Yüklemesi", tag: "~380 Kalori | 35g Protein", details: "160g Ton Balığı + Bol Yeşillikli Salata + 1 Dilim Ekmek.", alt: "Alternatif: 200g Izgara Somon veya Mackerell." },
-                { id: "dcu3", title: "16:00 - Tok Tutucu Atıştırmalık", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 adet fındık." },
-                { id: "dcu4", title: "19:00 - Lezzetli Cuma Menemeni", tag: "~420 Kalori | 28g Protein", details: "3 Yumurtalı, Biberli Domatesli Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Lorlu kıymalı yumurta." }
-            ],
-            cumartesi: [
-                { id: "dcm1", title: "09:00 - Hafta Sonu Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden suyu." },
-                { id: "dcm2", title: "12:30 - Keyifli Hafta Sonu Kahvaltısı", tag: "~450 Kalori | 32g Protein", details: "3 Yumurtalı Bol Lorlu Maydanozlu Omlet + 5 Adet Zeytin + 1 Dilim Ekmek.", alt: "Alternatif: Menemen + 2 dilim peynir." },
-                { id: "dcm3", title: "16:00 - Doğal Şeker Yüklemesi", tag: "~100 Kalori", details: "1 Adet Orta Boy Muz veya 1 Adet Şeftali/Elma.", alt: "Alternatif: 1 avuç taze kitle/yaban mersini." },
-                { id: "dcm4", title: "19:00 - Tavuk Izgara & Salata", tag: "~480 Kalori | 48g Protein", details: "250g Izgara Tavuk Pirzola/Göğüs + Bol Salata.", alt: "Alternatif: 250g Izgara Bonfile/Köfte." }
-            ],
-            pazar: [
-                { id: "dpz1", title: "09:00 - Pazar Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık limonlu su." },
-                { id: "dpz2", title: "12:30 - Pazar Kahvaltı Tabağı", tag: "~400 Kalori | 30g Protein", details: "3 Haşlanmış Yumurta + 5 Adet Zeytin + 100g Lor + Yeşillik.", alt: "Alternatif: 2 Yumurtalı sahanda yumurta + Peynir." },
-                { id: "dpz3", title: "16:00 - Pul Biberli Yağ Yakıcı Yoğurt", tag: "~110 Kalori", details: "1 Kase Yoğurt + 1 Çay Kaşığı Pul Biber + Limon Suyu.", alt: "Alternatif: 1 bardak tuzsuz ayran." },
-                { id: "dpz4", title: "19:00 - Hafif Pazar Yemeği", tag: "~320 Kalori | 18g Protein", details: "1 Tabak Mercimek/Nohut Yemeği veya Çorba + Bol Salata.", alt: "Alternatif: Fırınlanmış zeytinyağlı sebze yemeği." }
-            ]
-        };
-
-        // Detaylı Spor Programı (Set, Tekrar, Form İpucu, Hedef Kas)
-        const sportRoutines = {
-            pazartesi: [
-                { id: "sp1", title: "1. Isınma - Nabız Yükseltme", tag: "5 Dakika", details: "Yerinde tempolu adım atma / diz çekme. Eklemleri ve kalbi spora hazırlar.", alt: "Form İpucu: Derin nefes alıp ver, kolları aktif salla." },
-                { id: "sp2", title: "2. Sandalye Squat", tag: "3 Set x 12-15 Tekrar", details: "Hedef: Bacak & Kalça. Sandalyenin önüne geç, kalçanı geriye verip sandalyeye hafifçe dokunup kalk.", alt: "Form İpucu: Dizlerin ayak parmak ucunu geçmesin, ağırlığı topuklara ver." },
-                { id: "sp3", title: "3. Duvar Şınavı (Wall Push-up)", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs, Omuz & Triceps. Duvardan 2 adım geride dur, ellerini duvara koyup göğsünü yaklaştırıp it.", alt: "Form İpucu: Vücudunu baştan topuğa kadar ok gibi düz tut." },
-                { id: "sp4", title: "4. Statik Plank", tag: "3 Set x 20-30 Saniye", details: "Hedef: Tum Karın & Bel. Dirsekler zemin üstünde, vücut düz pozisyonda bekle.", alt: "Form İpucu: Karın kaslarını ve kalçanı sürekli sık, aşağı sarkma." },
-                { id: "sp5", title: "5. Soğuma & Bacak Esneme", tag: "5 Dakika", details: "Bacak ve bel kaslarını esneterek nabzı düşür.", alt: "Form İpucu: Her esnemede 15 saniye sabit bekle, zıplama." }
-            ],
-            sali: [
-                { id: "ss1", title: "1. Üst Vücut Isınması", tag: "5 Dakika", details: "Omuz daireleri, kol çevirme ve hafif tempoda yerinde yürüyüş.", alt: "Form İpucu: Omuz eklemlerini iyice ısıt." },
-                { id: "ss2", title: "2. Yağ Yakım Kardiyosu (Interval)", tag: "20 Dakika", details: "2 Dakika Hafif Tempo Jog/Koşu + 2 Dakika Tempolu Yürüyüş (5 Tur tekrarla).", alt: "Form İpucu: Koşarken adımlarını küçük tut, topuk üzerine sert basma." },
-                { id: "ss3", title: "3. Yüksek Açı Şınav (Masa/Sandalye)", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Alt Göğüs & Kol. Ellerini sağlam bir masaya koyarak şınav çek.", alt: "Form İpucu: Masanın kaymayacağından emin ol." },
-                { id: "ss4", title: "4. Mekik / Crunch", tag: "3 Set x 15 Tekrar", details: "Hedef: Üst Karın. Sırtüstü yat, dizleri bük, sadece kürek kemiklerini yerden kaldır.", alt: "Form İpucu: Boynunu çekme, çene ile göğüs arasında bir elma mesafesi bırak." },
-                { id: "ss5", title: "5. Bacak & Bel Soğuması", tag: "5 Dakika", details: "Arka bacak ve bel kaslarını esnet.", alt: "Form İpucu: Derin nefes alarak kasları rahatlat." }
-            ],
-            carsamba: [
-                { id: "sc1", title: "1. Mobilite Isınması", tag: "5 Dakika", details: "Kalça ve bel dönme hareketleri, yerinde yürüyüş.", alt: "Form İpucu: Eklemleri dairesel yumuşak hareket ettir." },
-                { id: "sc2", title: "2. Sumo Squat (Geniş Açı)", tag: "3 Set x 12 Tekrar", details: "Hedef: İç Bacak & Kalça. Bacakları omuz genişliğinden daha geniş aç, ayak parmakları dışa baksın.", alt: "Form İpucu: Çömelirken dizler ayak parmak yönünü takip etsin." },
-                { id: "sc3", title: "3. Diz Üstü Şınav", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Göğüs & Omuz. Dizler yerde, eller omuz genişliğinde şınav çek.", alt: "Form İpucu: Kalçanı geride bırakma, vücudunla birlikte öne in." },
-                { id: "sc4", title: "4. Yan Plank (Side Plank)", tag: "2 Set x 15-20 Sn (Her Yön)", details: "Hedef: Yan Karın & Bel. Tek dirsek üzerinde yan yatıp kalçayı havaya kaldır.", alt: "Form İpucu: Vücudun yan profilini tamamen düz tut." },
-                { id: "sc5", title: "5. Tüm Vücut Esneme", tag: "5 Dakika", details: "Tüm vücudu rahatlatma esnemesi.", alt: "Form İpucu: Kasları zorlamadan tatlı bir gerilme hisset." }
-            ],
-            persembe: [
-                { id: "spe1", title: "1. Dinamik Isınma", tag: "5 Dakika", details: "Tempolu yürüyüş ve kol açıp kapama.", alt: "Form İpucu: Nabzı kademeli yükselt." },
-                { id: "spe2", title: "2. Sabit Tempo Kardiyo", tag: "20-25 Dakika", details: "Tempolu sokak yürüyüşü veya evde Stepper / tempolu adım.", alt: "Form İpucu: Yağ yakım nabzında kalmak için terlemeyi hisset ama tıkanma." },
-                { id: "spe3", title: "3. Sandalye Triceps Dips", tag: "3 Set x 10 Tekrar", details: "Hedef: Arka Kol (Sallanan Kısım). Sandalye kenarına ellerini koy, kalçayı aşağı indirip kollarla it.", alt: "Form İpucu: Dirseklerin dışa açılmasına izin verme, arkaya bük." },
-                { id: "spe4", title: "4. Kalça Kaldırma (Glute Bridge)", tag: "3 Set x 15 Tekrar", details: "Hedef: Kalça & Arka Bacak. Sırtüstü yat, dizler bükük. Kalçayı en tepeye kaldırıp 1 sn sık.", alt: "Form İpucu: Tepedeyken kalça kaslarını max seviyede sık." },
-                { id: "spe5", title: "5. Arka Kol & Bacak Esneme", tag: "5 Dakika", details: "Kolları ve bacakları rahatlat.", alt: "Form İpucu: Nefesini yavaşlat." }
-            ],
-            cuma: [
-                { id: "scu1", title: "1. Isınma & High Knee", tag: "5 Dakika", details: "Yerinde dizleri kalça hizasına hafifçe çekerek ısın.", alt: "Form İpucu: Zıplamadan tempolu yapabilirsin." },
-                { id: "scu2", title: "2. Yavaş Tempo Squat", tag: "3 Set x 12 Tekrar", details: "Hedef: Bacak Dayanıklılığı. 3 saniyede in, 1 saniyede patlayıcı şekilde kalk.", alt: "Form İpucu: Yavaş inmek kas liflerini maksimum çalıştırır." },
-                { id: "scu3", title: "3. Duvar / Masa Şınavı", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs ve Omuz güçlendirme.", alt: "Form İpucu: Nefes alarak in, nefes vererek kendini it." },
-                { id: "scu4", title: "4. Plank Challenge", tag: "3 Set x 30 Saniye", details: "Hedef: Karın kor gücü.", alt: "Form İpucu: Saniyeleri sayarken düzenli nefes alıp ver." },
-                { id: "scu5", title: "5. Cuma Soğuması", tag: "5 Dakika", details: "Haftalık yorgunluğu atmak için derin esneme.", alt: "Form İpucu: Kasları gevşet." }
-            ],
-            cumartesi: [
-                { id: "scm1", title: "1. Kardiyo Isınması", tag: "5 Dakika", details: "Hafif tempo yürüyüş.", alt: "Form İpucu: Vücudu harekete hazırla." },
-                { id: "scm2", title: "2. Uzun Düşük Tempo Kardiyo", tag: "25-30 Dakika", details: "Kesintisiz hafif jog veya tempolu yürüyüş.", alt: "Form İpucu: Tamamen yağ yakım odaklı, hızlanmana gerek yok." },
-                { id: "scm3", title: "3. Superman (Sırt & Bel)", tag: "3 Set x 10 Tekrar", details: "Hedef: Bel & Duruş Düzeltme. Yüzüstü yat, göğsünü ve bacaklarını aynı anda 2 cm yukarı kaldır.", alt: "Form İpucu: Tepede 1 saniye bekle ve yavaşça in." },
-                { id: "scm4", title: "4. Sırt & Bel Esneme", tag: "5 Dakika", details: "Kedi-Deve (Cat-Cow) hareketi ile beli rahatlat.", alt: "Form İpucu: Omurgayı esnet." }
-            ],
-            pazar: [
-                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", tag: "15 Dakika", details: "Evde veya dışarıda çok hafif adımlama.", alt: "Form İpucu: Amaç yorulmak değil, kan dolaşımını artırmak." },
-                { id: "spz2", title: "2. Tüm Vücut Yoga / Mobility Esneme", tag: "15 Dakika", details: "Omuz, bel, bacak ve kalça kaslarını derinlemesine esnet.", alt: "Form İpucu: Yeni haftaya kas ağrısız girmene yardımcı olur." }
-            ]
-        };
-
-        let currentDay = "pazartesi";
-        let currentTab = "beslenme";
-
-        // Cihazın yerel saatine göre otomatik gün ve sıfırlama
-        function checkAutoReset() {
-            const now = new Date();
-            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-            const lastDate = localStorage.getItem("last_active_date");
-
-            const dayIndex = now.getDay(); // 0: Pazar, 1: Pazartesi...
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
-            
-            if (lastDate !== todayStr) {
-                localStorage.setItem("water_amount", "0");
-                localStorage.setItem("last_active_date", todayStr);
+                card.className = `task-card ${isDone ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
                 
-                currentDay = dayKeys[dayIndex];
-                document.getElementById("daySelect").value = currentDay;
-            }
-        }
-
-        function init() {
-            checkAutoReset();
-            
-            const now = new Date();
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
-            currentDay = dayKeys[now.getDay()];
-            document.getElementById("daySelect").value = currentDay;
-
-            renderApp();
-            updateWaterUI();
-
-            // Cihaz saatini her 20 saniyede bir kontrol et (gece 00:00 olunca otomatik aksın)
-            setInterval(() => {
-                const checkNow = new Date();
-                const checkTodayStr = `${checkNow.getFullYear()}-${checkNow.getMonth() + 1}-${checkNow.getDate()}`;
-                if (localStorage.getItem("last_active_date") !== checkTodayStr) {
-                    checkAutoReset();
-                    renderApp();
-                    updateWaterUI();
+                let timerHtml = "";
+                if (currentTab === 'spor' && task.seconds) {
+                    timerHtml = `
+                        <div class="timer-box">
+                            <span class="timer-val" id="timer_${task.id}">${formatTime(task.seconds)}</span>
+                            <button class="timer-btn" onclick="event.stopPropagation(); startTimer('${task.id}', ${task.seconds})">▶️ Kronometre Başlat</button>
+                        </div>
+                    `;
                 }
-            }, 20000);
-        }
 
-        function changeDay() {
-            currentDay = document.getElementById("daySelect").value;
-            renderApp();
-        }
-
-        function switchTab(tab) {
-            currentTab = tab;
-            document.getElementById("tabBeslenme").classList.toggle("active", tab === 'beslenme');
-            document.getElementById("tabSpor").classList.toggle("active", tab === 'spor');
-            renderApp();
-        }
-
-        function renderApp() {
-            // AI İpucunu Güncelle
-            document.getElementById("aiTip").innerText = aiTips[currentTab][currentDay];
-
-            // Görev Listesini Güncelle
-            const listEl = document.getElementById("taskList");
-            listEl.innerHTML = "";
-            
-            const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-            let completedCount = 0;
-
-            activeTasks.forEach(task => {
-                const key = `task_${currentDay}_${currentTab}_${task.id}`;
-                const isDone = localStorage.getItem(key) === "true";
-                if (isDone) completedCount++;
-
-                const card = document.createElement("div");
-                card.className = `task-card ${isDone ? 'completed' : ''}`;
-                card.onclick = () => toggleTask(key);
                 card.innerHTML = `
-                    <div class="task-header">
+                    <div class="task-header" onclick="toggleTask('${key}')">
                         <div class="checkbox"></div>
                         <div class="task-title-group">
-                            <div class="task-title">${task.title}</div>
-                            <span class="task-tag">${task.tag}</span>
+                            <div class="task-title">${isLocked ? '🔒 ' : ''}${task.title}</div>
+                            <div class="task-tags">
+                                <span class="task-tag">${task.tag}</span>
+                                <span class="task-duration">⏱️ ${task.duration}</span>
+                            </div>
                         </div>
                     </div>
                     <div class="task-details">
-                        <strong>Detay:</strong> ${task.details}
-                        <div class="task-alt">💡 <strong>${currentTab === 'beslenme' ? 'Alternatif' : 'Püf Nokta'}:</strong> ${task.alt}</div>
+                        <strong>Ayrıntı:</strong> ${task.details}<br>
+                        <div class="task-sub-info">💡 <strong>Püf Nokta / Alternatif:</strong> ${task.alt}</div>
+                        ${task.rest ? `<div style="color:#60a5fa; margin-top:2px;">🔄 <strong>Dinlenme:</strong> ${task.rest}</div>` : ''}
                     </div>
+                    ${timerHtml}
                 `;
-                listEl.appendChild(card);
-            });
-
-            const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
-            document.getElementById("progressPct").innerText = `%${pct}`;
-        }
-
-        function toggleTask(key) {
-            const val = localStorage.getItem(key) === "true";
-            localStorage.setItem(key, !val);
-            renderApp();
-        }
-
-        function addWater(amount) {
-            let curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            curr = Math.min(4.0, curr + amount);
-            localStorage.setItem("water_amount", curr.toFixed(1));
-            updateWaterUI();
-        }
-
-        function updateWaterUI() {
-            const curr = parseFloat(localStorage.getItem("water_amount") || "0");
-            document.getElementById("waterVal").innerText = `${curr.toFixed(1)} / 4.0 L`;
-        }
-
-        function resetCurrentDay() {
-            if (confirm("Bu günün verilerini sıfırlamak istiyor musun?")) {
-                const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-                activeTasks.forEach(task => {
-                    localStorage.removeItem(`task_${currentDay}_${currentTab}_${task.id}`);
-                });
-                localStorage.setItem("water_amount", "0");
-                updateWaterUI();
-                renderApp();
-            }
-        }
-
-        init();
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60 Günlük AI Koçum</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBBSSBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBEdW5BSSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
-    <style>
-        :root {
-            --bg: #0b0f19;
-            --card: #151c2e;
-            --card-border: #232d42;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --text: #f3f4f6;
-            --text-dim: #9ca3af;
-            --green: #10b981;
-            --ai-purple: #8b5cf6;
-            --ai-bg: #1e1b4b;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 40px; }
-        
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; margin-top: 10px; }
-        .header-title h1 { font-size: 20px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .header-title p { font-size: 11px; color: var(--text-dim); }
-
-        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 10px 12px; border-radius: 12px; font-weight: 600; font-size: 13px; outline: none; cursor: pointer; }
-
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-btn { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; text-align: center; }
-        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
-
-        .ai-box { background: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%); border: 1px solid #5b21b6; border-radius: 16px; padding: 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #ddd6fe; position: relative; overflow: hidden; }
-        .ai-badge { display: inline-flex; align-items: center; gap: 4px; background: #7c3aed; color: white; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px; }
-        
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-        .stat-val { font-size: 22px; font-weight: 800; color: white; margin: 2px 0; }
-        .stat-lbl { font-size: 11px; color: var(--text-dim); }
-
-        .water-btn-group { display: flex; gap: 6px; width: 100%; margin-top: 8px; }
-        .water-btn { flex: 1; padding: 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
-
-        .task-list { display: flex; flex-direction: column; gap: 12px; }
-        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; transition: all 0.2s; }
-        .task-card.completed { opacity: 0.45; text-decoration: line-through; filter: grayscale(0.8); }
-        
-        .task-header { display: flex; align-items: center; gap: 12px; }
-        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-        .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
-        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 14px; }
-        .task-card.completed .checkbox::after { display: block; }
-        
-        .task-title-group { flex: 1; }
-        .task-title { font-size: 14px; font-weight: 700; color: #f3f4f6; }
-        .task-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; background: #242f4d; color: #93c5fd; font-weight: 600; margin-top: 2px; }
-        
-        .task-details { background: #0f1623; border-radius: 10px; padding: 10px; font-size: 11px; color: #9ca3af; line-height: 1.4; border-left: 3px solid var(--accent); }
-        .task-details strong { color: #e5e7eb; }
-        .task-alt { color: #f59e0b; margin-top: 4px; font-size: 10.5px; }
-
-        .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; margin-top: 24px; display: block; width: 100%; text-align: center; text-decoration: underline; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <div class="header-title">
-            <h1>60 Günlük AI Koçum</h1>
-            <p id="subTitle">Akıllı Takip & Adaptif Program</p>
-        </div>
-        <select id="daySelect" class="day-select" onchange="changeDay()">
-            <option value="pazartesi">Pazartesi</option>
-            <option value="sali">Salı</option>
-            <option value="carsamba">Çarşamba</option>
-            <option value="persembe">Perşembe</option>
-            <option value="cuma">Cuma</option>
-            <option value="cumartesi">Cumartesi</option>
-            <option value="pazar">Pazar</option>
-        </select>
-    </div>
-
-    <div class="tabs">
-        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme Planı</div>
-        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Detaylı Spor</div>
-    </div>
-
-    <div class="ai-box">
-        <div class="ai-badge">🤖 AI Koç Tavsiyesi</div>
-        <div id="aiTip">Yükleniyor...</div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-val" id="progressPct">%0</div>
-            <div class="stat-lbl">Tamamlanan İlerleme</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Hedefi 💧</div>
-            <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
-            <div class="water-btn-group">
-                <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
-                <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="task-list" id="taskList"></div>
-
-    <button class="reset-btn" onclick="resetCurrentDay()">🔄 Bu Günü Sıfırla</button>
-
-    <script>
-        // AI Koç Tavsiyeleri
-        const aiTips = {
-            beslenme: {
-                pazartesi: "Haftaya güçlü bir protein girişi yapıyoruz! Yumurta ve tavuk kas dokunu korurken yağ yakımını maksimumda tutar. Acıktığında bol su tüket.",
-                sali: "Bugün omega-3 ve yüksek protein günü. Ton balığı metabolizmanı hızlandıracak. Yeşilliği bol tutarak mide hacmini doldur.",
-                carsamba: "Sıcak mercimek çorbası ve tavuk kombini sindirimini rahatlatır. Akşam yemeğinden sonra karbonhidratı tamamen kesiyoruz.",
-                persembe: "Sebze ve lor peyniri birleşimi vücuttaki ödemi atmana yardımcı olur. Bugün tuz miktarını biraz kısabilirsin.",
-                cuma: "Cuma enerjisi! Menemen ve ton balığı ile hem lezzetli hem disiplinli bir kapanış yapıyoruz. Tatlı krizine karşı 1 fincan sade kahve iç.",
-                cumartesi: "Hafta sonu temposunda protein dengesini bozma. Meyve öğününü antrenmandan veya yürüyüşten önce tüket.",
-                pazar: "Haftalık detoks ve dinlenme günü. Sindirim sistemini dinlendiriyoruz. Bol su içip yeni haftaya zihnen hazırlan."
-            },
-            spor: {
-                pazartesi: "Bacak ve karın odaklı kuvvet günü. Squat yaparken dizlerinin içe kaçmamasına dikkat et. Topuklarına basarak kalk.",
-                sali: "Kardiyo & Core günü! Koşarken ciğerlerini zorlamayacak tempoda kal. Yanında konuşabilecek hızda koşmak en çok yağı yakar.",
-                carsamba: "Üst vücut & Göğüs odağı. Duvarda/Masada şınav çekerken dirseklerini vücuduna 45 derece açıyla tut, omuzlarını yorma.",
-                persembe: "Yağ yakım kardiyosu ve arka kol! Triceps dips yaparken sırtını sandalyeye yakın tut, yükü tamamen kollara ver.",
-                cuma: "Tüm vücut sıkılaşma günü! Plank duruşunda kalçanı çok yukarı kaldırma, vücudunu bir tahta gibi düz tut.",
-                cumartesi: "Düşük tempo uzun kardiyo günü. Nabzını sabit tutarak 25 dakika tempolu yürü/jog yap. Bel için Superman hareketini unutma.",
-                pazar: "Aktif toparlanma ve esneme günü! Kasların büyüdüğü ve yağ yakımının devam ettiği gün bugündür. Esnemeleri derin yap."
-            }
-        };
-
-        // Detaylı Beslenme Programı (Gramaj, Makro, Alternatif)
-        const dietRoutines = {
-            pazartesi: [
-                { id: "dp1", title: "09:00 - Uyanış & Su", tag: "Hidrasyon", details: "2 Büyük Bardak Ilık Su (İçine birkaç damla limon sıkabilirsin).", alt: "Alternatif: Sade maden suyu veya ılık yeşil çay." },
-                { id: "dp2", title: "12:30 - Protein Patlaması Öğleni", tag: "~450 Kalori | 40g Protein", details: "3 Tam Haşlanmış Yumurta + 3 Yemek Kaşığı Lor Peyniri + 1 Dilim Tam Buğday/Kepek Ekmek + Salatalık.", alt: "Alternatif: Lor yerine 2 dilim süzme peynir veya 3 yemek kaşığı süzme yoğurt." },
-                { id: "dp3", title: "16:00 - Ara Öğün & Enerji", tag: "~160 Kalori", details: "1 Avuç Çiğ Badem veya Fındık (Yaklaşık 10-12 adet).", alt: "Alternatif: 2 adet ceviz içi veya 1 tatlı kaşığı fıstık ezmesi." },
-                { id: "dp4", title: "19:00 - Ana Akşam Yemeği", tag: "~500 Kalori | 45g Protein", details: "250g Tavuk Göğsü Sote (1 tatlı kaşığı zeytinyağı ile) + Bol Yeşillikli Yağsız Salata + 1 Dilim Ekmek.", alt: "Alternatif: Tavuk yerine 250g ızgara/sote hindi göğsü veya 200g yağsız köfte." }
-            ],
-            sali: [
-                { id: "ds1", title: "09:00 - Uyanış Su Detoksu", tag: "Hidrasyon", details: "2 Bardak Su. Gün boyu ödem atımını başlatır.", alt: "Alternatif: 1 bardak tarçınlı su." },
-                { id: "ds2", title: "12:30 - Ton Balıklı Salata Öğleni", tag: "~400 Kalori | 38g Protein", details: "2 Kutu Küçük Ton Balığı (Suyu/Yağı süzülmüş) + Bol Göbek, Salatalık, Roka Salatalık.", alt: "Alternatif: Ton balığı yerine 160g haşlanmış / ızgara tavuk." },
-                { id: "ds3", title: "16:00 - Ferahlatıcı Ara Öğün", tag: "~80 Kalori", details: "1 Adet Orta Boy Yeşil Elma veya 2 Adet Çıtır Salatalık.", alt: "Alternatif: 1 kase çilek veya 1 adet kivi." },
-                { id: "ds4", title: "19:00 - Pratik Lorlu Omlet", tag: "~380 Kalori | 32g Protein", details: "3 Yumurta ve 3 Yemek Kaşığı Lor ile Yapılmış Yağsız Omlet + Domates/Biber.", alt: "Alternatif: Yumurtalı menemen veya 200g lorlu pul biberli yoğurt." }
-            ],
-            carsamba: [
-                { id: "dc1", title: "09:00 - Güne Başlangıç Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık sirkeli su." },
-                { id: "dc2", title: "12:30 - Sıcak Mercimek & Lor", tag: "~350 Kalori | 22g Protein", details: "1 Kase Yağsız Mercimek Çorbası + 100g Lor Peynirli Yeşillik Salatası.", alt: "Alternatif: Ezogelin çorbası veya 1 kase sebze çorbası." },
-                { id: "dc3", title: "16:00 - Odaklanma Ara Öğünü", tag: "~180 Kalori", details: "3 Adet Tam Ceviz İçi veya 10 Adet Çiğ Badem.", alt: "Alternatif: 15 adet kavrulmamış kabak çekirdeği." },
-                { id: "dc4", title: "19:00 - Saf Tavuk Göğsü", tag: "~450 Kalori | 50g Protein", details: "250g Haşlanmış veya Baharatlı Tavuk Göğsü + Bol Limonlu Salata.", alt: "Alternatif: 250g fırında yağsız balık (çipura/levrek)." }
-            ],
-            persembe: [
-                { id: "dpe1", title: "09:00 - Sabah Hidrasyonu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Limonlu ve nane yapraklı su." },
-                { id: "dpe2", title: "12:30 - Low-Carb Öğle Menüsü", tag: "~360 Kalori | 35g Protein", details: "3 Haşlanmış Yumurta + 100g Lor Peyniri + Söğüş Biber/Salatalık.", alt: "Alternatif: 150g süzme yoğurt içine 3 haşlanmış yumurta beyazı." },
-                { id: "dpe3", title: "16:00 - Probiyotik Arası", tag: "~100 Kalori", details: "1 Su Bardağı Ayran veya 3 Yemek Kaşığı Ev Yoğurdu.", alt: "Alternatif: 1 bardak kefir." },
-                { id: "dpe4", title: "19:00 - Sebze Sote & Tavuk", tag: "~420 Kalori | 35g Protein", details: "150g Tavuk Göğsü + 1 Tabak Mantar/Kabak Sote (Az zeytinyağlı).", alt: "Alternatif: Tavuklu brokolı/fırın sebze." }
-            ],
-            cuma: [
-                { id: "dcu1", title: "09:00 - Cuma Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Yeşillikli detoks suyu." },
-                { id: "dcu2", title: "12:30 - Omega-3 Yüklemesi", tag: "~380 Kalori | 35g Protein", details: "160g Ton Balığı + Bol Yeşillikli Salata + 1 Dilim Ekmek.", alt: "Alternatif: 200g Izgara Somon veya Mackerell." },
-                { id: "dcu3", title: "16:00 - Tok Tutucu Atıştırmalık", tag: "~150 Kalori", details: "1 Avuç Çiğ Badem.", alt: "Alternatif: 10 adet fındık." },
-                { id: "dcu4", title: "19:00 - Lezzetli Cuma Menemeni", tag: "~420 Kalori | 28g Protein", details: "3 Yumurtalı, Biberli Domatesli Az Yağlı Menemen + 1 Dilim Ekmek.", alt: "Alternatif: Lorlu kıymalı yumurta." }
-            ],
-            cumartesi: [
-                { id: "dcm1", title: "09:00 - Hafta Sonu Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Maden suyu." },
-                { id: "dcm2", title: "12:30 - Keyifli Hafta Sonu Kahvaltısı", tag: "~450 Kalori | 32g Protein", details: "3 Yumurtalı Bol Lorlu Maydanozlu Omlet + 5 Adet Zeytin + 1 Dilim Ekmek.", alt: "Alternatif: Menemen + 2 dilim peynir." },
-                { id: "dcm3", title: "16:00 - Doğal Şeker Yüklemesi", tag: "~100 Kalori", details: "1 Adet Orta Boy Muz veya 1 Adet Şeftali/Elma.", alt: "Alternatif: 1 avuç taze kitle/yaban mersini." },
-                { id: "dcm4", title: "19:00 - Tavuk Izgara & Salata", tag: "~480 Kalori | 48g Protein", details: "250g Izgara Tavuk Pirzola/Göğüs + Bol Salata.", alt: "Alternatif: 250g Izgara Bonfile/Köfte." }
-            ],
-            pazar: [
-                { id: "dpz1", title: "09:00 - Pazar Detoks Suyu", tag: "Hidrasyon", details: "2 Bardak Su.", alt: "Alternatif: Ilık limonlu su." },
-                { id: "dpz2", title: "12:30 - Pazar Kahvaltı Tabağı", tag: "~400 Kalori | 30g Protein", details: "3 Haşlanmış Yumurta + 5 Adet Zeytin + 100g Lor + Yeşillik.", alt: "Alternatif: 2 Yumurtalı sahanda yumurta + Peynir." },
-                { id: "dpz3", title: "16:00 - Pul Biberli Yağ Yakıcı Yoğurt", tag: "~110 Kalori", details: "1 Kase Yoğurt + 1 Çay Kaşığı Pul Biber + Limon Suyu.", alt: "Alternatif: 1 bardak tuzsuz ayran." },
-                { id: "dpz4", title: "19:00 - Hafif Pazar Yemeği", tag: "~320 Kalori | 18g Protein", details: "1 Tabak Mercimek/Nohut Yemeği veya Çorba + Bol Salata.", alt: "Alternatif: Fırınlanmış zeytinyağlı sebze yemeği." }
-            ]
-        };
-
-        // Detaylı Spor Programı (Set, Tekrar, Form İpucu, Hedef Kas)
-        const sportRoutines = {
-            pazartesi: [
-                { id: "sp1", title: "1. Isınma - Nabız Yükseltme", tag: "5 Dakika", details: "Yerinde tempolu adım atma / diz çekme. Eklemleri ve kalbi spora hazırlar.", alt: "Form İpucu: Derin nefes alıp ver, kolları aktif salla." },
-                { id: "sp2", title: "2. Sandalye Squat", tag: "3 Set x 12-15 Tekrar", details: "Hedef: Bacak & Kalça. Sandalyenin önüne geç, kalçanı geriye verip sandalyeye hafifçe dokunup kalk.", alt: "Form İpucu: Dizlerin ayak parmak ucunu geçmesin, ağırlığı topuklara ver." },
-                { id: "sp3", title: "3. Duvar Şınavı (Wall Push-up)", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs, Omuz & Triceps. Duvardan 2 adım geride dur, ellerini duvara koyup göğsünü yaklaştırıp it.", alt: "Form İpucu: Vücudunu baştan topuğa kadar ok gibi düz tut." },
-                { id: "sp4", title: "4. Statik Plank", tag: "3 Set x 20-30 Saniye", details: "Hedef: Tum Karın & Bel. Dirsekler zemin üstünde, vücut düz pozisyonda bekle.", alt: "Form İpucu: Karın kaslarını ve kalçanı sürekli sık, aşağı sarkma." },
-                { id: "sp5", title: "5. Soğuma & Bacak Esneme", tag: "5 Dakika", details: "Bacak ve bel kaslarını esneterek nabzı düşür.", alt: "Form İpucu: Her esnemede 15 saniye sabit bekle, zıplama." }
-            ],
-            sali: [
-                { id: "ss1", title: "1. Üst Vücut Isınması", tag: "5 Dakika", details: "Omuz daireleri, kol çevirme ve hafif tempoda yerinde yürüyüş.", alt: "Form İpucu: Omuz eklemlerini iyice ısıt." },
-                { id: "ss2", title: "2. Yağ Yakım Kardiyosu (Interval)", tag: "20 Dakika", details: "2 Dakika Hafif Tempo Jog/Koşu + 2 Dakika Tempolu Yürüyüş (5 Tur tekrarla).", alt: "Form İpucu: Koşarken adımlarını küçük tut, topuk üzerine sert basma." },
-                { id: "ss3", title: "3. Yüksek Açı Şınav (Masa/Sandalye)", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Alt Göğüs & Kol. Ellerini sağlam bir masaya koyarak şınav çek.", alt: "Form İpucu: Masanın kaymayacağından emin ol." },
-                { id: "ss4", title: "4. Mekik / Crunch", tag: "3 Set x 15 Tekrar", details: "Hedef: Üst Karın. Sırtüstü yat, dizleri bük, sadece kürek kemiklerini yerden kaldır.", alt: "Form İpucu: Boynunu çekme, çene ile göğüs arasında bir elma mesafesi bırak." },
-                { id: "ss5", title: "5. Bacak & Bel Soğuması", tag: "5 Dakika", details: "Arka bacak ve bel kaslarını esnet.", alt: "Form İpucu: Derin nefes alarak kasları rahatlat." }
-            ],
-            carsamba: [
-                { id: "sc1", title: "1. Mobilite Isınması", tag: "5 Dakika", details: "Kalça ve bel dönme hareketleri, yerinde yürüyüş.", alt: "Form İpucu: Eklemleri dairesel yumuşak hareket ettir." },
-                { id: "sc2", title: "2. Sumo Squat (Geniş Açı)", tag: "3 Set x 12 Tekrar", details: "Hedef: İç Bacak & Kalça. Bacakları omuz genişliğinden daha geniş aç, ayak parmakları dışa baksın.", alt: "Form İpucu: Çömelirken dizler ayak parmak yönünü takip etsin." },
-                { id: "sc3", title: "3. Diz Üstü Şınav", tag: "3 Set x 8-10 Tekrar", details: "Hedef: Göğüs & Omuz. Dizler yerde, eller omuz genişliğinde şınav çek.", alt: "Form İpucu: Kalçanı geride bırakma, vücudunla birlikte öne in." },
-                { id: "sc4", title: "4. Yan Plank (Side Plank)", tag: "2 Set x 15-20 Sn (Her Yön)", details: "Hedef: Yan Karın & Bel. Tek dirsek üzerinde yan yatıp kalçayı havaya kaldır.", alt: "Form İpucu: Vücudun yan profilini tamamen düz tut." },
-                { id: "sc5", title: "5. Tüm Vücut Esneme", tag: "5 Dakika", details: "Tüm vücudu rahatlatma esnemesi.", alt: "Form İpucu: Kasları zorlamadan tatlı bir gerilme hisset." }
-            ],
-            persembe: [
-                { id: "spe1", title: "1. Dinamik Isınma", tag: "5 Dakika", details: "Tempolu yürüyüş ve kol açıp kapama.", alt: "Form İpucu: Nabzı kademeli yükselt." },
-                { id: "spe2", title: "2. Sabit Tempo Kardiyo", tag: "20-25 Dakika", details: "Tempolu sokak yürüyüşü veya evde Stepper / tempolu adım.", alt: "Form İpucu: Yağ yakım nabzında kalmak için terlemeyi hisset ama tıkanma." },
-                { id: "spe3", title: "3. Sandalye Triceps Dips", tag: "3 Set x 10 Tekrar", details: "Hedef: Arka Kol (Sallanan Kısım). Sandalye kenarına ellerini koy, kalçayı aşağı indirip kollarla it.", alt: "Form İpucu: Dirseklerin dışa açılmasına izin verme, arkaya bük." },
-                { id: "spe4", title: "4. Kalça Kaldırma (Glute Bridge)", tag: "3 Set x 15 Tekrar", details: "Hedef: Kalça & Arka Bacak. Sırtüstü yat, dizler bükük. Kalçayı en tepeye kaldırıp 1 sn sık.", alt: "Form İpucu: Tepedeyken kalça kaslarını max seviyede sık." },
-                { id: "spe5", title: "5. Arka Kol & Bacak Esneme", tag: "5 Dakika", details: "Kolları ve bacakları rahatlat.", alt: "Form İpucu: Nefesini yavaşlat." }
-            ],
-            cuma: [
-                { id: "scu1", title: "1. Isınma & High Knee", tag: "5 Dakika", details: "Yerinde dizleri kalça hizasına hafifçe çekerek ısın.", alt: "Form İpucu: Zıplamadan tempolu yapabilirsin." },
-                { id: "scu2", title: "2. Yavaş Tempo Squat", tag: "3 Set x 12 Tekrar", details: "Hedef: Bacak Dayanıklılığı. 3 saniyede in, 1 saniyede patlayıcı şekilde kalk.", alt: "Form İpucu: Yavaş inmek kas liflerini maksimum çalıştırır." },
-                { id: "scu3", title: "3. Duvar / Masa Şınavı", tag: "3 Set x 12 Tekrar", details: "Hedef: Göğüs ve Omuz güçlendirme.", alt: "Form İpucu: Nefes alarak in, nefes vererek kendini it." },
-                { id: "scu4", title: "4. Plank Challenge", tag: "3 Set x 30 Saniye", details: "Hedef: Karın kor gücü.", alt: "Form İpucu: Saniyeleri sayarken düzenli nefes alıp ver." },
-                { id: "scu5", title: "5. Cuma Soğuması", tag: "5 Dakika", details: "Haftalık yorgunluğu atmak için derin esneme.", alt: "Form İpucu: Kasları gevşet." }
-            ],
-            cumartesi: [
-                { id: "scm1", title: "1. Kardiyo Isınması", tag: "5 Dakika", details: "Hafif tempo yürüyüş.", alt: "Form İpucu: Vücudu harekete hazırla." },
-                { id: "scm2", title: "2. Uzun Düşük Tempo Kardiyo", tag: "25-30 Dakika", details: "Kesintisiz hafif jog veya tempolu yürüyüş.", alt: "Form İpucu: Tamamen yağ yakım odaklı, hızlanmana gerek yok." },
-                { id: "scm3", title: "3. Superman (Sırt & Bel)", tag: "3 Set x 10 Tekrar", details: "Hedef: Bel & Duruş Düzeltme. Yüzüstü yat, göğsünü ve bacaklarını aynı anda 2 cm yukarı kaldır.", alt: "Form İpucu: Tepede 1 saniye bekle ve yavaşça in." },
-                { id: "scm4", title: "4. Sırt & Bel Esneme", tag: "5 Dakika", details: "Kedi-Deve (Cat-Cow) hareketi ile beli rahatlat.", alt: "Form İpucu: Omurgayı esnet." }
-            ],
-            pazar: [
-                { id: "spz1", title: "1. Aktif Dinlenme Yürüyüşü", tag: "15 Dakika", details: "Evde veya dışarıda çok hafif adımlama.", alt: "Form İpucu: Amaç yorulmak değil, kan dolaşımını artırmak." },
-                { id: "spz2", title: "2. Tüm Vücut Yoga / Mobility Esneme", tag: "15 Dakika", details: "Omuz, bel, bacak ve kalça kaslarını derinlemesine esnet.", alt: "Form İpucu: Yeni haftaya kas ağrısız girmene yardımcı olur." }
-            ]
-        };
-
-        let currentDay = "pazartesi";
-        let currentTab = "beslenme";
-
-        // Cihazın yerel saatine göre otomatik gün ve sıfırlama
-        function checkAutoReset() {
-            const now = new Date();
-            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-            const lastDate = localStorage.getItem("last_active_date");
-
-            const dayIndex = now.getDay(); // 0: Pazar, 1: Pazartesi...
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
-            
-            if (lastDate !== todayStr) {
-                localStorage.setItem("water_amount", "0");
-                localStorage.setItem("last_active_date", todayStr);
                 
-                currentDay = dayKeys[dayIndex];
-                document.getElementById("daySelect").value = currentDay;
-            }
-        }
-
-        function init() {
-            checkAutoReset();
-            
-            const now = new Date();
-            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
-            currentDay = dayKeys[now.getDay()];
-            document.getElementById("daySelect").value = currentDay;
-
-            renderApp();
-            updateWaterUI();
-
-            // Cihaz saatini her 20 saniyede bir kontrol et (gece 00:00 olunca otomatik aksın)
-            setInterval(() => {
-                const checkNow = new Date();
-                const checkTodayStr = `${checkNow.getFullYear()}-${checkNow.getMonth() + 1}-${checkNow.getDate()}`;
-                if (localStorage.getItem("last_active_date") !== checkTodayStr) {
-                    checkAutoReset();
-                    renderApp();
-                    updateWaterUI();
-                }
-            }, 20000);
-        }
-
-        function changeDay() {
-            currentDay = document.getElementById("daySelect").value;
-            renderApp();
-        }
-
-        function switchTab(tab) {
-            currentTab = tab;
-            document.getElementById("tabBeslenme").classList.toggle("active", tab === 'beslenme');
-            document.getElementById("tabSpor").classList.toggle("active", tab === 'spor');
-            renderApp();
-        }
-
-        function renderApp() {
-            // AI İpucunu Güncelle
-            document.getElementById("aiTip").innerText = aiTips[currentTab][currentDay];
-
-            // Görev Listesini Güncelle
-            const listEl = document.getElementById("taskList");
-            listEl.innerHTML = "";
-            
-            const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
-            let completedCount = 0;
-
-            activeTasks.forEach(task => {
-                const key = `task_${currentDay}_${currentTab}_${task.id}`;
-                const isDone = localStorage.getItem(key) === "true";
-                if (isDone) completedCount++;
-
-                const card = document.createElement("div");
-                card.className = `task-card ${isDone ? 'completed' : ''}`;
-                card.onclick = () => toggleTask(key);
-                card.innerHTML = `
-                    <div class="task-header">
-                        <div class="checkbox"></div>
-                        <div class="task-title-group">
-                            <div class="task-title">${task.title}</div>
-                            <span class="task-tag">${task.tag}</span>
-                        </div>
-                    </div>
-                    <div class="task-details">
-                        <strong>Detay:</strong> ${task.details}
-                        <div class="task-alt">💡 <strong>${currentTab === 'beslenme' ? 'Alternatif' : 'Püf Nokta'}:</strong> ${task.alt}</div>
-                    </div>
-                `;
                 listEl.appendChild(card);
+                previousCompleted = isDone; // Sonraki kart için kilit durumunu güncelle
             });
 
             const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
@@ -1043,6 +347,27 @@
             const val = localStorage.getItem(key) === "true";
             localStorage.setItem(key, !val);
             renderApp();
+        }
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer(id, totalSec) {
+            if (activeTimers[id]) clearInterval(activeTimers[id]);
+            let currentSec = totalSec;
+            const timerEl = document.getElementById(`timer_${id}`);
+            
+            activeTimers[id] = setInterval(() => {
+                currentSec--;
+                if (timerEl) timerEl.innerText = formatTime(currentSec);
+                if (currentSec <= 0) {
+                    clearInterval(activeTimers[id]);
+                    if (timerEl) timerEl.innerText = "SÜRE BİTTİ! 💪";
+                }
+            }, 1000);
         }
 
         function addWater(amount) {
