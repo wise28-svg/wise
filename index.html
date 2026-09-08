@@ -2,428 +2,320 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>60 Günlük Koçum</title>
-    
-    <!-- PWA / Mobil Uygulama Ayarları -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="60GünKoçum">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3048/3048381.png">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIjYwIEd1bmx1ayBLb2N1bSIsCiAgInNob3J0X25hbWUiOiAiNjBHdW5Lb2N1bSIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwYjBmMTkiLAogICJ0aGVtZV9jb2xvcIjogIiMwYjBmMTkiCn0=">
     <style>
-        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #0f172a; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-        .glass-card { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .progress-ring-circle { transition: stroke-dashoffset 0.35s; transform: rotate(-90deg); transform-origin: 50% 50%; }
-        .tab-btn.active { background-color: #2563eb; color: #ffffff; border-color: #3b82f6; }
+        :root {
+            --bg: #0b0f19;
+            --card: #151c2e;
+            --card-border: #232d42;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --text: #f3f4f6;
+            --text-dim: #9ca3af;
+            --green: #10b981;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 16px; max-width: 500px; margin: 0 auto; padding-bottom: 40px; }
+        
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; margin-top: 10px; }
+        .header-title h1 { font-size: 20px; font-weight: 700; }
+        .header-title p { font-size: 12px; color: var(--text-dim); }
+
+        .day-select { background: var(--card); color: var(--text); border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 12px; font-weight: 600; font-size: 14px; outline: none; cursor: pointer; }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab-btn { flex: 1; padding: 12px; background: var(--card); border: 1px solid var(--card-border); color: var(--text-dim); border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; text-align: center; }
+        .tab-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .stat-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .stat-val { font-size: 24px; font-weight: 800; color: white; margin: 4px 0; }
+        .stat-lbl { font-size: 11px; color: var(--text-dim); }
+
+        .water-btn-group { display: flex; gap: 6px; width: 100%; margin-top: 8px; }
+        .water-btn { flex: 1; padding: 6px; background: #1e293b; border: 1px solid var(--card-border); color: #38bdf8; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+        .info-box { background: #1e1b4b; border: 1px solid #3730a3; border-radius: 14px; padding: 12px 14px; margin-bottom: 16px; font-size: 12px; line-height: 1.5; color: #c7d2fe; }
+        .info-box strong { color: #818cf8; }
+
+        .task-list { display: flex; flex-direction: column; gap: 10px; }
+        .task-card { background: var(--card); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .task-card.completed { opacity: 0.5; text-decoration: line-through; }
+        .checkbox { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+        .task-card.completed .checkbox { background: var(--green); border-color: var(--green); }
+        .checkbox::after { content: '✓'; color: white; font-weight: bold; display: none; font-size: 14px; }
+        .task-card.completed .checkbox::after { display: block; }
+        .task-info { flex: 1; }
+        .task-title { font-size: 13px; font-weight: 600; }
+        .task-sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+        .reset-btn { background: transparent; border: none; color: var(--text-dim); font-size: 12px; cursor: pointer; margin-top: 20px; display: block; width: 100%; text-align: center; text-decoration: underline; }
     </style>
 </head>
-<body class="min-h-screen pb-20 select-none">
+<body>
 
-    <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur px-4 py-3">
-        <div class="max-w-lg mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/30">
-                    <i class="fa-solid fa-person-running"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-sm text-white leading-tight">60 Günlük Koçum</h1>
-                    <p class="text-[10px] text-slate-400">Sabah Rutini & Mülakat Kampı</p>
-                </div>
-            </div>
-            <select id="daySelect" onchange="changeDay(this.value)" class="bg-slate-800 border border-slate-700 text-white text-xs font-semibold rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-blue-500">
-            </select>
+    <div class="header">
+        <div class="header-title">
+            <h1>60 Günlük Koçum</h1>
+            <p id="subTitle">Günlük Takip Sistemi</p>
         </div>
-    </header>
+        <select id="daySelect" class="day-select" onchange="changeDay()">
+            <option value="pazartesi">Pazartesi</option>
+            <option value="sali">Salı</option>
+            <option value="carsamba">Çarşamba</option>
+            <option value="persembe">Perşembe</option>
+            <option value="cuma">Cuma</option>
+            <option value="cumartesi">Cumartesi</option>
+            <option value="pazar">Pazar</option>
+        </select>
+    </div>
 
-    <!-- Tab Navigation -->
-    <nav class="max-w-lg mx-auto px-4 mt-4 grid grid-cols-2 gap-2">
-        <button id="tabDietBtn" onclick="switchTab('diet')" class="tab-btn active py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-xs font-bold transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-utensils"></i> Beslenme & Rutin
-        </button>
-        <button id="tabSportBtn" onclick="switchTab('sport')" class="tab-btn py-2.5 rounded-xl border border-slate-700 bg-slate-800 text-slate-400 text-xs font-bold transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-dumbbell"></i> Sabah Sporu (~30 Dk)
-        </button>
-    </nav>
+    <div class="tabs">
+        <div class="tab-btn active" id="tabBeslenme" onclick="switchTab('beslenme')">🍽️ Beslenme & Rutin</div>
+        <div class="tab-btn" id="tabSpor" onclick="switchTab('spor')">🏋️ Günün Sporsu (~30 Dk)</div>
+    </div>
 
-    <main class="max-w-lg mx-auto px-4 mt-4 space-y-5">
-
-        <!-- ================= SEKME 1: BESLENME VE RUTİN ================= -->
-        <div id="tabDiet" class="space-y-5">
-            
-            <!-- Tamamlanma & Su Kartı -->
-            <div class="grid grid-cols-2 gap-3">
-                <!-- İlerleme -->
-                <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-                    <div class="relative w-24 h-24 flex items-center justify-center">
-                        <svg class="w-full h-full" viewBox="0 0 100 100">
-                            <circle class="text-slate-800" stroke-width="8" stroke="currentColor" fill="transparent" r="38" cx="50" cy="50"/>
-                            <circle id="progressCircle" class="text-blue-500 progress-ring-circle" stroke-width="8" stroke-dasharray="238.7" stroke-dashoffset="238.7" stroke-linecap="round" stroke="currentColor" fill="transparent" r="38" cx="50" cy="50"/>
-                        </svg>
-                        <span id="percentText" class="absolute text-xl font-extrabold text-white">%0</span>
-                    </div>
-                    <span class="text-[11px] text-slate-400 mt-2 font-medium">Günün Rutin Başarısı</span>
-                </div>
-
-                <!-- Su -->
-                <div class="glass-card rounded-2xl p-4 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-xs font-bold text-slate-300">Su Takibi</span>
-                            <i class="fa-solid fa-bottle-water text-cyan-400 text-xs"></i>
-                        </div>
-                        <span id="waterText" class="text-base font-black text-cyan-400 block">0.0 / 4.0 L</span>
-                        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden mt-2 border border-slate-700">
-                            <div id="waterBar" class="bg-cyan-500 h-full w-0 transition-all duration-300"></div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5 mt-3">
-                        <button onclick="addWater(0.5)" class="bg-slate-800 hover:bg-cyan-950 border border-slate-700 text-cyan-400 py-1.5 rounded-lg text-[11px] font-bold">+500 ml</button>
-                        <button onclick="addWater(1.0)" class="bg-slate-800 hover:bg-cyan-950 border border-slate-700 text-cyan-400 py-1.5 rounded-lg text-[11px] font-bold">+1.0 L</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ekmek Rehberi (Bütçe Dostu) -->
-            <div class="glass-card rounded-2xl p-3.5 border-amber-500/30 bg-amber-950/10">
-                <div class="flex items-center gap-2 mb-1.5">
-                    <i class="fa-solid fa-bread-slice text-amber-400 text-sm"></i>
-                    <h3 class="text-xs font-bold text-amber-300">Ekonomik Ekmek Rehberi</h3>
-                </div>
-                <p class="text-[11px] text-slate-300 leading-relaxed">
-                    <strong>Tavsiye Markalar:</strong> BİM (Efsane/Ekmekçik Tam Buğday), A101 (Nimet Tam Buğday/Kepekli) veya Halk Ekmek Tam Buğday.<br>
-                    <strong>Alternatif:</strong> Evde ıslatılmış kırmızı mercimeği 2 yumurta ve yoğurtla blenderdan geçirip tavada pişirerek sıfır unlu protein ekmeği yapabilirsin.
-                </p>
-            </div>
-
-            <!-- Yemek & Rutin Listesi -->
-            <div class="glass-card rounded-2xl p-4">
-                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-800">
-                    <h2 id="currentDayTitle" class="text-xs font-bold text-white uppercase tracking-wider">Menü Planı</h2>
-                    <button onclick="resetTasks()" class="text-[11px] text-slate-400 hover:text-white flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i> Sıfırla
-                    </button>
-                </div>
-                <div id="taskList" class="space-y-2.5"></div>
-            </div>
-
-            <!-- Kilo Kayıt -->
-            <div class="glass-card rounded-2xl p-4">
-                <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">Kilo Kontrol Noktası</h3>
-                    <span class="text-[10px] text-slate-400">Tartıldıkça Gir</span>
-                </div>
-                <p class="text-[11px] text-slate-400 mb-2 leading-relaxed">Tartıldıkça buraya tarih ve kiloyu eklemen yeterli.</p>
-                <div class="flex gap-2 mb-3">
-                    <input type="number" id="weightInput" placeholder="Örn: 128.5" step="0.1" class="bg-slate-900 border border-slate-700 text-white rounded-xl px-3 py-2 text-xs w-full focus:outline-none focus:border-blue-500">
-                    <button onclick="logWeight()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-2 rounded-xl font-bold shrink-0">Kaydet</button>
-                </div>
-                <div id="weightHistory" class="space-y-1 text-xs text-slate-300"></div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-val" id="progressPct">%0</div>
+            <div class="stat-lbl">Günün Rutin Başarısı</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-lbl" style="color:#38bdf8; font-weight:700;">Su Takibi 💧</div>
+            <div class="stat-val" id="waterVal" style="color:#38bdf8;">0.0 / 4.0 L</div>
+            <div class="water-btn-group">
+                <button class="water-btn" onclick="addWater(0.5)">+500 ml</button>
+                <button class="water-btn" onclick="addWater(1.0)">+1.0 L</button>
             </div>
         </div>
+    </div>
 
+    <div class="info-box">
+        <strong>🍞 Ekonomik Ekmek Rehberi:</strong> BIM (Efsane/Ekmekçik Tam Buğday) veya A101 Tam Buğday/Kepekli. Alternatif: Evde ıslatılmış kırmızı mercimeği 2 yumurta ve yoğurtla blenderdan geçirip tavada pişirebilirsin.
+    </div>
 
-        <!-- ================= SEKME 2: SABAH SPORU ================= -->
-        <div id="tabSport" class="space-y-4 hidden">
-            
-            <div class="glass-card rounded-2xl p-4 bg-gradient-to-r from-blue-950/40 to-slate-900 border-blue-500/30">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg font-bold shrink-0">
-                        <i class="fa-solid fa-sun"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xs font-bold text-white">Sabah Kalkar Kalkmaz Rutini (~30 Dk)</h3>
-                        <p class="text-[11px] text-slate-400 mt-0.5">Sırayla yap, zaman sayacını başlat, bittiğinde tikle!</p>
-                    </div>
-                </div>
-            </div>
+    <div class="task-list" id="taskList"></div>
 
-            <!-- Egzersiz Listesi -->
-            <div id="exerciseList" class="space-y-3"></div>
-
-        </div>
-
-    </main>
+    <button class="reset-btn" onclick="resetCurrentDay()">🔄 Bu Günü Sıfırla</button>
 
     <script>
-        const weeklyPlan = {
-            1: { name: 'Pazartesi - Protein & Yumurta', items: [
-                { id: 'p1', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: 'Aç karnına 2 büyük bardak su iç.' },
-                { id: 'p2', title: 'Öğle (12:30): 3 Haşlanmış Yumurta + Lor + 1 Dilim Ekmek', icon: 'fa-egg text-amber-400', detail: '3 haşlanmış yumurta + 2 YK lor peyniri + salatalık + 1 dilim BİM/A101 tam buğday ekmeği.' },
-                { id: 'p3', title: 'Ara Öğün (16:00): 1 Avuç Çiğ Badem / Fındık', icon: 'fa-apple-whole text-purple-400', detail: '1 avuç çiğ badem, ceviz veya fındık + 2 bardak su.' },
-                { id: 'p4', title: 'Akşam (19:00): 250g Tavuk Sote + Salata + 1 Dilim Ekmek', icon: 'fa-drumstick-bite text-emerald-400', detail: '250g tavuk göğsünü az yağda sotele. Yanında bol salata ve 1 dilim tam buğday ekmeği.' },
-                { id: 'p5', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Saat 20:00\'den sonra kalori içeren hiçbir şey yenmeyecek.' }
-            ]},
-            2: { name: 'Salı - Ton Balığı & Ferahlık', items: [
-                { id: 's1', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: 'Güne 2 bardak su ile başla.' },
-                { id: 's2', title: 'Öğle (12:30): Ton Balıklı Salata + 1-2 Dilim Ekmek', icon: 'fa-fish text-amber-400', detail: '1 büyük ton balığının yağını süz, salatayla karıştır. Yanında 1-2 dilim tam buğday ekmeği.' },
-                { id: 's3', title: 'Ara Öğün (16:00): Pul Biberli Yoğurt', icon: 'fa-bowl-rice text-purple-400', detail: '3 yemek kaşığı yoğurdun içine nane ve pul biber ekle.' },
-                { id: 's4', title: 'Akşam (19:00): 200g Kıymalı Sote + Yoğurt', icon: 'fa-utensils text-emerald-400', detail: '200g kıymayı kendi yağında kavur. Yanına yoğurt ve salatalık. (İstersen 1 dilim ekmek).' },
-                { id: 's5', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Yemek yemeyi kes.' }
-            ]},
-            3: { name: 'Çarşamba - Peynir & Köfte', items: [
-                { id: 'c1', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: '2 bardak su.' },
-                { id: 'c2', title: 'Öğle (12:30): Lor Peynirli Omlet + 1 Dilim Ekmek', icon: 'fa-egg text-amber-400', detail: '3 yumurta ve 3 YK lor peyniri ile omlet yap. 1 dilim tam buğday ekmeği ile ye.' },
-                { id: 'c3', title: 'Ara Öğün (16:00): 5-6 Çiğ Ceviz', icon: 'fa-apple-whole text-purple-400', detail: '5-6 çiğ ceviz + 2 bardak su.' },
-                { id: 'c4', title: 'Akşam (19:00): 5-6 Kasap Köfte + Salata + 1 Dilim Ekmek', icon: 'fa-drumstick-bite text-emerald-400', detail: 'Köfteleri yağsız tavada pişir. Yanında bol limonlu salata ve 1 dilim ekmek.' },
-                { id: 'c5', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Gece kapanışı.' }
-            ]},
-            4: { name: 'Perşembe - Konserve & Baklagil', items: [
-                { id: 'p41', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: '2 bardak su.' },
-                { id: 'p42', title: 'Öğle (12:30): Haşlanmış Nohut Salatası', icon: 'fa-bowl-rice text-amber-400', detail: '1 su bardağı haşlanmış nohutu domates/salatalık ve limonla karıştır. Nohut karbonhidrat olduğu için ekmeğe gerek yok.' },
-                { id: 'p43', title: 'Ara Öğün (16:00): Şekersiz Kahve', icon: 'fa-mug-hot text-purple-400', detail: 'Sade filtre/türk kahvesi + su.' },
-                { id: 'p44', title: 'Akşam (19:00): Tavuk Sote + Yoğurt + 1 Dilim Ekmek', icon: 'fa-drumstick-bite text-emerald-400', detail: '200g tavuk sote + 1 kase yoğurt + 1 dilim tam buğday ekmeği.' },
-                { id: 'p45', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Kapanış.' }
-            ]},
-            5: { name: 'Cuma - Kıymalı Menemen', items: [
-                { id: 'c51', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: '2 bardak su.' },
-                { id: 'c52', title: 'Öğle (12:30): Kıymalı 3 Yumurtalı Menemen + 1-2 Dilim Ekmek', icon: 'fa-egg text-amber-400', detail: 'Kıyma, domates, biber ve 3 yumurta ile menemen. Yanında 1-2 dilim kepekli/tam buğday ekmeği.' },
-                { id: 'c53', title: 'Ara Öğün (16:00): Limonlu Salatalık', icon: 'fa-apple-whole text-purple-400', detail: '2 salatalığı dilimle, limon sık.' },
-                { id: 'c54', title: 'Akşam (19:00): Ton Balıklı Salata + 1 Dilim Ekmek', icon: 'fa-fish text-emerald-400', detail: '1 büyük kutu ton balığı + bol salata + 1 dilim ekmek.' },
-                { id: 'c55', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Kapanış.' }
-            ]},
-            6: { name: 'Cumartesi - Izgara & Lor', items: [
-                { id: 'cm1', title: 'Sabah (09:00): 2 Bardak Su', icon: 'fa-droplet text-cyan-400', detail: '2 bardak su.' },
-                { id: 'cm2', title: 'Öğle (12:30): Bol Lor Peynirli Salata + 1 Dilim Ekmek', icon: 'fa-leaf text-amber-400', detail: '100g lor peyniri + bol yeşillik + 1 YK zeytinyağı + 1 dilim tam buğday ekmeği.' },
-                { id: 'cm3', title: 'Ara Öğün (16:00): Limonlu Maden Suyu', icon: 'fa-glass-water text-purple-400', detail: 'Sade maden suyuna limon sık.' },
-                { id: 'cm4', title: 'Akşam (19:00): Tavuk Pirzola / Köfte + 1 Dilim Ekmek', icon: 'fa-drumstick-bite text-emerald-400', detail: '250g tavuk veya köfte + yoğurt + 1 dilim ekmek.' },
-                { id: 'cm5', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Kapanış.' }
-            ]},
-            7: { name: 'Pazar - Tartı & Protein', items: [
-                { id: 'pz1', title: 'Sabah (09:00): 2 Bardak Su & Genel Kontrol', icon: 'fa-droplet text-cyan-400', detail: 'Güne 2 bardak su ile başla.' },
-                { id: 'pz2', title: 'Öğle (12:30): Pazar Omleti + Zeytin + 1-2 Dilim Ekmek', icon: 'fa-egg text-amber-400', detail: '3 yumurtalı bol sebzeli omlet + 5 zeytin + 1-2 dilim ekmek.' },
-                { id: 'pz3', title: 'Ara Öğün (16:00): 10 Çiğ Badem', icon: 'fa-apple-whole text-purple-400', detail: '10 çiğ badem + su.' },
-                { id: 'pz4', title: 'Akşam (19:00): Kıyma/Tavuk Sote + Yoğurt + 1 Dilim Ekmek', icon: 'fa-utensils text-emerald-400', detail: '200g et/tavuk + yoğurt + 1 dilim ekmek.' },
-                { id: 'pz5', title: 'Gece (20:00 Sonrası): Mutfak Kapandı', icon: 'fa-moon text-indigo-400', detail: 'Haftayı bitirdik!' }
-            ]}
+        // Beslenme Programı
+        const dietRoutines = {
+            pazartesi: [
+                { id: "dp1", title: "Sabah (09:00): 2 Bardak Su", sub: "Güne metabolizmayı uyandırarak başla." },
+                { id: "dp2", title: "Öğle (12:30): 3 Haşlanmış Yumurta + Lor + 1 Dilim Ekmek", sub: "Yüksek proteinli başlangıç." },
+                { id: "dp3", title: "Ara Öğün (16:00): 1 Avuç Çiğ Badem / Fındık", sub: "Sağlıklı yağ ve enerji depolama." },
+                { id: "dp4", title: "Akşam (19:00): 250g Tavuk Sote + Salata + 1 Dilim Ekmek", sub: "Doyurucu akşam yemeği." }
+            ],
+            sali: [
+                { id: "ds1", title: "Sabah (09:00): 2 Bardak Su", sub: "Aç karnına detoks suyu." },
+                { id: "ds2", title: "Öğle (12:30): 2 Kutu Ton Balığı + Bol Salata", sub: "Ekmeksiz, yüksek omega-3 öğünü." },
+                { id: "ds3", title: "Ara Öğün (16:00): 1 Tane Yeşil Elma veya Salatalık", sub: "Lif ve ferahlık." },
+                { id: "ds4", title: "Akşam (19:00): 3 Yumurtalı Lorlu Omlet + Salata", sub: "Pratik ve bütçe dostu protein." }
+            ],
+            carsamba: [
+                { id: "dc1", title: "Sabah (09:00): 2 Bardak Su", sub: "Metabolizma aktivasyonu." },
+                { id: "dc2", title: "Öğle (12:30): 1 Kase Mercimek Çorbası + Lorlu Salata", sub: "Sıcak ve doyurucu lif deposu." },
+                { id: "dc3", title: "Ara Öğün (16:00): 1 Avuç Ceviz / Fındık", sub: "Odağı artıran sağlıklı yağlar." },
+                { id: "dc4", title: "Akşam (19:00): 250g Haşlanmış/Izgara Tavuk Göğsü + Salata", sub: "Sıfır yağlı saf protein." }
+            ],
+            persembe: [
+                { id: "dpe1", title: "Sabah (09:00): 2 Bardak Su", sub: "Aç karnına hidrasyon." },
+                { id: "dpe2", title: "Öğle (12:30): 3 Haşlanmış Yumurta + 100g Lor + Salatalık", sub: "Minimal karbonhidrat." },
+                { id: "dpe3", title: "Ara Öğün (16:00): 1 Bardak Ayran / Yoğurt", sub: "Sindirim sistemini destekle." },
+                { id: "dpe4", title: "Akşam (19:00): Sote Mantar/Kabak + 150g Tavuk", sub: "Düşük kalorili hacim öğünü." }
+            ],
+            cuma: [
+                { id: "dcu1", title: "Sabah (09:00): 2 Bardak Su", sub: "Güne dinç başlangıç." },
+                { id: "dcu2", title: "Öğle (12:30): 160g Ton Balıklı Yeşillik Salatası", sub: "Hafif ve dinç tutan öğle." },
+                { id: "dcu3", title: "Ara Öğün (16:00): 1 Avuç Çiğ Badem", sub: "Tok tutucu ara katman." },
+                { id: "dcu4", title: "Akşam (19:00): 3 Yumurtalı Menemen (Az Yağlı) + 1 Dilim Ekmek", sub: "Lezzetli cuma akşamı." }
+            ],
+            cumartesi: [
+                { id: "dcm1", title: "Sabah (09:00): 2 Bardak Su", sub: "Güne başlarken su." },
+                { id: "dcm2", title: "Öğle (12:30): Bol Lorlu ve Maydanozlu Omlet + 1 Dilim Ekmek", sub: "Hafta sonu kahvaltısı." },
+                { id: "dcm3", title: "Ara Öğün (16:00): 1 Meyve (Elma/Muz)", sub: "Doğal şeker yüklemesi." },
+                { id: "dcm4", title: "Akşam (19:00): 250g Tavuk Izgara / Sote + Salata", sub: "Kas recovery öğünü." }
+            ],
+            pazar: [
+                { id: "dpz1", title: "Sabah (09:00): 2 Bardak Su", sub: "Sabah klasiği." },
+                { id: "dpz2", title: "Öğle (12:30): 3 Haşlanmış Yumurta + Zeytin + Lor", sub: "Pazar kahvaltısı." },
+                { id: "dpz3", title: "Ara Öğün (16:00): 1 Bardak Yoğurt + Pul Biber", sub: "Metabolizma hızlandırıcı." },
+                { id: "dpz4", title: "Akşam (19:00): Mercimek Yemeği / Çorbası + Salata", sub: "Yeni haftaya hafif hazırlık." }
+            ]
         };
 
-        const exercises = [
-            { id: 1, title: '1. Isınma: Yerinde Hafif Adımlama', duration: 180, desc: 'Kolları sallayarak ve dizleri hafifçe kaldırarak temposuz yürü.', reps: '3 Dakika' },
-            { id: 2, title: '2. Yüksek / Masada Şınav (Göğüs & İtiş)', duration: 120, desc: 'Ellerini masa veya duvara koy. Göğsünü yaklaştırıp it. 12 Tekrar x 2 Set yap.', reps: '12 Tekrar x 2 Set' },
-            { id: 3, title: '3. Sandalye Squat (Bacak & Kalça)', duration: 150, desc: 'Arkanı sandalyeye dön. Yavaşça oturur gibi yapıp kalçan dokunduğu an kalk.', reps: '10 Tekrar x 2 Set' },
-            { id: 4, title: '4. Sandalye Dips (Arka Kol)', duration: 120, desc: 'Sandalyenin kenarına ellerini koy, kalçanı öne al. Dirseklerini büküp kendini yukarı it.', reps: '10 Tekrar x 2 Set' },
-            { id: 5, title: '5. Oturarak Bacak Kaldırma (Alt Karın)', duration: 120, desc: 'Sandalyede dik otur. Bacaklarını sırayla uzat ve 2 sn tut.', reps: 'Toplam 20 Tekrar' },
-            { id: 6, title: '6. Yüksek Plank (Tüm Vücut & Karın)', duration: 90, desc: 'Ellerini masaya/koltuğa koy. Vücudunu dümdüz tutarak karın kaslarını sık.', reps: '45 Sn x 2 Set' },
-            { id: 7, title: '7. Ayakta Yan Karın Sıkıştırma', duration: 90, desc: 'Ayakta dik dur. Dizini yukarı kaldırıp dirseğine yaklaştır.', reps: 'Sağ/Sol 12 Tekrar' },
-            { id: 8, title: '8. Tempolu Ev İçi Yürüyüş (Yağ Yakımı)', duration: 600, desc: 'Oda içinde ritmik, hafif tempolu şekilde yürü.', reps: '10 Dakika' }
-        ];
+        // Her Güne Özel Spor Programı
+        const sportRoutines = {
+            pazartesi: [
+                { id: "sp1", title: "Isınma (5 Dk): Tempolu Yürüyüş / Jog", sub: "Sokakta veya evde nabzı kaldır." },
+                { id: "sp2", title: "Sandalye Squat (3 Set x 12 Tekrar)", sub: "Bacak ve kalça güçlendirme." },
+                { id: "sp3", title: "Duvar Şınavı / Wall Push-up (3 Set x 10 Tekrar)", sub: "Göğüs ve omuz kasları." },
+                { id: "sp4", title: "Plank / Düz Duruş (3 Set x 20 Saniye)", sub: "Karın ve bel bölgesini sıkılaştır." },
+                { id: "sp5", title: "Soğuma & Esneme (5 Dk)", sub: "Kasları esnet, nabzı düşür." }
+            ],
+            sali: [
+                { id: "ss1", title: "Isınma (5 Dk): Yerinde Adımlama & Kol Çevirme", sub: "Üst vücudu spora hazırla." },
+                { id: "ss2", title: "Hafif Tempo Koşu / Yürüyüş (15-20 Dk)", sub: "2 Dk Hafif Koşu + 2 Dk Yürüyüş kardiyosu." },
+                { id: "ss3", title: "Masa/Sandalye Şınavı (3 Set x 8 Tekrar)", sub: "Üst vücut odaklı kuvvet çalışması." },
+                { id: "ss4", title: "Mekik / Crunch (3 Set x 12 Tekrar)", sub: "Üst karın kası odaklı." },
+                { id: "ss5", title: "Bacak Esneme & Soğuma (5 Dk)", sub: "Yürüyüş sonrası bacakları rahatlat." }
+            ],
+            carsamba: [
+                { id: "sc1", title: "Isınma (5 Dk): Omuz & Bel Dairesel Hareketler", sub: "Eklem sıvılarını harekete geçir." },
+                { id: "sc2", title: "Geniş Açı Squat (3 Set x 12 Tekrar)", sub: "İç bacak ve kalça odaklı duruş." },
+                { id: "sc3", title: "Diz Üstünde Şınav (3 Set x 8 Tekrar)", sub: "Omuz ve kol arkası çalışması." },
+                { id: "sc4", title: "Side Plank / Yan Plank (2 Set x 15 Sn Her Taraf)", sub: "Yan karın ve bel yağları için." },
+                { id: "sc5", title: "Tüm Vücut Esneme (5 Dk)", sub: "Toparlanma esnemesi." }
+            ],
+            persembe: [
+                { id: "spe1", title: "Isınma (5 Dk): Tempolu Yürüyüş", sub: "Kardiyo öncesi ısınma." },
+                { id: "spe2", title: "Hafif Tempo Jog / Yürüyüş (20 Dk)", sub: "Doğrudan yağ yakım nabzı." },
+                { id: "spe3", title: "Sandalye Triceps Dips (3 Set x 10 Tekrar)", sub: "Arka kol kaslarını sıkılaştır." },
+                { id: "spe4", title: "Glute Bridge / Kalça Kaldırma (3 Set x 15 Tekrar)", sub: "Zeminde sırtüstü bel-kalça güçlendirme." },
+                { id: "spe5", title: "Soğuma Esnemesi (5 Dk)", sub: "Kalp ritmini normale döndür." }
+            ],
+            cuma: [
+                { id: "scu1", title: "Isınma (5 Dk): Yerinde Zıplamadan High Knee", sub: "Dizleri hafif yukarı çekerek ısın." },
+                { id: "scu2", title: "Sandalye Squat (3 Set x 15 Tekrar)", sub: "Haftanın son bacak yüklemesi." },
+                { id: "scu3", title: "Duvar Şınavı (3 Set x 12 Tekrar)", sub: "Göğüs ve omuz pres." },
+                { id: "scu4", title: "Plank (3 Set x 25 Saniye)", sub: "Karın dayanıklılık artırımı." },
+                { id: "scu5", title: "Alt Vücut Odaklı Esneme (5 Dk)", sub: "Hafta sonuna rahat gir." }
+            ],
+            cumartesi: [
+                { id: "scm1", title: "Isınma (5 Dk): Hafif Yürüyüş", sub: "Açık havada veya evde." },
+                { id: "scm2", title: "Serbest Tempo Yürüyüş / Jog (25 Dk)", sub: "Düşük tempo uzun kardiyo." },
+                { id: "scm3", title: "Superman / Sırt Kaldırma (3 Set x 10 Tekrar)", sub: "Yüzüstü yatarak bel ve sırt sağlığı." },
+                { id: "scm4", title: "Esneme & Soğuma (5 Dk)", sub: "Hafta sonu gevşemesi." }
+            ],
+            pazar: [
+                { id: "spz1", title: "Aktif Dinlenme (15 Dk): Hafif Ev İçi Yürüyüş", sub: "Kasları yormadan kan dolaşımı sağla." },
+                { id: "spz2", title: "Tüm Vücut Mobility & Yoga Esnemesi (15 Dk)", sub: "Yeni haftaya kasları tamamen yenileyerek gir." }
+            ]
+        };
 
-        let currentDay = 1;
-        let completedTasks = JSON.parse(localStorage.getItem('v6_tasks')) || {};
-        let completedExercises = JSON.parse(localStorage.getItem('v6_exercises')) || [];
-        let currentWater = parseFloat(localStorage.getItem('v6_water')) || 0;
-        let weightLogs = JSON.parse(localStorage.getItem('v6_weights')) || [{ date: 'Başlangıç', weight: 130.0 }];
-        let activeTimer = null;
+        let currentDay = "pazartesi";
+        let currentTab = "beslenme";
 
-        function initDaySelect() {
-            const select = document.getElementById('daySelect');
-            select.innerHTML = '';
-            for (let i = 1; i <= 7; i++) {
-                const opt = document.createElement('option');
-                opt.value = i;
-                opt.innerText = weeklyPlan[i].name;
-                select.appendChild(opt);
+        // Cihaz saatine göre otomatik gün belirleme ve gece 00:00 sıfırlaması
+        function checkAutoReset() {
+            const now = new Date();
+            const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+            const lastDate = localStorage.getItem("last_active_date");
+
+            const dayIndex = now.getDay(); // 0: Pazar, 1: Pazartesi, 2: Salı...
+            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
+            
+            if (lastDate !== todayStr) {
+                // Gece 00:00 geçildi:
+                localStorage.setItem("water_amount", "0");
+                localStorage.setItem("last_active_date", todayStr);
+                
+                currentDay = dayKeys[dayIndex];
+                document.getElementById("daySelect").value = currentDay;
             }
-            select.value = currentDay;
+        }
+
+        function init() {
+            checkAutoReset();
+            
+            // Cihazın mevcut gününü seç
+            const now = new Date();
+            const dayKeys = ["pazar", "pazartesi", "sali", "carsamba", "persembe", "cuma", "cumartesi"];
+            currentDay = dayKeys[now.getDay()];
+            document.getElementById("daySelect").value = currentDay;
+
+            renderTasks();
+            updateWaterUI();
+
+            // Cihaz saatini 30 saniyede bir kontrol et (gece 00:00 olduğunda otomatik gün atlasın)
+            setInterval(() => {
+                const checkNow = new Date();
+                const checkTodayStr = `${checkNow.getFullYear()}-${checkNow.getMonth() + 1}-${checkNow.getDate()}`;
+                if (localStorage.getItem("last_active_date") !== checkTodayStr) {
+                    checkAutoReset();
+                    renderTasks();
+                    updateWaterUI();
+                }
+            }, 30000);
+        }
+
+        function changeDay() {
+            currentDay = document.getElementById("daySelect").value;
+            renderTasks();
         }
 
         function switchTab(tab) {
-            if (tab === 'diet') {
-                document.getElementById('tabDiet').classList.remove('hidden');
-                document.getElementById('tabSport').classList.add('hidden');
-                document.getElementById('tabDietBtn').classList.add('active');
-                document.getElementById('tabSportBtn').classList.remove('active');
-            } else {
-                document.getElementById('tabDiet').classList.add('hidden');
-                document.getElementById('tabSport').classList.remove('hidden');
-                document.getElementById('tabSportBtn').classList.add('active');
-                document.getElementById('tabDietBtn').classList.remove('active');
-                renderExercises();
-            }
+            currentTab = tab;
+            document.getElementById("tabBeslenme").classList.toggle("active", tab === 'beslenme');
+            document.getElementById("tabSpor").classList.toggle("active", tab === 'spor');
+            renderTasks();
         }
-
-        function changeDay(val) { currentDay = parseInt(val); renderTasks(); }
 
         function renderTasks() {
-            document.getElementById('currentDayTitle').innerText = weeklyPlan[currentDay].name;
-            const container = document.getElementById('taskList');
-            container.innerHTML = '';
-            const dayCompleted = completedTasks[currentDay] || [];
+            const listEl = document.getElementById("taskList");
+            listEl.innerHTML = "";
+            
+            // Aktif segmente ve seçili güne göre görev listesini al
+            const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
 
-            weeklyPlan[currentDay].items.forEach(item => {
-                const isChecked = dayCompleted.includes(item.id);
-                const card = document.createElement('div');
-                card.className = `rounded-xl border transition p-3 ${isChecked ? 'bg-slate-800/30 border-slate-800 opacity-60' : 'bg-slate-900/80 border-slate-700'}`;
+            let completedCount = 0;
+
+            activeTasks.forEach(task => {
+                const key = `task_${currentDay}_${currentTab}_${task.id}`;
+                const isDone = localStorage.getItem(key) === "true";
+                if (isDone) completedCount++;
+
+                const card = document.createElement("div");
+                card.className = `task-card ${isDone ? 'completed' : ''}`;
+                card.onclick = () => toggleTask(key);
                 card.innerHTML = `
-                    <div class="flex items-center justify-between cursor-pointer" onclick="toggleTask('${item.id}')">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-5 h-5 rounded border ${isChecked ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-600'} flex items-center justify-center text-xs shrink-0">
-                                ${isChecked ? '<i class="fa-solid fa-check"></i>' : ''}
-                            </div>
-                            <i class="fa-solid ${item.icon} text-xs shrink-0"></i>
-                            <span class="text-xs font-bold ${isChecked ? 'line-through text-slate-500' : 'text-slate-200'}">${item.title}</span>
-                        </div>
-                        <button onclick="event.stopPropagation(); toggleDetail('${item.id}')" class="text-[10px] text-blue-400 bg-slate-800 px-2 py-1 rounded border border-slate-700">Detay</button>
+                    <div class="checkbox"></div>
+                    <div class="task-info">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-sub">${task.sub}</div>
                     </div>
-                    <div id="detail-${item.id}" class="hidden text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-800 leading-relaxed">${item.detail}</div>
                 `;
-                container.appendChild(card);
+                listEl.appendChild(card);
             });
-            updateProgress();
+
+            const pct = Math.round((completedCount / activeTasks.length) * 100) || 0;
+            document.getElementById("progressPct").innerText = `%${pct}`;
         }
 
-        function toggleDetail(id) { document.getElementById(`detail-${id}`).classList.toggle('hidden'); }
-
-        function toggleTask(id) {
-            if (!completedTasks[currentDay]) completedTasks[currentDay] = [];
-            if (completedTasks[currentDay].includes(id)) {
-                completedTasks[currentDay] = completedTasks[currentDay].filter(t => t !== id);
-            } else {
-                completedTasks[currentDay].push(id);
-            }
-            localStorage.setItem('v6_tasks', JSON.stringify(completedTasks));
+        function toggleTask(key) {
+            const val = localStorage.getItem(key) === "true";
+            localStorage.setItem(key, !val);
             renderTasks();
         }
 
-        function resetTasks() {
-            completedTasks[currentDay] = [];
-            localStorage.setItem('v6_tasks', JSON.stringify(completedTasks));
-            renderTasks();
+        function addWater(amount) {
+            let curr = parseFloat(localStorage.getItem("water_amount") || "0");
+            curr = Math.min(4.0, curr + amount);
+            localStorage.setItem("water_amount", curr.toFixed(1));
+            updateWaterUI();
         }
 
-        function updateProgress() {
-            const total = weeklyPlan[currentDay].items.length;
-            const completed = (completedTasks[currentDay] || []).length;
-            const percent = Math.round((completed / total) * 100);
-            document.getElementById('percentText').innerText = `%${percent}`;
-            const circle = document.getElementById('progressCircle');
-            const circumference = 2 * Math.PI * 38;
-            circle.style.strokeDasharray = `${circumference}`;
-            circle.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+        function updateWaterUI() {
+            const curr = parseFloat(localStorage.getItem("water_amount") || "0");
+            document.getElementById("waterVal").innerText = `${curr.toFixed(1)} / 4.0 L`;
         }
 
-        function addWater(amt) {
-            currentWater = Math.min(4.0, currentWater + amt);
-            localStorage.setItem('v6_water', currentWater);
-            updateWater();
-        }
-        function updateWater() {
-            document.getElementById('waterText').innerText = `${currentWater.toFixed(1)} / 4.0 L`;
-            document.getElementById('waterBar').style.width = `${(currentWater / 4.0) * 100}%`;
-        }
-
-        function logWeight() {
-            const input = document.getElementById('weightInput');
-            const val = parseFloat(input.value);
-            if (!val) return;
-            const today = new Date().toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
-            weightLogs.unshift({ date: today, weight: val });
-            localStorage.setItem('v6_weights', JSON.stringify(weightLogs));
-            input.value = '';
-            renderWeights();
-        }
-
-        function renderWeights() {
-            const container = document.getElementById('weightHistory');
-            container.innerHTML = '';
-            weightLogs.slice(0, 5).forEach(l => {
-                container.innerHTML += `<div class="flex justify-between bg-slate-900/60 px-2.5 py-1.5 rounded border border-slate-800"><span class="text-slate-400">${l.date}</span><span class="font-bold text-white">${l.weight} kg</span></div>`;
-            });
-        }
-
-        function renderExercises() {
-            const container = document.getElementById('exerciseList');
-            container.innerHTML = '';
-            let unlockedIndex = completedExercises.length;
-
-            exercises.forEach((ex, idx) => {
-                const isDone = completedExercises.includes(ex.id);
-                const isUnlocked = idx <= unlockedIndex;
-
-                const card = document.createElement('div');
-                card.className = `glass-card rounded-2xl p-4 transition ${
-                    isDone ? 'opacity-50 border-emerald-900/50' : isUnlocked ? 'border-blue-500/50' : 'opacity-40 grayscale pointer-events-none'
-                }`;
-
-                card.innerHTML = `
-                    <div class="flex items-center justify-between mb-2">
-                        <div class="flex items-center gap-2">
-                            <span class="w-6 h-6 rounded-full ${isDone ? 'bg-emerald-600' : isUnlocked ? 'bg-blue-600' : 'bg-slate-700'} text-white text-xs font-bold flex items-center justify-center">
-                                ${isDone ? '<i class="fa-solid fa-check"></i>' : idx + 1}
-                            </span>
-                            <h4 class="text-xs font-bold text-white">${ex.title}</h4>
-                        </div>
-                        <span class="text-[10px] font-bold bg-slate-800 text-blue-400 px-2 py-0.5 rounded border border-slate-700">${ex.reps}</span>
-                    </div>
-                    <p class="text-[11px] text-slate-300 mb-3 leading-relaxed">${ex.desc}</p>
-                    <div class="flex items-center justify-between bg-slate-900/80 p-2 rounded-xl border border-slate-800">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-regular fa-clock text-amber-400 text-xs"></i>
-                            <span id="timer-display-${ex.id}" class="text-xs font-mono font-bold text-white">${formatTime(ex.duration)}</span>
-                        </div>
-                        <div class="flex gap-2">
-                            ${isUnlocked && !isDone ? `
-                                <button id="timer-btn-${ex.id}" onclick="startTimer(${ex.id}, ${ex.duration})" class="bg-amber-600 hover:bg-amber-500 text-white text-[11px] font-bold px-3 py-1 rounded-lg transition">Başlat</button>
-                                <button onclick="completeExercise(${ex.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-bold px-3 py-1 rounded-lg transition">Tamamladım ✓</button>
-                            ` : isDone ? `
-                                <span class="text-xs font-bold text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Bitti</span>
-                            ` : `
-                                <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-lock"></i> Kilitli</span>
-                            `}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function formatTime(sec) {
-            const m = Math.floor(sec / 60);
-            const s = sec % 60;
-            return `${m}:${s < 10 ? '0' : ''}${s}`;
-        }
-
-        function startTimer(id, duration) {
-            if (activeTimer) clearInterval(activeTimer);
-            let left = duration;
-            const btn = document.getElementById(`timer-btn-${id}`);
-            const display = document.getElementById(`timer-display-${id}`);
-            btn.disabled = true;
-            btn.className = "bg-slate-700 text-slate-400 text-[11px] font-bold px-3 py-1 rounded-lg";
-
-            activeTimer = setInterval(() => {
-                left--;
-                display.innerText = formatTime(left);
-                if (left <= 0) {
-                    clearInterval(activeTimer);
-                    display.innerText = "Bitti!";
-                    display.className = "text-xs font-mono font-bold text-emerald-400 animate-pulse";
-                    btn.disabled = false;
-                    btn.innerText = "Yeniden";
-                    btn.className = "bg-amber-600 text-white text-[11px] font-bold px-3 py-1 rounded-lg";
-                }
-            }, 1000);
-        }
-
-        function completeExercise(id) {
-            if (activeTimer) clearInterval(activeTimer);
-            if (!completedExercises.includes(id)) {
-                completedExercises.push(id);
-                localStorage.setItem('v6_exercises', JSON.stringify(completedExercises));
-                renderExercises();
+        function resetCurrentDay() {
+            if (confirm("Bu günün verilerini sıfırlamak istiyor musun?")) {
+                const activeTasks = currentTab === 'beslenme' ? dietRoutines[currentDay] : sportRoutines[currentDay];
+                activeTasks.forEach(task => {
+                    localStorage.removeItem(`task_${currentDay}_${currentTab}_${task.id}`);
+                });
+                localStorage.setItem("water_amount", "0");
+                updateWaterUI();
+                renderTasks();
             }
         }
 
-        initDaySelect();
-        renderTasks();
-        updateWater();
-        renderWeights();
+        init();
     </script>
 </body>
 </html>
